@@ -1,0 +1,83 @@
+server:
+  port: ${APP_API_PORT}
+  servlet:
+    context-path: /api
+spring:
+  application:
+    name: app-api
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+          issuer-uri: http://localhost:8080/realms/MySuperApplicationRealm
+  datasource:
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT_EXT}/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PASS}
+    hikari:
+      connection-timeout: '20000'
+      idle-timeout: '10000'
+      maximum-pool-size: '40'
+      auto-commit: 'true'
+      minimum-idle: '10'
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT_EXT}/${DB_NAME}
+    password: ${DB_PASS}
+    user: ${DB_USER}
+    enabled: true
+    change-log: classpath:db/changelog-master.yml
+    parameters:
+      sql_user_name_1: ${DB_SQL_USER_NAME_1}
+      sql_user_name_2: ${DB_SQL_USER_NAME_2}
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: 'true'
+        temp:
+          use_jdbc_metadata_defaults: 'false'
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    hibernate:
+      ddl-auto: none
+ribbon:
+  ReadTimeout: '20000'
+  ConnectTimeout: '10000'
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: '60000'
+authorization:
+  jwt:
+    secret: ${APP_API_AUTHORIZATION_JWT_SECRET}
+oauth:
+  client:
+    secret: ${APP_API_AUTHENTICATION_PASS}
+    name: ${APP_API_AUTHENTICATION_USER}
+logging:
+  level:
+    liquibase: debug
+    org:
+      springframework:
+        security: DEBUG
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+springdoc:
+  swagger-ui:
+    csrf:
+      enabled: true
+  api-docs:
+    path: /api-docs
+jwt:
+  auth:
+    converter:
+      resource-id: my-super-client
+      principal-attribute: principal_username
