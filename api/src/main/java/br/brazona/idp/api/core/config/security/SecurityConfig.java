@@ -25,9 +25,6 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Value("${teste}")
-    public String teste;
-
     @Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}")
     private String jwkSetUri;
 
@@ -35,9 +32,9 @@ public class SecurityConfig {
 
     private static final String[] PUBLIC = {
 
-            "/api/oauth/token"
-            ,"/api/v1/oauth2/**"
-            ,"/v1/oauth2/**"
+            "/api/auth/token"
+            ,"/api/v1/auth/**"
+            ,"/v1/auth/**"
             ,"/api/actuator/**"
             ,"/api/actuator/health/**"
             ,"/api/swagger-ui.html"
@@ -52,7 +49,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((authorizeHttpRequests) ->
                         authorizeHttpRequests
-                                .requestMatchers(HttpMethod.POST, "/api/v1/oauth2/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
                                 .requestMatchers(PUBLIC).permitAll()
                                 .anyRequest().authenticated()
                 )

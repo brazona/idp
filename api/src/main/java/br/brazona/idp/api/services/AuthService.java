@@ -1,6 +1,6 @@
 package br.brazona.idp.api.services;
 
-import br.brazona.idp.api.core.dtos.Oauth2DTO;
+import br.brazona.idp.api.core.dtos.AuthDTO;
 import br.brazona.idp.api.core.models.LoginKeycloakResponseModel;
 import br.brazona.idp.api.core.models.LoginRequestModel;
 import br.brazona.idp.api.core.models.LoginResponseModel;
@@ -12,20 +12,20 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 @Service
-public class Oauth2Service {
+public class AuthService {
     @Autowired
-    private Oauth2DTO oauth2DTO;
+    private AuthDTO authDTO;
     @Autowired(required = false)
-    private IOauth2Service oauth2Service;
+    private IAuthService oauth2Service;
 
 
     public LoginResponseModel login (LoginRequestModel login){
         ObjectMapper objectMapper = new ObjectMapper();
         Gson gson = new Gson();
-
-        Map<String, Object> map = objectMapper.convertValue(oauth2DTO.request(login)
+        //
+        Map<String, Object> map = objectMapper.convertValue(authDTO.request(login)
                 , Map.class);
-        return oauth2DTO.response(
+        return authDTO.response(
                 gson.fromJson(oauth2Service.signIn(map).getBody(), LoginKeycloakResponseModel.class)
         );
     }

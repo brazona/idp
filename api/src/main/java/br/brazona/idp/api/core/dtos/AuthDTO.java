@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Oauth2DTO {
+public class AuthDTO {
     @Value("${keycloak.client}")
     private String CLIENT_ID;
     @Value("${keycloak.grant}")

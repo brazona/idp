@@ -14,7 +14,7 @@ import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VAL
 
 @Component
 @FeignClient(name = "${keycloak.name}", url = "${keycloak.url}")
-public interface IOauth2Service {
+public interface IAuthService {
 
     @PostMapping
     LoginKeycloakResponseModel login (@RequestBody LoginKeycloakRequestModel request);

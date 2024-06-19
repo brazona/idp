@@ -1,10 +1,11 @@
 server:
-  port: ${APP_API_PORT}
+  port: ${API_PORT}
   servlet:
     context-path: /api
+
 spring:
   application:
-    name: idp-api
+    name: ${API_NAME}
   main:
     web-application-type: servlet
   security:
@@ -12,27 +13,34 @@ spring:
       resourceserver:
         jwt:
           jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
-          issuer-uri: http://localhost:8081/realms/brazona
+          issuer-uri: ${KEYCLOAK_URL}
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+    password: ${REDIS_PASSWORD}
+  cache:
+    type: ${CACHES_TYPE}
+    cache-names: ${CACHES_NAME}
   datasource:
-    url: jdbc:postgresql://${APP_API_DB_HOST}:${APP_API_DB_PORT_EXT}/${APP_API_DB_NAME}
-    password: ${APP_API_DB_PASS}
-    user: ${APP_API_DB_USER}
-    hikari:
-      connection-timeout: '20000'
-      idle-timeout: '10000'
-      maximum-pool-size: '40'
-      auto-commit: 'true'
-      minimum-idle: '10'
-    driver-class-name: org.postgresql.Driver
+    url: jdbc:${DB_TYPE}://${DB_HOST}:${DB_PORT_EXT}/${DB_NAME}
+    password: ${DB_PASS}
+    user: ${DB_USER}
+  hikari:
+    connection-timeout: '20000'
+    idle-timeout: '10000'
+    maximum-pool-size: '40'
+    auto-commit: 'true'
+    minimum-idle: '10'
+  driver-class-name: ${DB_DRIVER}
   liquibase:
-    url: jdbc:postgresql://${APP_API_DB_HOST}:${APP_API_DB_PORT_EXT}/${APP_API_DB_NAME}
-    password: ${APP_API_DB_PASS}
-    user: ${APP_API_DB_USER}
+    url: jdbc:${DB_TYPE}://${DB_HOST}:${DB_PORT_EXT}/${DB_NAME}
+    password: ${DB_PASS}
+    user: ${DB_USER}
     enabled: false
     change-log: classpath:db/changelog-master.yml
     parameters:
-      sql_user_name_1: ${APP_API_DB_SQL_USER_NAME_1}
-      sql_user_name_2: ${APP_API_DB_SQL_USER_NAME_2}
+      sql_user_name_1: ${DB_SQL_USER_NAME_1}
+      sql_user_name_2: ${DB_SQL_USER_NAME_2}
   jpa:
     properties:
       hibernate:
@@ -41,12 +49,49 @@ spring:
             non_contextual_creation: 'true'
         temp:
           use_jdbc_metadata_defaults: 'false'
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    database-platform: ${DB_SQLDIALECT}
     hibernate:
       ddl-auto: none
+
+management:
+  endpoints:
+    enabled-by-default: false
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      enabled: true
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+
+springdoc:
+  swagger-ui:
+    csrf:
+      enabled: true
+  api-docs:
+    path: /api-docs
+
+jwt:
+  auth:
+    converter:
+      resource-id: ${KEYCLOAK_NAME}
+      principal-attribute: principal_username
+
+keycloak:
+  url: ${KEYCLOAK_URL}
+  name: ${KEYCLOAK_NAME}
+  grant: ${KEYCLOAK_GRANT_TYPE}
+  client: ${KEYCLOAK_CLIENT_ID}
+
 ribbon:
   ReadTimeout: '20000'
   ConnectTimeout: '10000'
+
 hystrix:
   command:
     default:
@@ -54,39 +99,3 @@ hystrix:
         isolation:
           thread:
             timeoutInMilliseconds: '60000'
-authorization:
-  jwt:
-    secret: ${APP_API_AUTHORIZATION_JWT_SECRET}
-oauth:
-  client:
-    secret: ${APP_API_AUTHENTICATION_PASS}
-    name: ${APP_API_AUTHENTICATION_USER}
-logging:
-  level:
-    liquibase: debug
-    org:
-      springframework:
-        security: DEBUG
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
-springdoc:
-  swagger-ui:
-    csrf:
-      enabled: true
-  api-docs:
-    path: /api-docs
-jwt:
-  auth:
-    converter:
-      resource-id: idp
-      principal-attribute: principal_username
-keycloak:
-  url: ${KEYCLOAK_URL}
-  name: ${KEYCLOAK_NAME}
-  grant: ${KEYCLOAK_GRANT_TYPE}
-  client: ${KEYCLOAK_CLIENT_ID}
-
-teste: ${KEYCLOAK_URL}

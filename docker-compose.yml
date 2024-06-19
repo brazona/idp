@@ -1,36 +1,51 @@
 version: '3.8'
 
 services:
-  db_app:
-    container_name: ${APP_API_DB_CONTAINER_NAME}
-    image: "postgres:${APP_API_DB_IMAGE_TAG}"
+  postgres_api:
+    container_name: ${DB_CONTAINER_NAME}
+    image: ${DB_IMAGE}
     restart: on-failure
     environment:
-      - POSTGRES_USER=${APP_API_DB_USER}
-      - POSTGRES_PASSWORD=${APP_API_DB_PASS}
-      - POSTGRES_DB=${APP_API_DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB_NAME}
     ports:
-      - "${APP_API_DB_PORT_EXT}:5432"
+      - "${DB_PORT_EXT}:5432"
     volumes:
-      - idp_db_data_app:/var/lib/postgresql/data
-    networks:
-      - idp_network
-  db_keycloak:
+      - postgres_api_vol:/var/lib/postgresql/data
+  redis:
+    container_name: ${REDIS_CONTAINER_NAME}
+    image: ${REDIS_IMAGE}
+    restart: on-failure
+    ports:
+      - "${REDIS_PORT_EXT}:${REDIS_PORT_INT}"
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+  redis-insight:
+    container_name: ${REDIS_INSIGHT_CONTAINER_NAME}
+    image: ${REDIS_INSIGHT_IMAGE}
+    restart: on-failure
+    ports:
+      - "${REDIS_INSIGHT_PORT_EXT}:${REDIS_INSIGHT_PORT_INT}"
+    volumes:
+      - redis_vol:/data
+  postgres_keycloak:
     container_name: ${KEYCLOAK_POSTGRES_CONTAINER_NAME}
-    image: postgres:16.2
+    image: ${KEYCLOAK_POSTGRES_IMAGE}
+    restart: on-failure
     volumes:
-      - idp_db_data_keycloak:/var/lib/postgresql/data
+      - postgres_keycloak_vol:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: ${KEYCLOAK_POSTGRES_DB}
       POSTGRES_USER: ${KEYCLOAK_POSTGRES_USER}
       POSTGRES_PASSWORD: ${KEYCLOAK_POSTGRES_PASSWORD}
     networks:
-      - idp_network
+      - brazona_net
   keycloak:
     container_name: ${KEYCLOAK_CONTAINER_NAME}
     image: ${KEYCLOAK_IMAGE}
     command: ${KEYCLOAK_COMMAND}
-    restart: always
+    restart: on-failure
     environment:
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
@@ -41,14 +56,16 @@ services:
     ports:
       - "${KEYCLOAK_PORT_EXT}:8080"
     depends_on:
-      - db_keycloak
+      - postgres_keycloak
     networks:
-      - idp_network
+      - brazona_net
 volumes:
-  idp_db_data_keycloak:
+  postgres_keycloak_vol:
     driver: local
-  idp_db_data_app:
+  postgres_api_vol:
+    driver: local
+  redis_vol:
     driver: local
 networks:
-  idp_network:
+  brazona_net:
     driver: bridge
