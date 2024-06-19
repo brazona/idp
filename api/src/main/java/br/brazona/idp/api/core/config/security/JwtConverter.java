@@ -1,4 +1,4 @@
-package br.brazona.idp.api.config.security;
+package br.brazona.idp.api.core.config.security;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;

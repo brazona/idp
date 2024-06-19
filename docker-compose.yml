@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  db_app:
+    container_name: ${APP_API_DB_CONTAINER_NAME}
+    image: "postgres:${APP_API_DB_IMAGE_TAG}"
+    restart: on-failure
+    environment:
+      - POSTGRES_USER=${APP_API_DB_USER}
+      - POSTGRES_PASSWORD=${APP_API_DB_PASS}
+      - POSTGRES_DB=${APP_API_DB_NAME}
+    ports:
+      - "${APP_API_DB_PORT_EXT}:5432"
+    volumes:
+      - idp_db_data_app:/var/lib/postgresql/data
+    networks:
+      - idp_network
+  db_keycloak:
+    container_name: ${KEYCLOAK_POSTGRES_CONTAINER_NAME}
+    image: postgres:16.2
+    volumes:
+      - idp_db_data_keycloak:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${KEYCLOAK_POSTGRES_DB}
+      POSTGRES_USER: ${KEYCLOAK_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${KEYCLOAK_POSTGRES_PASSWORD}
+    networks:
+      - idp_network
+  keycloak:
+    container_name: ${KEYCLOAK_CONTAINER_NAME}
+    image: ${KEYCLOAK_IMAGE}
+    command: ${KEYCLOAK_COMMAND}
+    restart: always
+    environment:
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://${KEYCLOAK_POSTGRES_CONTAINER_NAME}/${KEYCLOAK_POSTGRES_DB}
+      KC_DB_USERNAME: ${KEYCLOAK_POSTGRES_USER}
+      KC_DB_PASSWORD: ${KEYCLOAK_POSTGRES_PASSWORD}
+    ports:
+      - "${KEYCLOAK_PORT_EXT}:8080"
+    depends_on:
+      - db_keycloak
+    networks:
+      - idp_network
+volumes:
+  idp_db_data_keycloak:
+    driver: local
+  idp_db_data_app:
+    driver: local
+networks:
+  idp_network:
+    driver: bridge

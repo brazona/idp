@@ -5,6 +5,12 @@ import org.springframework.stereotype.Component;
 @Setter
 @Component
 public class LoginResponseModel {
+    private String result;
 
-    private String token;
+    public LoginResponseModel() {}
+    public LoginResponseModel(String result) {
+        this.result = result;
+    }
+
+
 }

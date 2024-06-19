@@ -3,12 +3,12 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>br.brazona.bag</groupId>
-		<artifactId>app</artifactId>
+		<groupId>br.brazona</groupId>
+		<artifactId>idp</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<groupId>br.brazona.bag.app</groupId>
+	<groupId>br.brazona.idp</groupId>
 	<artifactId>ui</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ui</name>

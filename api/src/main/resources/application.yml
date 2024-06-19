@@ -4,17 +4,19 @@ server:
     context-path: /api
 spring:
   application:
-    name: app-api
+    name: idp-api
+  main:
+    web-application-type: servlet
   security:
     oauth2:
       resourceserver:
         jwt:
           jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
-          issuer-uri: http://localhost:8080/realms/MySuperApplicationRealm
+          issuer-uri: http://localhost:8081/realms/brazona
   datasource:
-    url: jdbc:postgresql://${DB_HOST}:${DB_PORT_EXT}/${DB_NAME}
-    username: ${DB_USER}
-    password: ${DB_PASS}
+    url: jdbc:postgresql://${APP_API_DB_HOST}:${APP_API_DB_PORT_EXT}/${APP_API_DB_NAME}
+    password: ${APP_API_DB_PASS}
+    user: ${APP_API_DB_USER}
     hikari:
       connection-timeout: '20000'
       idle-timeout: '10000'
@@ -23,14 +25,14 @@ spring:
       minimum-idle: '10'
     driver-class-name: org.postgresql.Driver
   liquibase:
-    url: jdbc:postgresql://${DB_HOST}:${DB_PORT_EXT}/${DB_NAME}
-    password: ${DB_PASS}
-    user: ${DB_USER}
-    enabled: true
+    url: jdbc:postgresql://${APP_API_DB_HOST}:${APP_API_DB_PORT_EXT}/${APP_API_DB_NAME}
+    password: ${APP_API_DB_PASS}
+    user: ${APP_API_DB_USER}
+    enabled: false
     change-log: classpath:db/changelog-master.yml
     parameters:
-      sql_user_name_1: ${DB_SQL_USER_NAME_1}
-      sql_user_name_2: ${DB_SQL_USER_NAME_2}
+      sql_user_name_1: ${APP_API_DB_SQL_USER_NAME_1}
+      sql_user_name_2: ${APP_API_DB_SQL_USER_NAME_2}
   jpa:
     properties:
       hibernate:
@@ -39,7 +41,7 @@ spring:
             non_contextual_creation: 'true'
         temp:
           use_jdbc_metadata_defaults: 'false'
-    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: none
 ribbon:
@@ -79,5 +81,12 @@ springdoc:
 jwt:
   auth:
     converter:
-      resource-id: my-super-client
+      resource-id: idp
       principal-attribute: principal_username
+keycloak:
+  url: ${KEYCLOAK_URL}
+  name: ${KEYCLOAK_NAME}
+  grant: ${KEYCLOAK_GRANT_TYPE}
+  client: ${KEYCLOAK_CLIENT_ID}
+
+teste: ${KEYCLOAK_URL}

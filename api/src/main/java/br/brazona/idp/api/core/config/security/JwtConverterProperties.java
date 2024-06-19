@@ -1,4 +1,4 @@
-package br.brazona.idp.api.config.security;
+package br.brazona.idp.api.core.config.security;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
