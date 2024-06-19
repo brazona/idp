@@ -4,17 +4,6 @@
 ## Business Administration Games ( BAG )  
 
 
-http://localhost:8081/realms/brazona/protocol/openid-connect/certs
-
-![coverage](.github/badges/jacoco.svg)
-![branches coverage](.github/badges/branches.svg)
-
-![coverage](.github/badges/jacoco.svg)
-![branches coverage](.github/badges/branches.svg)
-
-![GitHub License](https://img.shields.io/github/license/brazona/bag)
-
-![GitHub deployments](https://img.shields.io/github/deployments/brazona/bag/development)
 
 ![GitHub forks](https://img.shields.io/github/forks/brazona/bag)
 
