@@ -6,41 +6,26 @@ server:
 spring:
   application:
     name: ${API_NAME}
-  main:
-    web-application-type: servlet
   security:
-    oauth2:
-      resourceserver:
-        jwt:
-          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
-          issuer-uri: ${KEYCLOAK_URL}
+    basic:
+      enabled: true
+      path: /**
+      ignored: /health**,/info**,/metrics**,/trace**
+      user:
+        name: ${OAUTH_CLIENT_NAME}
+        password: ${OAUTH_CLIENT_SECRET}
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+#          issuer-uri: ${KEYCLOAK_URL}
   redis:
     host: ${REDIS_HOST}
-    port: ${REDIS_PORT}
+    port: ${REDIS_PORT_CONNECT}
     password: ${REDIS_PASSWORD}
   cache:
     type: ${CACHES_TYPE}
     cache-names: ${CACHES_NAME}
-  datasource:
-    url: jdbc:${DB_TYPE}://${DB_HOST}:${DB_PORT_EXT}/${DB_NAME}
-    password: ${DB_PASS}
-    user: ${DB_USER}
-  hikari:
-    connection-timeout: '20000'
-    idle-timeout: '10000'
-    maximum-pool-size: '40'
-    auto-commit: 'true'
-    minimum-idle: '10'
-  driver-class-name: ${DB_DRIVER}
-  liquibase:
-    url: jdbc:${DB_TYPE}://${DB_HOST}:${DB_PORT_EXT}/${DB_NAME}
-    password: ${DB_PASS}
-    user: ${DB_USER}
-    enabled: false
-    change-log: classpath:db/changelog-master.yml
-    parameters:
-      sql_user_name_1: ${DB_SQL_USER_NAME_1}
-      sql_user_name_2: ${DB_SQL_USER_NAME_2}
   jpa:
     properties:
       hibernate:
@@ -49,25 +34,50 @@ spring:
             non_contextual_creation: 'true'
         temp:
           use_jdbc_metadata_defaults: 'false'
-    database-platform: ${DB_SQLDIALECT}
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: none
-
-management:
-  endpoints:
-    enabled-by-default: false
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      enabled: true
+      ddl-auto: update
+    jakarta:
+      persistence:
+        schema-generation:
+          database:
+            action: none
+          scripts:
+            action: none
+            create-source: metadata
+            create-target: ./api/src/main/resources/db/script/schema.sql
+  datasource:
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT_CONNECT}/${DB_NAME}
+    password: ${DB_PASS}
+    username: ${DB_USER}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: '20000'
+      idle-timeout: '10000'
+      maximum-pool-size: '40'
+      auto-commit: 'true'
+      minimum-idle: '10'
+  liquibase:
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT_CONNECT}/${DB_NAME}
+    password: ${DB_PASS}
+    user: ${DB_USER}
+    enabled: false
+    change-log: classpath:db/changelog-master.yml
+#    change-log: classpath:db_version/changelog-master.yml
+    parameters:
+      sql_user_name_1: ${DB_SQL_USER_NAME_1}
+      sql_user_name_2: ${DB_SQL_USER_NAME_2}
+      sql_user_name_3: ${DB_SQL_USER_NAME_3}
+      sql_user_name_4: ${DB_SQL_USER_NAME_4}
 
 logging:
   level:
+    liquibase: INFO
     org:
+      hibernate: INFO
       springframework:
-        security: DEBUG
+        security: TRACE
+        data: INFO
 
 springdoc:
   swagger-ui:
@@ -86,16 +96,11 @@ keycloak:
   url: ${KEYCLOAK_URL}
   name: ${KEYCLOAK_NAME}
   grant: ${KEYCLOAK_GRANT_TYPE}
-  client: ${KEYCLOAK_CLIENT_ID}
+  client:
+    id: ${KEYCLOAK_CLIENT_ID}
+    secret: ${KEYCLOAK_CLIENT_SECRET}
 
-ribbon:
-  ReadTimeout: '20000'
-  ConnectTimeout: '10000'
-
-hystrix:
-  command:
-    default:
-      execution:
-        isolation:
-          thread:
-            timeoutInMilliseconds: '60000'
+oauth:
+  client:
+    secret: ${OAUTH_CLIENT_SECRET}
+    name: ${OAUTH_CLIENT_NAME}

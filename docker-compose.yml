@@ -1,7 +1,7 @@
-version: '3.8'
+version: '3.0'
 
 services:
-  postgres_api:
+  pg-api:
     container_name: ${DB_CONTAINER_NAME}
     image: ${DB_IMAGE}
     restart: on-failure
@@ -10,9 +10,9 @@ services:
       - POSTGRES_PASSWORD=${DB_PASS}
       - POSTGRES_DB=${DB_NAME}
     ports:
-      - "${DB_PORT_EXT}:5432"
+      - "${DB_PORT_EXT}:${DB_PORT_INT}"
     volumes:
-      - postgres_api_vol:/var/lib/postgresql/data
+      - pg_api_vol:/var/lib/postgresql/data
   redis:
     container_name: ${REDIS_CONTAINER_NAME}
     image: ${REDIS_IMAGE}
@@ -29,12 +29,12 @@ services:
       - "${REDIS_INSIGHT_PORT_EXT}:${REDIS_INSIGHT_PORT_INT}"
     volumes:
       - redis_vol:/data
-  postgres_keycloak:
+  pg-keycloak:
     container_name: ${KEYCLOAK_POSTGRES_CONTAINER_NAME}
     image: ${KEYCLOAK_POSTGRES_IMAGE}
-    restart: on-failure
+    #restart: always
     volumes:
-      - postgres_keycloak_vol:/var/lib/postgresql/data
+      - pg_keycloak_vol:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: ${KEYCLOAK_POSTGRES_DB}
       POSTGRES_USER: ${KEYCLOAK_POSTGRES_USER}
@@ -45,7 +45,7 @@ services:
     container_name: ${KEYCLOAK_CONTAINER_NAME}
     image: ${KEYCLOAK_IMAGE}
     command: ${KEYCLOAK_COMMAND}
-    restart: on-failure
+    restart: always
     environment:
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
@@ -54,18 +54,16 @@ services:
       KC_DB_USERNAME: ${KEYCLOAK_POSTGRES_USER}
       KC_DB_PASSWORD: ${KEYCLOAK_POSTGRES_PASSWORD}
     ports:
-      - "${KEYCLOAK_PORT_EXT}:8080"
+      - "${KEYCLOAK_PORT_EXT}:${KEYCLOAK_PORT_INT}"
     depends_on:
-      - postgres_keycloak
+      - pg-keycloak
     networks:
       - brazona_net
+
 volumes:
-  postgres_keycloak_vol:
-    driver: local
-  postgres_api_vol:
-    driver: local
+  pg_keycloak_vol:
+  pg_api_vol:
   redis_vol:
-    driver: local
 networks:
   brazona_net:
     driver: bridge

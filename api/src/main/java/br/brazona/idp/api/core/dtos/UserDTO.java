@@ -1,15 +1,19 @@
-package br.brazona.idp.api.core.models;
+package br.brazona.idp.api.core.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
-@Getter
+
 @Component
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginRequestModel {
+@Getter
+public class UserDTO {
 
     private String username;
     private String password;
+
+    public UserDTO(String name) {
+    }
 }

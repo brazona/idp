@@ -16,9 +16,9 @@ import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VAL
 @FeignClient(name = "${keycloak.name}", url = "${keycloak.url}")
 public interface IAuthService {
 
-    @PostMapping
-    LoginKeycloakResponseModel login (@RequestBody LoginKeycloakRequestModel request);
-
     @PostMapping(value = "/protocol/openid-connect/token", consumes = APPLICATION_FORM_URLENCODED_VALUE)
     ResponseEntity<String> signIn(@RequestBody Map<String, ?> form);
+
+    @PostMapping(value = "/protocol/openid-connect/token", consumes = APPLICATION_FORM_URLENCODED_VALUE)
+    ResponseEntity<String> validatedToken(@RequestBody Map<String, ?> form);
 }

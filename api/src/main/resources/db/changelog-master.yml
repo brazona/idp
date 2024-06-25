@@ -1,5 +1,3 @@
 databaseChangeLog:
   - include:
-      file: db/script/schema.sql
-  - include:
       file: db/script/data.sql
