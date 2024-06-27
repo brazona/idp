@@ -1,9 +1,7 @@
 package br.brazona.idp.api.persistence.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,10 +28,10 @@ public class UsersEntity implements UserDetails, Serializable {
     private String name;
     private String email;
     private String password;
-    private boolean isAccountNonExpired;
-    private boolean isAccountNonLocked;
-    private boolean isCredentialsNonExpired;
-    private boolean isEnabled;
+    private Boolean isAccountNonExpired;
+    private Boolean isAccountNonLocked;
+    private Boolean isCredentialsNonExpired;
+    private Boolean isEnabled;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -41,14 +39,14 @@ public class UsersEntity implements UserDetails, Serializable {
             joinColumns = @JoinColumn(name="user_id"), // DEFINE O NOME DA COLUNA REFERENTE A PRIMARY KEY DESTA TABELA
             inverseJoinColumns = @JoinColumn(name="permission_id") // DEFINE O NOME DA COLUNA REFERENTE A PRIMARY KEY DA TABELA RELACIONAL
     )
-    private Set<UserPermissions> roles = new HashSet<>();
+    private Set<UserPermissionsEntity> roles = new HashSet<>();
 
     public UsersEntity() {
     }
 
-    public UsersEntity(Long id, String name, String email, String password,
-                       boolean isAccountNonExpired, boolean isAccountNonLocked,
-                       boolean isCredentialsNonExpired, boolean isEnabled) {
+    public UsersEntity(Long id, String name, String email, String password, Boolean isAccountNonExpired, Boolean isAccountNonLocked,
+                       Boolean isCredentialsNonExpired, Boolean isEnabled,
+                       Set<UserPermissionsEntity> roles) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -57,10 +55,12 @@ public class UsersEntity implements UserDetails, Serializable {
         this.isAccountNonLocked = isAccountNonLocked;
         this.isCredentialsNonExpired = isCredentialsNonExpired;
         this.isEnabled = isEnabled;
+        this.roles = roles;
     }
+
     public GrantedAuthority getRole(Long bpId, Long serviceId){
 
-        for (UserPermissions i : roles) {
+        for (UserPermissionsEntity i : roles) {
             if (bpId == i.getBp().getId() && serviceId == i.getService().getId()){
                 return i.getRole();
             }

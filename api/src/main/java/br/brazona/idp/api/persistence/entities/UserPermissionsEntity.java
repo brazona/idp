@@ -7,15 +7,13 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "users_permissions")
 @Getter
 @Setter
 @Component
-public class UserPermissions implements Serializable {
+public class UserPermissionsEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -39,5 +37,5 @@ public class UserPermissions implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "service_id")
-    private ServicesProvider service;
+    private ServicesProviderEntity service;
 }

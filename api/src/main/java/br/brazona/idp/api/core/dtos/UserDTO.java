@@ -1,19 +1,24 @@
 package br.brazona.idp.api.core.dtos;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 @Component
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
+@Setter
 public class UserDTO {
 
+
+    private Long id;
     private String username;
     private String password;
 
-    public UserDTO(String name) {
+    public UserDTO() {
+    }
+
+    public UserDTO(Long id, String username) {
+        this.id = id;
+        this.username = username;
     }
 }

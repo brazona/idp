@@ -4,16 +4,22 @@ server:
     context-path: /api
 
 spring:
+  cloud:
+    compatibility-verifier:
+      enabled: false
   application:
     name: ${API_NAME}
   security:
-    basic:
-      enabled: true
-      path: /**
-      ignored: /health**,/info**,/metrics**,/trace**
-      user:
-        name: ${OAUTH_CLIENT_NAME}
-        password: ${OAUTH_CLIENT_SECRET}
+    user:
+      name: ${OAUTH_CLIENT_NAME}
+      password: ${OAUTH_CLIENT_SECRET}
+#    basic:
+#      enabled: true
+#      path: /**
+#      ignored: /health**,/info**,/metrics**,/trace**
+#      user:
+#        name: ${OAUTH_CLIENT_NAME}
+#        password: ${OAUTH_CLIENT_SECRET}
 #    oauth2:
 #      resourceserver:
 #        jwt:
@@ -87,6 +93,8 @@ springdoc:
     path: /api-docs
 
 jwt:
+  secret: ${JWT_SECRET}
+  expiration_ms: ${JWT_EXPIRATION_TOKEN_MS}
   auth:
     converter:
       resource-id: ${KEYCLOAK_NAME}

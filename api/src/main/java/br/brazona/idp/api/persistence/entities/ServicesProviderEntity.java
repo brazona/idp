@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Component
-public class ServicesProvider implements Serializable {
+public class ServicesProviderEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

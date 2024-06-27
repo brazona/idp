@@ -1,4 +1,4 @@
-package br.brazona.idp.api.controllers;
+package br.brazona.idp.api.core.exception;
 
 import br.brazona.idp.api.core.dtos.ErrorMessageDTO;
 import br.brazona.idp.api.core.exception.ResourceNotFoundException;

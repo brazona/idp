@@ -11,12 +11,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
 @SpringBootApplication
-@EnableFeignClients
-@EntityScan(basePackages = { "br.brazona.idp.api.persistence.entities" })
-@ComponentScan( basePackages = {"br.brazona.idp.api.*", "org.springframework.http.*"})
-@EnableTransactionManagement
-@EnableJpaRepositories(basePackages = {"br.brazona.idp.api.persistence.repositories"})
-@EnableAutoConfiguration
 public class IdpApplication {
 
     public static void main(String[] args) {

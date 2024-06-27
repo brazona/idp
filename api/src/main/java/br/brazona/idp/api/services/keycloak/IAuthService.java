@@ -1,7 +1,5 @@
-package br.brazona.idp.api.services;
+package br.brazona.idp.api.services.keycloak;
 
-import br.brazona.idp.api.core.models.LoginKeycloakRequestModel;
-import br.brazona.idp.api.core.models.LoginKeycloakResponseModel;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

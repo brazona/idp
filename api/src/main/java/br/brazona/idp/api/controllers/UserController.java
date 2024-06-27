@@ -1,7 +1,8 @@
 package br.brazona.idp.api.controllers;
 
 import br.brazona.idp.api.core.dtos.UserDTO;
-import br.brazona.idp.api.services.UserService;
+
+import br.brazona.idp.api.services.business.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
