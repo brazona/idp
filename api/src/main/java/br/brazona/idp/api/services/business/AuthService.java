@@ -1,10 +1,10 @@
 package br.brazona.idp.api.services.business;
 
-import br.brazona.idp.api.core.config.security.JwtUtils;
-import br.brazona.idp.api.core.config.security.UserDetailsServiceImpl;
+import br.brazona.idp.api.core.utils.JwtUtils;
 import br.brazona.idp.api.core.dtos.business.*;
 import br.brazona.idp.api.core.dtos.keycloak.IntrospectResponseDTO;
 import br.brazona.idp.api.core.dtos.keycloak.TokenResponseDTO;
+import br.brazona.idp.api.core.exception.UnavailableServicedException;
 import br.brazona.idp.api.core.utils.AuthUtil;
 import br.brazona.idp.api.services.keycloak.IAuthService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -59,11 +59,9 @@ public class AuthService {
 
 
             if (resp == null || resp.getStatusCode().value() != 200 || resp.getBody() == null) {
-                // implementar exceções
-                System.out.println("exception");
+               throw new UnavailableServicedException();
             }
 
-            assert resp != null;
             IntrospectResponseDTO introspectResponseDTO = resp.getBody();
             assert introspectResponseDTO != null;
             return introspectResponseDTO.isActive();
@@ -88,8 +86,7 @@ public class AuthService {
         ResponseEntity<TokenResponseDTO> resp = oauth2Service.signIn(map);
 
         if (resp == null || resp.getStatusCode().value() != 200 || resp.getBody() == null) {
-            // implementar exceções
-            System.out.println("exception");
+            throw new UnavailableServicedException();
         }
 
         List<GrantedAuthority> grantedAuths = new ArrayList<>();

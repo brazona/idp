@@ -1,6 +1,6 @@
 package br.brazona.idp.api.controllers;
 
-import br.brazona.idp.api.core.config.security.JwtUtils;
+import br.brazona.idp.api.core.utils.JwtUtils;
 import br.brazona.idp.api.core.dtos.business.TokenDTO;
 import br.brazona.idp.api.core.dtos.business.UserDTO;
 import br.brazona.idp.api.services.business.AuthService;

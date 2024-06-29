@@ -1,4 +1,4 @@
-package br.brazona.idp.api.core.config.security;
+package br.brazona.idp.api.services.business;
 
 import br.brazona.idp.api.core.dtos.business.UserDetailsImplDTO;
 import br.brazona.idp.api.persistence.entities.UsersEntity;

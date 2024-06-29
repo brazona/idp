@@ -1,4 +1,4 @@
-package br.brazona.idp.api.core.config.security;
+package br.brazona.idp.api.core.utils;
 
 
 import io.jsonwebtoken.ExpiredJwtException;

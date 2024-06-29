@@ -1,7 +1,9 @@
 package br.brazona.idp.api.core.config.security;
 
 import br.brazona.idp.api.core.dtos.business.UserDetailsImplDTO;
+import br.brazona.idp.api.core.utils.JwtUtils;
 import br.brazona.idp.api.services.business.AuthService;
+import br.brazona.idp.api.services.business.UserDetailsServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.catalina.filters.CorsFilter;
 import org.apache.commons.lang3.ArrayUtils;
