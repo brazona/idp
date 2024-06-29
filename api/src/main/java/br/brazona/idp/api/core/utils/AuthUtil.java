@@ -3,8 +3,8 @@ package br.brazona.idp.api.core.utils;
 import br.brazona.idp.api.core.dtos.keycloak.IntrospectRequestDTO;
 import br.brazona.idp.api.core.dtos.keycloak.TokenRequestDTO;
 import br.brazona.idp.api.core.dtos.keycloak.TokenResponseDTO;
-import br.brazona.idp.api.core.dtos.business.LoginRequestModel;
-import br.brazona.idp.api.core.dtos.business.LoginResponseModel;
+import br.brazona.idp.api.core.dtos.business.LoginRequestDTO;
+import br.brazona.idp.api.core.dtos.business.LoginResponseDTO;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,15 +20,12 @@ public class AuthUtil {
     @Value("${keycloak.grant}")
     private String GRANT_TYPE;
 
-    public TokenRequestDTO request(LoginRequestModel loginReqApp){
+    public TokenRequestDTO request(LoginRequestDTO loginReqApp){
         return new TokenRequestDTO(
                 CLIENT_ID, GRANT_TYPE, loginReqApp.getUsername(),loginReqApp.getPassword(), CLIENT_SECRET);
     }
-    public LoginResponseModel response(TokenResponseDTO loginResApp){
-        return new LoginResponseModel(loginResApp.getAccess_token());
-    }
-    public String generateHash(int length){
-        return RandomStringUtils.randomAlphanumeric(length);
+    public LoginResponseDTO response(TokenResponseDTO loginResApp){
+        return new LoginResponseDTO(loginResApp.getAccess_token());
     }
     public IntrospectRequestDTO isValidTokenRequest(String token){
         return new IntrospectRequestDTO(CLIENT_ID, CLIENT_SECRET, token);

@@ -1,7 +1,6 @@
 package br.brazona.idp.api.core.exception;
 
 import br.brazona.idp.api.core.dtos.business.ErrorMessageDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -12,11 +11,20 @@ import java.util.Date;
 
 @RestControllerAdvice
 public class ControllerExceptionHandler {
-    @Autowired
-    private ErrorMessageDTO messageDTO;
+
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ErrorMessageDTO resourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
+        return new ErrorMessageDTO(
+                HttpStatus.NOT_FOUND,
+                new Date(),
+                ex.getMessage(),
+                request.getDescription(false));
+
+    }
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public ErrorMessageDTO userNotFoundException(UserNotFoundException ex, WebRequest request) {
         return new ErrorMessageDTO(
                 HttpStatus.NOT_FOUND,
                 new Date(),

@@ -6,21 +6,16 @@ import br.brazona.idp.api.core.dtos.business.*;
 import br.brazona.idp.api.core.dtos.keycloak.IntrospectResponseDTO;
 import br.brazona.idp.api.core.dtos.keycloak.TokenResponseDTO;
 import br.brazona.idp.api.core.utils.AuthUtil;
-import br.brazona.idp.api.persistence.entities.SessionEntity;
-import br.brazona.idp.api.persistence.repositories.SessionRepository;
 import br.brazona.idp.api.services.keycloak.IAuthService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -86,7 +81,7 @@ public class AuthService {
 
         Map<String, Object> map =
                 objectMapper.convertValue(
-                        authUtil.request(new LoginRequestModel(
+                        authUtil.request(new LoginRequestDTO(
                                 userDetails.getName(),
                                 user.getPassword()))
                         , Map.class);
@@ -96,8 +91,7 @@ public class AuthService {
             // implementar exceções
             System.out.println("exception");
         }
-//        Authentication authentication = authenticationManager.authenticate(
-//               new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword()));
+
         List<GrantedAuthority> grantedAuths = new ArrayList<>();
         Authentication authentication = authenticateAgainstThirdPartyAndGetAuthentication(
                 userDetails.getUsername(), userDetails.getPassword(), grantedAuths

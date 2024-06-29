@@ -6,11 +6,11 @@ import org.springframework.stereotype.Component;
 @Setter
 @Component
 @Getter
-public class LoginResponseModel {
+public class LoginResponseDTO {
     private String result;
 
-    public LoginResponseModel() {}
-    public LoginResponseModel(String result) {
+    public LoginResponseDTO() {}
+    public LoginResponseDTO(String result) {
         this.result = result;
     }
 

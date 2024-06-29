@@ -12,8 +12,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -21,13 +19,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -46,9 +41,7 @@ public class SecurityConfig {
     UserDetailsServiceImpl userDetailsService;
 
     private static final String[] PUBLIC = {
-            "/api/main/protect",
-            "/api/v1/auth/signin",
-            "/api/v1/auth/signup"
+            "/api/v1/auth/signin"
     };
 
     @Autowired
@@ -97,6 +90,7 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     AuthorizationManager<RequestAuthorizationContext> customAuthManager() {
         return new AuthorizationManager<RequestAuthorizationContext>() {
             
@@ -114,17 +108,10 @@ public class SecurityConfig {
                     String username = jwtUtils.getUserNameFromJwtToken(jwt);
 
                     UserDetailsImplDTO userDetails = userDetailsService.loadUserByUsername(username);
-                    Boolean isValid = authService.authorization(userDetails.getId());
 
-                    //UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
-//                    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-//                    auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(object.getRequest()));
-//
-//                    SecurityContextHolder.getContext()
-//                            .setAuthentication(auth);
-
-                    return new AuthorizationDecision(isValid);
+                    return new AuthorizationDecision(
+                            authService.authorization(userDetails.getId())
+                    );
                 }
 
                 return new AuthorizationDecision(false);

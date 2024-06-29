@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginRequestModel {
+public class LoginRequestDTO {
 
     private String username;
     private String password;
