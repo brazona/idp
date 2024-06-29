@@ -1,5 +1,7 @@
 package br.brazona.idp.api.core.config.security;
 
+import br.brazona.idp.api.core.dtos.business.UserDetailsImplDTO;
+import br.brazona.idp.api.services.business.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.catalina.filters.CorsFilter;
 import org.apache.commons.lang3.ArrayUtils;
@@ -14,6 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.authorization.AuthorizationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -41,8 +44,7 @@ public class SecurityConfig {
 
     @Autowired
     UserDetailsServiceImpl userDetailsService;
-    @Autowired(required = false)
-    AuthenticationManager authenticationManager;
+
     private static final String[] PUBLIC = {
             "/api/main/protect",
             "/api/v1/auth/signin",
@@ -51,6 +53,10 @@ public class SecurityConfig {
 
     @Autowired
     private JwtUtils jwtUtils;
+
+    @Autowired
+    private AuthService authService;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -86,16 +92,7 @@ public class SecurityConfig {
         return bean;
     }
 
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-        System.out.println(authProvider);
-
-        return authProvider;
-    }
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -116,13 +113,18 @@ public class SecurityConfig {
                 if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
                     String username = jwtUtils.getUserNameFromJwtToken(jwt);
 
-                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                    auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(object.getRequest()));
+                    UserDetailsImplDTO userDetails = userDetailsService.loadUserByUsername(username);
+                    Boolean isValid = authService.authorization(userDetails.getId());
 
-                    SecurityContextHolder.getContext()
-                            .setAuthentication(auth);
-                    return new AuthorizationDecision(true);
+                    //UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+//                    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+//                    auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(object.getRequest()));
+//
+//                    SecurityContextHolder.getContext()
+//                            .setAuthentication(auth);
+
+                    return new AuthorizationDecision(isValid);
                 }
 
                 return new AuthorizationDecision(false);
@@ -137,6 +139,10 @@ public class SecurityConfig {
         }
 
         return null;
+    }
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 
 }

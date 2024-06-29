@@ -1,7 +1,6 @@
 package br.brazona.idp.api.core.exception;
 
-import br.brazona.idp.api.core.dtos.ErrorMessageDTO;
-import br.brazona.idp.api.core.exception.ResourceNotFoundException;
+import br.brazona.idp.api.core.dtos.business.ErrorMessageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;

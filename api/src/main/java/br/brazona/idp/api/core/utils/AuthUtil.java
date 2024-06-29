@@ -1,10 +1,10 @@
 package br.brazona.idp.api.core.utils;
 
-import br.brazona.idp.api.core.dtos.KeycloakIntrospectRequestDTO;
-import br.brazona.idp.api.core.models.LoginKeycloakRequestModel;
-import br.brazona.idp.api.core.models.LoginKeycloakResponseModel;
-import br.brazona.idp.api.core.models.LoginRequestModel;
-import br.brazona.idp.api.core.models.LoginResponseModel;
+import br.brazona.idp.api.core.dtos.keycloak.IntrospectRequestDTO;
+import br.brazona.idp.api.core.dtos.keycloak.TokenRequestDTO;
+import br.brazona.idp.api.core.dtos.keycloak.TokenResponseDTO;
+import br.brazona.idp.api.core.dtos.business.LoginRequestModel;
+import br.brazona.idp.api.core.dtos.business.LoginResponseModel;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,17 +20,18 @@ public class AuthUtil {
     @Value("${keycloak.grant}")
     private String GRANT_TYPE;
 
-    public LoginKeycloakRequestModel request(LoginRequestModel loginReqApp){
-        return new LoginKeycloakRequestModel(
-                CLIENT_ID, GRANT_TYPE, loginReqApp.getUsername(),loginReqApp.getPassword());
+    public TokenRequestDTO request(LoginRequestModel loginReqApp){
+        return new TokenRequestDTO(
+                CLIENT_ID, GRANT_TYPE, loginReqApp.getUsername(),loginReqApp.getPassword(), CLIENT_SECRET);
     }
-    public LoginResponseModel response(LoginKeycloakResponseModel loginResApp){
+    public LoginResponseModel response(TokenResponseDTO loginResApp){
         return new LoginResponseModel(loginResApp.getAccess_token());
     }
     public String generateHash(int length){
         return RandomStringUtils.randomAlphanumeric(length);
     }
-    public KeycloakIntrospectRequestDTO isValidTokenRequest(String token){
-        return new KeycloakIntrospectRequestDTO(CLIENT_ID, CLIENT_SECRET, token);
+    public IntrospectRequestDTO isValidTokenRequest(String token){
+        return new IntrospectRequestDTO(CLIENT_ID, CLIENT_SECRET, token);
     }
+
 }

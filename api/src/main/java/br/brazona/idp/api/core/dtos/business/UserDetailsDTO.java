@@ -1,9 +1,8 @@
-package br.brazona.idp.api.core.dtos;
+package br.brazona.idp.api.core.dtos.business;
 
 import br.brazona.idp.api.persistence.entities.UsersEntity;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Component

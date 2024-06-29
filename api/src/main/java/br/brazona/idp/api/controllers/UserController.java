@@ -1,6 +1,6 @@
 package br.brazona.idp.api.controllers;
 
-import br.brazona.idp.api.core.dtos.UserDTO;
+import br.brazona.idp.api.core.dtos.business.UserDTO;
 
 import br.brazona.idp.api.services.business.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

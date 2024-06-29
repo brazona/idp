@@ -1,21 +1,19 @@
-package br.brazona.idp.api.core.models;
+package br.brazona.idp.api.core.dtos.keycloak;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 
 @Component
 @Setter
-public class LoginKeycloakRequestModel {
+public class TokenRequestDTO {
 
 
     @JsonProperty(value = "client_id", required = true)
     private String clientId;
+    @JsonProperty(value = "client_secret", required = true)
+    private String clientSecret;
     @JsonProperty(value = "grant_type", required = true)
     private String grantType;
     @JsonProperty(value = "username", required = true)
@@ -23,13 +21,14 @@ public class LoginKeycloakRequestModel {
     @JsonProperty(value = "password", required = true)
     private String password;
 
-    public LoginKeycloakRequestModel(){
+    public TokenRequestDTO(){
 
     }
-    public LoginKeycloakRequestModel(String clientId, String grantType, String username, String password) {
+    public TokenRequestDTO(String clientId, String grantType, String username, String password, String clientSecret) {
         this.clientId = clientId;
         this.grantType = grantType;
         this.username = username;
         this.password = password;
+        this.clientSecret = clientSecret;
     }
 }

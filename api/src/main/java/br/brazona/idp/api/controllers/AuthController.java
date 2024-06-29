@@ -1,16 +1,13 @@
 package br.brazona.idp.api.controllers;
 
 import br.brazona.idp.api.core.config.security.JwtUtils;
-import br.brazona.idp.api.core.dtos.TokenDTO;
-import br.brazona.idp.api.core.dtos.UserDTO;
-import br.brazona.idp.api.core.dtos.UserDetailsImplDTO;
+import br.brazona.idp.api.core.dtos.business.EntityDTO;
+import br.brazona.idp.api.core.dtos.business.TokenDTO;
+import br.brazona.idp.api.core.dtos.business.UserDTO;
 import br.brazona.idp.api.services.business.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,21 +29,14 @@ public class AuthController implements IAuthController {
 
     @Override
     public ResponseEntity<TokenDTO> signin(UserDTO user) {
-
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
-
-        SecurityContextHolder.getContext()
-                .setAuthentication(authentication);
-        UserDetailsImplDTO userDetails = (UserDetailsImplDTO) authentication.getPrincipal();
-
-        String jwt = jwtUtils.generateJwtToken(authentication);
-
-        return ResponseEntity.ok(new TokenDTO(jwt));
+        TokenDTO tokenDTO = service.signIn(user);
+        return ResponseEntity.ok()
+                .header("Authorization", tokenDTO.getToken())
+                .body(tokenDTO);
     }
 
     @Override
-    public ResponseEntity<TokenDTO> signup(UserDTO user) {
+    public ResponseEntity<TokenDTO> signup(String service_id, String bp_id, UserDTO user) {
         return null;
     }
 }

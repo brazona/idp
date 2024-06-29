@@ -1,6 +1,5 @@
-package br.brazona.idp.api.core.models;
+package br.brazona.idp.api.core.dtos.keycloak;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
@@ -8,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Getter
 @Setter
-public class LoginKeycloakResponseModel {
+public class TokenResponseDTO {
 
     private String access_token;
     private String expires_in;
@@ -19,10 +18,10 @@ public class LoginKeycloakResponseModel {
     private String session_state;
     private String scope;
 
-    public LoginKeycloakResponseModel() {
+    public TokenResponseDTO() {
     }
 
-    public LoginKeycloakResponseModel(String accessToken, String refreshExpiresIn, String refreshToken, String tokenType, String notBeforePolicy, String sessionState, String scope) {
+    public TokenResponseDTO(String accessToken, String refreshExpiresIn, String refreshToken, String tokenType, String notBeforePolicy, String sessionState, String scope) {
         this.access_token = accessToken;
         this.refresh_expires_in = refreshExpiresIn;
         this.refresh_token = refreshToken;

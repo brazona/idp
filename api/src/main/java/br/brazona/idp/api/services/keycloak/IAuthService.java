@@ -1,8 +1,9 @@
 package br.brazona.idp.api.services.keycloak;
 
+import br.brazona.idp.api.core.dtos.keycloak.IntrospectResponseDTO;
+import br.brazona.idp.api.core.dtos.keycloak.TokenResponseDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -10,13 +11,13 @@ import java.util.Map;
 
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
 
-@Component
 @FeignClient(name = "${keycloak.name}", url = "${keycloak.url}")
 public interface IAuthService {
 
     @PostMapping(value = "/protocol/openid-connect/token", consumes = APPLICATION_FORM_URLENCODED_VALUE)
-    ResponseEntity<String> signIn(@RequestBody Map<String, ?> form);
+    ResponseEntity<TokenResponseDTO> signIn(@RequestBody Map<String, ?> form);
 
-    @PostMapping(value = "/protocol/openid-connect/token", consumes = APPLICATION_FORM_URLENCODED_VALUE)
-    ResponseEntity<String> validatedToken(@RequestBody Map<String, ?> form);
+    @PostMapping(value = "/protocol/openid-connect/token/introspect", consumes = APPLICATION_FORM_URLENCODED_VALUE)
+    ResponseEntity<IntrospectResponseDTO> authorizationIntrospect(@RequestBody Map<String, ?> form);
+
 }

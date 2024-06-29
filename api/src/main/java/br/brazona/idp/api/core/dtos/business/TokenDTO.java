@@ -1,6 +1,5 @@
-package br.brazona.idp.api.core.dtos;
+package br.brazona.idp.api.core.dtos.business;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;

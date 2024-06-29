@@ -1,4 +1,4 @@
-package br.brazona.idp.api.core.models;
+package br.brazona.idp.api.core.dtos.business;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

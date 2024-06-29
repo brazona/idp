@@ -13,26 +13,26 @@ services:
       - "${DB_PORT_EXT}:${DB_PORT_INT}"
     volumes:
       - pg_api_vol:/var/lib/postgresql/data
-  redis:
-    container_name: ${REDIS_CONTAINER_NAME}
-    image: ${REDIS_IMAGE}
-    restart: on-failure
-    ports:
-      - "${REDIS_PORT_EXT}:${REDIS_PORT_INT}"
-    environment:
-      REDIS_PASSWORD: ${REDIS_PASSWORD}
-  redis-insight:
-    container_name: ${REDIS_INSIGHT_CONTAINER_NAME}
-    image: ${REDIS_INSIGHT_IMAGE}
-    restart: on-failure
-    ports:
-      - "${REDIS_INSIGHT_PORT_EXT}:${REDIS_INSIGHT_PORT_INT}"
-    volumes:
-      - redis_vol:/data
+  # redis:
+  #   container_name: ${REDIS_CONTAINER_NAME}
+  #   image: ${REDIS_IMAGE}
+  #   restart: on-failure
+  #   ports:
+  #     - "${REDIS_PORT_EXT}:${REDIS_PORT_INT}"
+  #   environment:
+  #     REDIS_PASSWORD: ${REDIS_PASSWORD}
+  # redis-insight:
+  #   container_name: ${REDIS_INSIGHT_CONTAINER_NAME}
+  #   image: ${REDIS_INSIGHT_IMAGE}
+  #   restart: on-failure
+  #   ports:
+  #     - "${REDIS_INSIGHT_PORT_EXT}:${REDIS_INSIGHT_PORT_INT}"
+  #   volumes:
+  #     - redis_vol:/data
   pg-keycloak:
     container_name: ${KEYCLOAK_POSTGRES_CONTAINER_NAME}
     image: ${KEYCLOAK_POSTGRES_IMAGE}
-    #restart: always
+    restart: always
     volumes:
       - pg_keycloak_vol:/var/lib/postgresql/data
     environment:
@@ -63,7 +63,7 @@ services:
 volumes:
   pg_keycloak_vol:
   pg_api_vol:
-  redis_vol:
+  # redis_vol:
 networks:
   brazona_net:
     driver: bridge

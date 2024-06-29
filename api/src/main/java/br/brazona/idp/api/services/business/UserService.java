@@ -1,15 +1,11 @@
 package br.brazona.idp.api.services.business;
 
-import br.brazona.idp.api.core.dtos.UserDTO;
-import br.brazona.idp.api.core.dtos.UserDetailsDTO;
-import br.brazona.idp.api.core.dtos.UserDetailsImplDTO;
+import br.brazona.idp.api.core.dtos.business.UserDTO;
+import br.brazona.idp.api.core.dtos.business.UserDetailsDTO;
 import br.brazona.idp.api.core.exception.UserNotFoundException;
 import br.brazona.idp.api.persistence.entities.UsersEntity;
 import br.brazona.idp.api.persistence.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -31,6 +27,9 @@ public class UserService {
 
     public UserDTO getById(Long id){
         Optional<UsersEntity> usersEntity = usersRepository.findById(id);
+        if (usersEntity.isEmpty()){
+            throw new UserNotFoundException();
+        }
         return usersEntity.map(entity -> new UserDTO(entity.getId() ,entity.getName())).orElse(null);
     }
     public UserDTO getByname(String name){

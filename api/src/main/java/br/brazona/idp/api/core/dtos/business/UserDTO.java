@@ -1,4 +1,4 @@
-package br.brazona.idp.api.core.dtos;
+package br.brazona.idp.api.core.dtos.business;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -9,7 +9,9 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Set;
 
 
 @Entity
@@ -33,20 +35,19 @@ public class UsersEntity implements UserDetails, Serializable {
     private Boolean isCredentialsNonExpired;
     private Boolean isEnabled;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(
-            name = "user_relation_permission",  // DEFINE NOME DA TABELA
-            joinColumns = @JoinColumn(name="user_id"), // DEFINE O NOME DA COLUNA REFERENTE A PRIMARY KEY DESTA TABELA
-            inverseJoinColumns = @JoinColumn(name="permission_id") // DEFINE O NOME DA COLUNA REFERENTE A PRIMARY KEY DA TABELA RELACIONAL
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
     )
-    private Set<UserPermissionsEntity> roles = new HashSet<>();
+    private Set<RolesEntity> roles;
 
     public UsersEntity() {
     }
 
     public UsersEntity(Long id, String name, String email, String password, Boolean isAccountNonExpired, Boolean isAccountNonLocked,
-                       Boolean isCredentialsNonExpired, Boolean isEnabled,
-                       Set<UserPermissionsEntity> roles) {
+                       Boolean isCredentialsNonExpired, Boolean isEnabled ) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -55,21 +56,11 @@ public class UsersEntity implements UserDetails, Serializable {
         this.isAccountNonLocked = isAccountNonLocked;
         this.isCredentialsNonExpired = isCredentialsNonExpired;
         this.isEnabled = isEnabled;
-        this.roles = roles;
     }
 
-    public GrantedAuthority getRole(Long bpId, Long serviceId){
-
-        for (UserPermissionsEntity i : roles) {
-            if (bpId == i.getBp().getId() && serviceId == i.getService().getId()){
-                return i.getRole();
-            }
-        }
-        return null;
-    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return new ArrayList<GrantedAuthority>(this.roles);
     }
 
     @Override
