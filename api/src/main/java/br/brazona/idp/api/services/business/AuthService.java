@@ -8,6 +8,8 @@ import br.brazona.idp.api.core.exception.UnavailableServicedException;
 import br.brazona.idp.api.core.utils.AuthUtil;
 import br.brazona.idp.api.services.keycloak.IAuthService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,13 +45,18 @@ public class AuthService {
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
-
+    private final static String SERVICE_LOG = "Service started AuthService: {}";
+    Logger logger = LoggerFactory.getLogger(AuthService.class);
 
     public Boolean authorization(Long user_id){
+        logger.info(SERVICE_LOG, "authorization");
+
         ObjectMapper objectMapper = new ObjectMapper();
         SessionDTO sessionDTO = sessionService.getByUserId(user_id);
 
         if (sessionDTO != null){
+
+            logger.info("Session active");
 
             Map<String, Object> map =
                     objectMapper.convertValue(
@@ -72,11 +79,11 @@ public class AuthService {
     }
 
     public TokenDTO signIn (UserDTO user){
-
+        logger.info(SERVICE_LOG, "signIn");
         ObjectMapper objectMapper = new ObjectMapper();
 
         UserDetailsImplDTO userDetails =  userDetailsService.loadUserByUsername(user.getUsername());
-
+        logger.info("Identified user");
         Map<String, Object> map =
                 objectMapper.convertValue(
                         authUtil.request(new LoginRequestDTO(
@@ -86,6 +93,7 @@ public class AuthService {
         ResponseEntity<TokenResponseDTO> resp = oauth2Service.signIn(map);
 
         if (resp == null || resp.getStatusCode().value() != 200 || resp.getBody() == null) {
+            logger.error("Unavailable service: {}", "Keycloak");
             throw new UnavailableServicedException();
         }
 
@@ -105,7 +113,7 @@ public class AuthService {
                 tokenResponseDTO.getExpires_in(), tokenResponseDTO.getRefresh_expires_in(), tokenResponseDTO.getRefresh_token());
 
         sessionService.save(sessionDTO);
-
+        logger.info("Token generated");
         return new TokenDTO(jwt);
     }
 

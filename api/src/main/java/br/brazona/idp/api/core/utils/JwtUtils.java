@@ -7,6 +7,8 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +27,8 @@ public class JwtUtils {
 
     @Value("${jwt.expiration_ms}")
     private int jwtExpirationMs;
+
+    Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
     public String generateJwtToken(Authentication authentication) {
 
@@ -62,16 +66,15 @@ public class JwtUtils {
                     .parseSignedClaims(authToken);
             return true;
         } catch (SignatureException e) {
-
-            System.out.println("Invalid JWT signature: {}"+e.getMessage());
+            logger.info("Invalid JWT signature: {}", e.getMessage());
         } catch (MalformedJwtException e) {
-            System.out.println(e.getMessage());
+            logger.info("Badly formatted jwt: {}", e.getMessage());
         } catch (ExpiredJwtException e) {
-            System.out.println(e.getMessage());
+            logger.info("expired token: {}", e.getMessage());
         } catch (UnsupportedJwtException e) {
-            System.out.println(e.getMessage());
+            logger.info("unsupported format: {}", e.getMessage());
         } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            logger.info("illegal argument: {}", e.getMessage());
         }
 
         return false;

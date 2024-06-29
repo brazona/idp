@@ -7,6 +7,8 @@ import br.brazona.idp.api.services.business.UserDetailsServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.catalina.filters.CorsFilter;
 import org.apache.commons.lang3.ArrayUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -38,6 +40,9 @@ import java.util.function.Supplier;
 @EnableWebSecurity
 @ComponentScan("br.brazona.idp.api.core.config.security")
 public class SecurityConfig {
+
+    private final static String SERVICE_LOG = "Service started SecurityConfig: {}";
+    Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
 
     @Autowired
     UserDetailsServiceImpl userDetailsService;
@@ -102,6 +107,7 @@ public class SecurityConfig {
                 HttpServletRequest request = object.getRequest();
                 String path =  request.getRequestURI();
                 if (ArrayUtils.contains(PUBLIC, path)){
+                    logger.info(SERVICE_LOG, "router public");
                     return new AuthorizationDecision(true);
                 }
                 String jwt = parseJwt(object.getRequest());
