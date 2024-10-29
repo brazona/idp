@@ -1,0 +1,102 @@
+server:
+  port: ${API_PORT}
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: ${API_NAME}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+          issuer-uri: ${KEYCLOAK_URL}
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT_CONNECT}
+    password: ${REDIS_PASSWORD}
+  cache:
+    type: ${CACHES_TYPE}
+    cache-names: ${CACHES_NAME}
+  jpa:
+    #open-in-view: false
+    #generate-ddl: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        ddl-auto: none
+        show_sql: true
+        use_sql_comments: true
+        format_sql: true
+        generate_statistics: false
+        jdbc:
+          fetch_size: 2000
+          lob.non_contextual_creation: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+      jakarta:
+        persistence:
+          schema-generation:
+            database:
+              action: none
+            scripts:
+              action: create
+              create-source: metadata
+              create-target: ./api/src/main/resources/db/script/schema.sql
+  datasource:
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT_CONNECT}/${DB_NAME}
+    password: ${DB_PASS}
+    username: ${DB_USER}
+    driver-class-name: org.postgresql.Driver
+    testWhileIdle: true
+    hikari:
+      minimumIdle: 5
+      maximumPoolSize: 20
+      idleTimeout: 30000
+      poolName: SpringBootJPAHikariCP
+      maxLifetime: 200000
+      connectionTimeout: 30000
+      connection-test-query: SELECT 1
+  liquibase:
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT_CONNECT}/${DB_NAME}
+    #url: jdbc:postgresql://${PG_HOST_SERVER}:${PG_HOST_SERVER_PORT}/${PG_DB_NAME}
+    password: ${DB_PASS}
+    user: ${DB_USER}
+    enabled: true
+    change-log: classpath:db/changelog-master.yml
+    parameters:
+      sql_user_name_1: ${DB_SQL_USER_NAME_1}
+      sql_user_name_2: ${DB_SQL_USER_NAME_2}
+      sql_user_name_3: ${DB_SQL_USER_NAME_3}
+      sql_user_name_4: ${DB_SQL_USER_NAME_4}
+#  autoconfigure:
+#    exclude:
+#      - org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration
+logging:
+  level:
+    liquibase: debug
+#    '[org.springframework.data]': TRACE
+#    '[org.hibernate]': TRACE
+#    '[javax.persistence]': TRACE
+
+
+springdoc:
+  swagger-ui:
+    csrf:
+      enabled: true
+  api-docs:
+    path: /api-docs
+
+jwt:
+  auth:
+    converter:
+      resource-id: ${KEYCLOAK_NAME}
+      principal-attribute: principal_username
+
+keycloak:
+  url: ${KEYCLOAK_URL}
+  name: ${KEYCLOAK_NAME}
+  grant: ${KEYCLOAK_GRANT_TYPE}
+  client: ${KEYCLOAK_CLIENT_ID}

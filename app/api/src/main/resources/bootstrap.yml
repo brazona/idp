@@ -1,0 +1,18 @@
+spring:
+  profiles:
+    active: local
+  application:
+    name: idp
+  cloud:
+    config:
+      uri: http://localhost:8888
+      fail-fast: true
+      username: admin
+      password: admin
+    compatibility-verifier:
+      enabled: false
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

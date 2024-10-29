@@ -1,0 +1,78 @@
+name: WebSite Pipeline Test
+on:
+  pull_request:
+    paths:
+      - 'website/**'
+  workflow_dispatch:
+jobs:
+  info-environment:
+    name: Identifying the Environment
+    permissions: write-all
+    uses: ./.github/workflows/export-env.yml
+    with:
+      github_base_ref: ${{github.base_ref}}
+      github_event_name: ${{github.event_name }}
+      github_ref_name: ${{github.ref_name}}
+  java:
+    name: Maven Build
+    needs: [info-environment]
+    permissions: write-all
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{needs.info-environment.outputs.environment_name}}
+    steps:
+    - name: Checkout the source code
+      uses: actions/checkout@v3
+
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'adopt'
+        java-version: '11'
+        cache: maven
+
+    - name: Build with Maven
+      run: mvn -B package --file website/pom.xml
+  angular:
+    name: Angular Build
+    needs: [info-environment]
+    permissions: write-all
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{needs.info-environment.outputs.environment_name}}
+    steps:
+      - name: Checkout the source code
+        uses: actions/checkout@v3
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: website/package-lock.json
+      - name: Install dependencies
+        run: npm ci
+        working-directory: website
+      # - name: Run tests
+      #   run: npm run test:ci
+      #   working-directory: website
+      - name: Build
+        run: npm run build
+        working-directory: website 
+  comment_pr:
+    name: Comment Pull Request Status
+    permissions: write-all
+    needs: [java, angular]
+    uses: ./.github/workflows/comment-pull-request.yml      
+          
+  # badge:
+  #   name: Generate Badge
+  #   needs: [angular, java]
+  #   permissions: write-all
+  #   uses: ./.github/workflows/badges-branch.yml
+  #   with:
+  #     path_app_pom: website
+  #     github_event_name: ${{github.event_name }}
+  #     github_pr_number: 1
+  #     # github_pr_number: ${{github.event.pull_request.number}}
+
