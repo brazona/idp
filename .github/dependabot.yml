@@ -13,3 +13,11 @@ updates:
     directory: "app" # Location of package manifests
     schedule:
       interval: "weekly"
+  - package-ecosystem: "maven" # See documentation for possible values
+    directory: "app/api" # Location of package manifests
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "npm" # See documentation for possible values
+    directory: "app/ui" # Location of package manifests
+    schedule:
+      interval: "weekly"
