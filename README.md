@@ -1,6 +1,6 @@
-# Support Server
+# Identity Server
 
-Servidores que tem o objetivo que oferecer suporte as aplicações, desde monitoramento de dados, desempenho de recursos computacionais, até persistência de dados.
+Aplicação sso responsável por gerir os usuários, perfils e autenticação/autorização. 
 
 ## Estrutura do projeto
 

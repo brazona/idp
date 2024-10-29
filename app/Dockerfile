@@ -1,0 +1,14 @@
+FROM openjdk:11
+ARG PATH_FILE
+VOLUME /tmp
+
+ARG ARG_PATH_FILE_API=api
+ARG ARG_PATH_FILE_UI=ui
+
+ENV PATH_FILE_API $ARG_PATH_FILE_API
+ENV PATH_FILE_UI $ARG_PATH_FILE_UI
+
+COPY $PATH_FILE_API/target/*.jar app.jar
+COPY $PATH_FILE_UI/target/*.jar app.jar
+
+ENTRYPOINT ["java","-jar","/app.jar"]
