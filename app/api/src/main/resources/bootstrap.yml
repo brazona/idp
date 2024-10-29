@@ -1,18 +1,14 @@
 spring:
   profiles:
-    active: local
+    active: ${SPRING_ACTIVE_PROFILE}
   application:
     name: idp
   cloud:
     config:
-      uri: http://localhost:8888
+      uri: ${CONFIG_SERVER_HOST}
       fail-fast: true
-      username: admin
-      password: admin
+      username: ${CONFIG_SERVER_USER}
+      password: ${CONFIG_SERVER_PASS}
     compatibility-verifier:
       enabled: false
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
+
