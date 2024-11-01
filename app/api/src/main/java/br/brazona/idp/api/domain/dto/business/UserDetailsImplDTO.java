@@ -34,7 +34,7 @@ public class UserDetailsImplDTO implements UserDetails {
 
     public static UserDetailsImplDTO build(UsersEntity user) {
 
-        return new UserDetailsImplDTO(user.getId(), user.getUsername(), user.getPassword(), user.getName());
+        return new UserDetailsImplDTO(user.getId(), "user.getUsername()", user.getPassword(), user.getName());
     }
 
     public Long getId() {

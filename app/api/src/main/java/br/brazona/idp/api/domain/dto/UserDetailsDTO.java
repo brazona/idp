@@ -36,9 +36,9 @@ public class UserDetailsDTO {
     public UserDetailsDTO(UsersEntity userDetails){
 
 //        this.id = id;
-        this.username = userDetails.getUsername();
+
         this.password = userDetails.getPassword();
-        this.email = userDetails.getUsername();
+
         this.isAccountNonExpired = userDetails.getIsAccountNonExpired();
         this.isAccountNonLocked = userDetails.getIsAccountNonLocked();
         this.isCredentialsNonExpired = userDetails.getIsCredentialsNonExpired();

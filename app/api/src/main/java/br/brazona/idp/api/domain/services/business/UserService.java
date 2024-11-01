@@ -26,7 +26,6 @@ public class UserService {
 
     public void create(UserDTO userDTO){
         logger.info(SERVICE_LOG, "create");
-        usersEntity.setName(userDTO.getUsername());
         usersRepository.save(usersEntity);
     }
 

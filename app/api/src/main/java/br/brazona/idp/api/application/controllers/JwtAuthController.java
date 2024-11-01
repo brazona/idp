@@ -2,9 +2,9 @@ package br.brazona.idp.api.application.controllers;
 
 
 import br.brazona.idp.api.domain.dto.JwtResponse;
-import br.brazona.idp.api.domain.dto.UserDTO;
-import br.brazona.idp.api.domain.dto.UserDetailsImplDTO;
-import br.brazona.idp.api.infrastructure.config.security.JwtUtils;
+import br.brazona.idp.api.domain.dto.business.UserDTO;
+import br.brazona.idp.api.domain.dto.business.UserDetailsImplDTO;
+import br.brazona.idp.api.domain.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
