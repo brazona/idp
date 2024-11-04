@@ -1,25 +1,25 @@
-package br.brazona.idp.api.domain.dto.business;
+package br.brazona.idp.api.domain.views.business;
 
 import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 @Component
 @Getter
-public class UserDTO {
+public class AuthRequestBusinessVO {
 
 
     private Long id;
     private String username;
     private String password;
 
-    public UserDTO() {
+    public AuthRequestBusinessVO() {
     }
 
-    public UserDTO(Long id, String username) {
+    public AuthRequestBusinessVO(Long id, String username) {
         this.id = id;
         this.username = username;
     }
-    public UserDTO(String username, String password) {
+    public AuthRequestBusinessVO(String username, String password) {
         this.username = username;
         this.password = password;
     }

@@ -48,8 +48,8 @@ public class SecurityConfig {
     UserDetailsServiceImpl userDetailsService;
 
     private static final String[] PUBLIC = {
-            "/api/v1/auth/signin"
-            ,"/v1/auth/signin"
+            "/api/v1/auth/authentication"
+            ,"/v1/auth/authentication"
     };
 
     @Autowired

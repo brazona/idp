@@ -1,24 +1,26 @@
 package br.brazona.idp.api.domain.dto;
 
-import br.brazona.idp.api.domain.views.LoginKeycloakRequestModel;
-import br.brazona.idp.api.domain.views.LoginKeycloakResponseModel;
-import br.brazona.idp.api.domain.views.LoginRequestModel;
-import br.brazona.idp.api.domain.views.LoginResponseModel;
-import org.springframework.beans.factory.annotation.Value;
+import br.brazona.idp.api.domain.views.business.AuthRequestBusinessVO;
+import br.brazona.idp.api.domain.views.business.AuthResponseBusinessVO;
+import br.brazona.idp.api.domain.views.keycloak.AuthRequestKeycloakVO;
+import br.brazona.idp.api.domain.views.keycloak.AuthResponseKeycloakVO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class AuthDTO {
-    @Value("${keycloak.client.id}")
-    private String CLIENT_ID;
-    @Value("${keycloak.grant}")
-    private String GRANT_TYPE;
 
-    public LoginKeycloakRequestModel request(LoginRequestModel loginReqApp){
-        return new LoginKeycloakRequestModel(
-                CLIENT_ID, GRANT_TYPE, loginReqApp.getUsername(),loginReqApp.getPassword());
+    public AuthRequestBusinessVO requestBusiness(AuthRequestKeycloakVO vo){
+        return new AuthRequestBusinessVO();
     }
-    public LoginResponseModel response(LoginKeycloakResponseModel loginResApp){
-        return new LoginResponseModel(loginResApp.getAccess_token());
+    public AuthRequestKeycloakVO requestKeycloak(AuthRequestBusinessVO vo){
+        return new AuthRequestKeycloakVO();
+    }
+    public AuthResponseBusinessVO responseBusiness(AuthResponseKeycloakVO vo){
+        return new AuthResponseBusinessVO();
+    }
+    public AuthResponseKeycloakVO responseKeycloak(AuthResponseBusinessVO vo){
+        return new AuthResponseKeycloakVO();
     }
 }

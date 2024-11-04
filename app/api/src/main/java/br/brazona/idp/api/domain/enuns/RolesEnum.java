@@ -5,7 +5,6 @@ import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 @Getter
-@Component
 public enum RolesEnum {
     OWNER_SYS(DictionaryConst.OWNER_SYS),
     ADM_SYS(DictionaryConst.ADM_SYS),
@@ -14,9 +13,12 @@ public enum RolesEnum {
     ADM_ORG(DictionaryConst.ADM_ORG),
     USER_ORG(DictionaryConst.USER_ORG);
 
-    private final String nome_role;
+    private String nome_role;
 
     RolesEnum(String nome) {
         this.nome_role = nome;
+    }
+
+    RolesEnum() {
     }
 }

@@ -29,7 +29,7 @@ import java.util.Map;
 @Service
 public class AuthService {
 
-    @Autowired
+    @Autowired(required = false)
     private IAuthService oauth2Service;
 
     @Autowired

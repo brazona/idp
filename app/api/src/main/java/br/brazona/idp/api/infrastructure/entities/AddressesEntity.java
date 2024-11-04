@@ -26,14 +26,14 @@ public class AddressesEntity implements Serializable {
     private String state;
     private String zipcode;
     private String country;
-    private Integer business_partner_id;
+    private Long business_partner_id;
 
     public AddressesEntity() {
     }
 
     public AddressesEntity(Long id, String street, String neighborhood,
                            String number, String complement, String state,
-                           String zipcode, String country, Integer business_partner_id) {
+                           String zipcode, String country, Long business_partner_id) {
         this.id = id;
         this.street = street;
         this.neighborhood = neighborhood;

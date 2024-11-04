@@ -5,7 +5,6 @@ import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 @Getter
-@Component
 public enum GenderEnum {
     HOMEM_CISGENERO(DictionaryConst.HOMEM_CISGENERO),
     HOMEM_TRANSGENERO(DictionaryConst.HOMEM_TRANSGENERO),
@@ -16,9 +15,14 @@ public enum GenderEnum {
     NAO_BINARIO(DictionaryConst.NAO_BINARIO),
     AGENERO(DictionaryConst.AGENERO);
 
-    private final String nome_genero;
+    private String nome_genero;
 
     GenderEnum(String genero) {
+
         this.nome_genero = genero;
     }
+
+    GenderEnum() {
+    }
+
 }

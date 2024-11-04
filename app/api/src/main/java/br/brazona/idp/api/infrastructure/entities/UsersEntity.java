@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Table(name = "users")
 @Getter
 @Component
-public class UsersEntity implements Serializable {
+public class UsersEntity implements Serializable, GenericEntity {
     @Serial
     private static final long serialVersionUID = 1L;
 

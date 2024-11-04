@@ -1,5 +1,8 @@
 package br.brazona.idp.api.domain.constants;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class DictionaryConst {
     public final static String HOMEM_CISGENERO = "Homem Cisgênero";
     public final static String HOMEM_TRANSGENERO = "Homem Transgênero";
