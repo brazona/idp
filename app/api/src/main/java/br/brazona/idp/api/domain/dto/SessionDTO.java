@@ -1,4 +1,4 @@
-package br.brazona.idp.api.domain.dto.business;
+package br.brazona.idp.api.domain.dto;
 
 import br.brazona.idp.api.infrastructure.entities.SessionEntity;
 import lombok.Getter;
@@ -29,6 +29,7 @@ public class SessionDTO {
         this.refresh_expires_in = refresh_expires_in;
         this.refresh_token = refresh_token;
     }
+
     public SessionDTO(SessionEntity sessionEntity) {
         this.id = sessionEntity.getId();
         this.user_id = sessionEntity.getUser_id();

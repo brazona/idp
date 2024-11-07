@@ -41,4 +41,8 @@ public class UsersEntity implements Serializable, GenericEntity {
         this.isCredentialsNonExpired = isCredentialsNonExpired;
         this.isEnabled = isEnabled;
     }
+
+    public String getUsername() {
+        return this.email;
+    }
 }

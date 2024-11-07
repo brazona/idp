@@ -1,5 +1,7 @@
-package br.brazona.idp.api.application.advice;
+package br.brazona.idp.api.application.controllers;
 
+import br.brazona.idp.api.domain.constants.ExceptionConst;
+import br.brazona.idp.api.domain.exceptions.UserNotFoundException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -13,14 +15,19 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 
-    public RestResponseEntityExceptionHandler() {
+    public ExceptionHandlerController() {
         super();
     }
 
     // API
+    // 404
 
+    @ExceptionHandler({UserNotFoundException.class})
+    protected ResponseEntity<Object> handleNotfound(final RuntimeException ex, final WebRequest request) {
+        return handleExceptionInternal(ex, ExceptionConst.NOT_FOUND, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
     // 400
 
     @ExceptionHandler({ ConstraintViolationException.class })

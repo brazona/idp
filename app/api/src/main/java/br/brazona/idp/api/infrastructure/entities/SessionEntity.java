@@ -1,6 +1,7 @@
 package br.brazona.idp.api.infrastructure.entities;
 
-import br.brazona.idp.api.domain.dto.business.SessionDTO;
+
+import br.brazona.idp.api.domain.dto.SessionDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;

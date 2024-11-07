@@ -1,11 +1,11 @@
-package br.brazona.idp.api.domain.views;
+package br.brazona.idp.api.domain.views.business;
 
 import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 @Component
 @Getter
-public class UsersVO implements GenericVO {
+public class UserRequestVO {
 
     private Long id;
     private String username;

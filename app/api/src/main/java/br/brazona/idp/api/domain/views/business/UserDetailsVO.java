@@ -1,6 +1,5 @@
-package br.brazona.idp.api.domain.dto.business;
+package br.brazona.idp.api.domain.views.business;
 
-import br.brazona.idp.api.infrastructure.entities.UsersEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -8,10 +7,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-import java.util.Objects;
+
 @Component
 @Getter
-public class UserDetailsImplDTO implements UserDetails {
+public class UserDetailsVO implements UserDetails {
     private static final long serialVersionUID = 1L;
 
     private Long id;
@@ -21,29 +20,6 @@ public class UserDetailsImplDTO implements UserDetails {
     @JsonIgnore
     private String password;
 
-    public UserDetailsImplDTO() {
-    }
-
-    public UserDetailsImplDTO(Long id, String username, String password, String name) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.name = name;
-
-    }
-
-    public static UserDetailsImplDTO build(UsersEntity user) {
-
-        return new UserDetailsImplDTO(user.getId(), "user.getUsername()", user.getPassword(), user.getName());
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public static long getSerialversionuid() {
-        return serialVersionUID;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -78,15 +54,5 @@ public class UserDetailsImplDTO implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-        UserDetailsImplDTO user = (UserDetailsImplDTO) o;
-        return Objects.equals(id, user.id);
     }
 }

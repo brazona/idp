@@ -10,6 +10,6 @@ public class UnavailableServicedException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     public UnavailableServicedException() {
-        super(ExceptionConst.UNAVAILABLE_SERVICE);
+        super(ExceptionConst.UNAVAILABLE_SERVICE_ERROR);
     }
 }

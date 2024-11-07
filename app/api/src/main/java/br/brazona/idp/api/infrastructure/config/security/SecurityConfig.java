@@ -1,8 +1,6 @@
 package br.brazona.idp.api.infrastructure.config.security;
 
-import br.brazona.idp.api.domain.dto.business.UserDetailsImplDTO;
 import br.brazona.idp.api.domain.services.business.AuthService;
-import br.brazona.idp.api.domain.services.business.UserDetailsServiceImpl;
 import br.brazona.idp.api.domain.utils.JwtUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.catalina.filters.CorsFilter;
@@ -23,6 +21,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -44,8 +43,6 @@ public class SecurityConfig {
     private final static String SERVICE_LOG = "Service started SecurityConfig: {}";
     Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
 
-    @Autowired
-    UserDetailsServiceImpl userDetailsService;
 
     private static final String[] PUBLIC = {
             "/api/v1/auth/authentication"
@@ -116,10 +113,10 @@ public class SecurityConfig {
                 if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
                     String username = jwtUtils.getUserNameFromJwtToken(jwt);
 
-                    UserDetailsImplDTO userDetails = userDetailsService.loadUserByUsername(username);
+                    UserDetails userDetails = authService.loadUserByUsername(username);
 
                     return new AuthorizationDecision(
-                            authService.authorization(userDetails.getId())
+                            authService.authorization(userDetails.getUsername())
                     );
                 }
 

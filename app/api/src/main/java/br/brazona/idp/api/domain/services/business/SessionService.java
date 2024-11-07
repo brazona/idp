@@ -1,6 +1,6 @@
 package br.brazona.idp.api.domain.services.business;
 
-import br.brazona.idp.api.domain.dto.business.SessionDTO;
+import br.brazona.idp.api.domain.dto.SessionDTO;
 import br.brazona.idp.api.infrastructure.entities.SessionEntity;
 import br.brazona.idp.api.infrastructure.repositories.SessionRepository;
 import org.slf4j.Logger;
@@ -24,7 +24,7 @@ public class SessionService {
             sessionDTO.setId(sessionCurrent.getId());
         }
 
-        sessionRepository.save(new SessionEntity(sessionDTO));
+        sessionRepository.save(new SessionEntity());
         logger.info("Stored session");
     }
 
