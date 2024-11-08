@@ -1,0 +1,17 @@
+@use '~@angular/material' as mat;
+@use '~@angular/material/theming' as theming;
+
+@include mat.core();
+
+$brazona-branco: (background: #F5F5F5);
+$brazona-cinza: (background: #4B4B4B);
+$brazona-preto: (background: #212121);
+$brazona-verde-escuro: (background: #114303);
+$brazona-verde-claro: (background: #29FF00);
+$brazona-amarelo-escuro: (background: #212100);
+$brazona-amarelo-claro: (background: #EAFE06);
+$brazona-amarelo-gradiente: (
+    border: 3px solid
+    border-image-source: linear-gradient(180deg, #EAFE06 0%, #29FF00 100%));
+
+
