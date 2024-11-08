@@ -1,21 +1,10 @@
 export const environment = {
-  production: true,
-  //@ts-ignore
-  ENVIRONMENT: window["env"]["APP_ENVIRONMENT"],
-  //@ts-ignore
-  VERSION: window["env"]["APP_VERSION"],
-  //@ts-ignore
+  production: false,
   APP_API:{
-    //@ts-ignore
-    URL: window["env"]["APP_API_URL"],
+    URL: "http:localhost:8787",
     BASIC_AUTH:{
-      //@ts-ignore
-      AUTH_USER: window["env"]["AUTHENTICATION_USER"],
-      //@ts-ignore
-      AUTH_PASS:window["env"]["AUTHENTICATION_PASS"]
-    },
-    
-    //@ts-ignore
-    GRANT: window["env"]["AUTHENTICATION_GRANT"]
+      AUTH_USER: "local",
+      AUTH_PASS:"bashaAAA"
+    }
   },
 };

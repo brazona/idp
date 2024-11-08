@@ -1,16 +1,16 @@
 {
   "name": "app-ui",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "npm run file_env && bash ./env-local.sh && ng serve -o",
-    "start-docker": "npm run file_env && bash ./env-local.sh dockercompose && ng serve -o",
-    "build": "npm run file_env && ng build --configuration production",
+    "start": "ng serve -o",
+    "dev": "npm run env && ng build --watch --configuration development --output-path ../api/target/idp/app",
+    "build": "npm run env && ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "clean": "rm -rf ./node_modules package-lock.json .cache dist",
     "reinstall": "npm run clean && npm cache clean && npm install",
-    "file_env": "cp ./src/assets/env.template.js ./src/assets/env.js"
+    "env": "cp ./src/assets/env.template.js ./src/assets/env.js"
   },
   "private": true,
   "dependencies": {
