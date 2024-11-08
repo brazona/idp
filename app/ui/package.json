@@ -9,20 +9,17 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "clean": "rm -rf ./node_modules package-lock.json .cache dist",
-    "reinstall": "npm run clean && npm install",
+    "reinstall": "npm run clean && npm cache clean && npm install",
     "file_env": "cp ./src/assets/env.template.js ./src/assets/env.js"
   },
   "private": true,
   "dependencies": {
     "@angular/animations": "^16.1.0",
-
     "@angular/cdk": "^18.2.11",
-
     "@angular/common": "^16.1.0",
     "@angular/compiler": "^16.1.0",
     "@angular/core": "^16.1.0",
     "@angular/forms": "^16.1.0",
-
     "@angular/material": "^18.2.11",
     "@angular/platform-browser": "^16.1.0",
     "@angular/platform-browser-dynamic": "^16.1.0",
@@ -30,13 +27,13 @@
     "angular-material": "^1.2.5",
     "class-transformer": "^0.5.1",
     "moment": "^2.30.1",
-
     "rxjs": "~7.8.0",
     "tslib": "^2.6.3",
     "zone.js": "~0.13.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^16.1.0",
+    "@angular-devkit/schematics": "^18.2.11",
     "@angular/cli": "~16.1.0",
     "@angular/compiler-cli": "^16.1.0",
     "@types/jasmine": "~5.1.4",
@@ -48,7 +45,4 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.1.3"
   }
-
 }
-
-
