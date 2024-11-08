@@ -35,10 +35,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.liquibase</groupId>
-			<artifactId>liquibase-core</artifactId>
-		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-openfeign</artifactId>
@@ -48,32 +45,6 @@
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.testcontainers</groupId>
-			<artifactId>testcontainers</artifactId>
-			<version>1.19.8</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.testcontainers</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>1.19.6</version>
-			<scope>test</scope>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.github.dasniko/testcontainers-keycloak -->
-		<dependency>
-			<groupId>com.github.dasniko</groupId>
-			<artifactId>testcontainers-keycloak</artifactId>
-			<version>3.3.0</version>
-			<scope>test</scope>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
-		<dependency>
-			<groupId>redis.clients</groupId>
-			<artifactId>jedis</artifactId>
-			<version>4.4.3</version>
 		</dependency>
 
 		<dependency>
@@ -107,28 +78,6 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>io.rest-assured</groupId>
-			<artifactId>rest-assured</artifactId>
-			<version>${restassured.version}</version>
-			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.codehaus.groovy</groupId>
-					<artifactId>groovy</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.codehaus.groovy</groupId>
-					<artifactId>groovy-xml</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>io.rest-assured</groupId>
-			<artifactId>scala-support</artifactId>
-			<version>5.4.0</version>
-		</dependency>
-
-		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-config</artifactId>
 			<version>3.0.4</version>
@@ -139,67 +88,13 @@
 			<artifactId>spring-cloud-starter-bootstrap</artifactId>
 			<version>3.0.3</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
 		<dependency>
-			<groupId>org.testcontainers</groupId>
-			<artifactId>junit-jupiter</artifactId>
-			<version>1.19.8</version>
-			<scope>test</scope>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.12.0</version>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-docker-compose</artifactId>
-			<optional>true</optional>
-			<scope>runtime</scope>
-    	</dependency>
-		<!-- https://mvnrepository.com/artifact/io.rest-assured/json-path -->
-<!--		<dependency>-->
-<!--			<groupId>io.rest-assured</groupId>-->
-<!--			<artifactId>json-path</artifactId>-->
-<!--			<version>4.2.0</version>-->
-<!--		</dependency>-->
-<!--		&lt;!&ndash; https://mvnrepository.com/artifact/io.rest-assured/xml-path &ndash;&gt;-->
-<!--		<dependency>-->
-<!--			<groupId>io.rest-assured</groupId>-->
-<!--			<artifactId>xml-path</artifactId>-->
-<!--			<version>4.2.0</version>-->
-<!--		</dependency>-->
-<!--		&lt;!&ndash; https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient &ndash;&gt;-->
-<!--		<dependency>-->
-<!--			<groupId>org.apache.httpcomponents</groupId>-->
-<!--			<artifactId>httpclient</artifactId>-->
-<!--			<version>4.5.12</version>-->
-<!--		</dependency>-->
-<!--		&lt;!&ndash; https://mvnrepository.com/artifact/org.apache.httpcomponents/httpmime &ndash;&gt;-->
-<!--		<dependency>-->
-<!--			<groupId>org.apache.httpcomponents</groupId>-->
-<!--			<artifactId>httpmime</artifactId>-->
-<!--			<version>4.5.12</version>-->
-<!--		</dependency>-->
-<!--		&lt;!&ndash; https://mvnrepository.com/artifact/org.ccil.cowan.tagsoup/tagsoup &ndash;&gt;-->
-<!--		<dependency>-->
-<!--			<groupId>org.ccil.cowan.tagsoup</groupId>-->
-<!--			<artifactId>tagsoup</artifactId>-->
-<!--			<version>1.2.1</version>-->
-<!--		</dependency>-->
 
-<!--		&lt;!&ndash; https://mvnrepository.com/artifact/org.codehaus.groovy/groovy-json &ndash;&gt;-->
-<!--		<dependency>-->
-<!--			<groupId>org.codehaus.groovy</groupId>-->
-<!--			<artifactId>groovy-json</artifactId>-->
-<!--			<version>3.0.2</version>-->
-<!--		</dependency>-->
-<!--		&lt;!&ndash; https://mvnrepository.com/artifact/org.codehaus.groovy/groovy &ndash;&gt;-->
-<!--		<dependency>-->
-<!--			<groupId>org.codehaus.groovy</groupId>-->
-<!--			<artifactId>groovy</artifactId>-->
-<!--			<version>3.0.2</version>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>io.rest-assured</groupId>-->
-<!--			<artifactId>json-schema-validator</artifactId>-->
-<!--			<version>4.4.0</version>-->
-<!--			<scope>test</scope>-->
-<!--		</dependency>-->
 	</dependencies>
 	<repositories>
 		<repository>
