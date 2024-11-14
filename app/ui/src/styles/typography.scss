@@ -1,0 +1,20 @@
+@use "pallete-color.scss" as paleta;
+
+:root {
+    --russo-one-font-family: "Russo One", Helvetica;
+    --russo-one-font-weight: 400;
+    --russo-one-font-size: 20px;
+    --russo-one-letter-spacing: 0px;
+    --russo-one-line-height: normal;
+    --russo-one-font-style: normal;
+  }
+
+$brazona-font-family: var(--russo-one-font-family);
+$brazona-font-weight: var(--russo-one-font-weight);
+$brazona-font-color: paleta.$brazona-branco;
+$brazona-font-size: var(--russo-one-font-size);
+$brazona-text-align: center;
+$brazona-letter-spacing: var(--russo-one-letter-spacing);
+$brazona-line-height: var(--russo-one-line-height);
+$brazona-white-space: nowrap;
+$brazona-font-style: var(--russo-one-font-style);

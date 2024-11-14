@@ -1,0 +1,18 @@
+@use "pallete-color.scss" as paleta;
+@use "typography.scss" as font;
+
+.background {
+    // background-color: blueviolet;
+    height: 100%;
+    width: 100%;
+}
+.background-left {
+    background-color: blueviolet;
+    position: relative;
+    //position: fixed;
+    height: 100%;
+    width: 100%;
+    //background-color: paleta.$brazona-verde-escuro-transparente;
+    margin: 0%;
+
+}

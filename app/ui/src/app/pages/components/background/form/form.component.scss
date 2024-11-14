@@ -1,0 +1,17 @@
+@use "pallete-color.scss" as paleta;
+@use "typography.scss" as font;
+
+.formulario {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    background-color: paleta.$brazona-verde-escuro-transparente;
+    margin: 0%;
+}
+.formulario-linha {
+    position: relative;
+    height: 100%;
+    width: 1%;
+    margin: 0%;
+    background-image: url(../../../../../assets/imagens/elemento.png);
+}

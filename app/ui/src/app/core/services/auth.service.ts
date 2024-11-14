@@ -2,14 +2,13 @@ import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { Observable} from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { plainToClass } from 'class-transformer';
-//import * as moment from "moment";
 import moment from "moment";
 
 import { Auth } from '../interfaces/auth/auth';
 import {Token } from '../interfaces/token/token'
 import { GenericService } from './generic.service';
-import { Oauth2 } from '../interfaces/oauth2/oauth2';
+import { User } from '../interfaces/user/user';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -17,7 +16,7 @@ export class AuthService extends GenericService{
 
   private authBase64: string = "";
   private isUserAuth: boolean = false;
-  private body: Oauth2 = {
+  private body: User = {
     grant_type:"",
     username:"",
     password:""

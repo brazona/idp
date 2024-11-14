@@ -1,9 +1,10 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, CanLoad, Route } from '@angular/router';
-import { AuthService } from '../../shared/services/auth.service';
+import { AuthService } from '../services/auth.service'; 
 
 @Injectable()
+
 export class coreGuard implements CanActivate, CanLoad {
 
   isValid:boolean = false;
@@ -22,10 +23,10 @@ export class coreGuard implements CanActivate, CanLoad {
 
   private verificarAcesso(){
     this.isValid = true;
-    debugger
+    
     if (!this.authService.isAthentication()) {
         this.isValid = false;
-        this.router.navigate(['/default']);
+        this.router.navigate(['/autenticacao']);
     } 
     return this.isValid;
   }
