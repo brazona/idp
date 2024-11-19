@@ -9,7 +9,7 @@ import {MatIconModule} from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-password',
+  selector: 'app-field-password',
   standalone: true,
   imports: [CommonModule, FormsModule, MatFormFieldModule, MatInputModule, MatSelectModule, FlexLayoutModule, MatIconModule],
   changeDetection: ChangeDetectionStrategy.OnPush,

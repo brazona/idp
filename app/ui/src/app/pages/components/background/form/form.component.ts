@@ -10,7 +10,7 @@ import {MatDividerModule} from '@angular/material/divider';
 import {FormControl, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms'
 
 @Component({
-  selector: 'app-form',
+  selector: 'app-background-form',
   standalone: true,
   imports: [RouterLink, RouterOutlet, MatButtonToggleModule, 
     FlexLayoutModule, MatFormFieldModule, MatIconModule, MatInputModule, 

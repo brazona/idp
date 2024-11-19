@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-bt-access',
+  selector: 'app-btn-access',
   standalone: true,
   imports: [],
   templateUrl: './access.component.html',

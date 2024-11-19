@@ -6,7 +6,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-username',
+  selector: 'app-field-username',
   standalone: true,
   imports: [MatFormFieldModule, MatInputModule, MatSelectModule, FlexLayoutModule, CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
