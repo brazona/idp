@@ -12,6 +12,9 @@
     background-color: paleta.$brazona-verde-escuro;
     border-radius: 5px;
 }
+.btn-access:hover{
+    color: font.$brazona-font-color-hover;
+}
 .container-btn-access{
     background-image: paleta.$brazona-amarelo-gradiente;
     //background-image: linear-gradient(to right, transparent, black, transparent);

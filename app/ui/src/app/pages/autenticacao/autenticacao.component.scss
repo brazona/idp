@@ -36,3 +36,10 @@
     text-decoration: none;
     position: relative;
 }
+
+.link-recuperacao:hover{
+    color: font.$brazona-font-color-hover;
+    //font-size: font.$brazona-font-size-hover;
+    font-weight: font.$brazona-font-weight-hover;
+    text-decoration: font.$brazona-font-decoration-hover;
+}
