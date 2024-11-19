@@ -6,12 +6,14 @@ import { MatToolbar } from '@angular/material/toolbar'
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+
 import * as moment from 'moment';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { PagesModule } from './pages/pages.module';
+import { MaterialModule } from './core/material.module';
 
 
 
@@ -30,6 +32,7 @@ import { PagesModule } from './pages/pages.module';
     MatSlideToggleModule,
 
     //app
+    MaterialModule,
     CoreModule,
     PagesModule
   ],

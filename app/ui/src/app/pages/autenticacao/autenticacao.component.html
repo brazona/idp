@@ -1,9 +1,24 @@
 <div class="background" fxLayout="row" >
     <app-page></app-page>
-    <!-- <div class="background-left" fxFlex="32" fxFill fxLayout="row" > -->
-        <!-- background-left -->
-    <!-- </div> -->
-    <app-form fxFlex="33" fxFill fxLayout="row" ></app-form>
+    <form class="background-left" fxFlex="30" fxLayout="column" >
+        <app-form></app-form>
+        <div class="formulario" fxFlex="100" fxLayout="column" fxLayoutAlign="center center" >
+            <div class="formulario-conteudo" fxFlex="100" fxLayout="column" fxLayoutAlign="center center" >
+                <div class="formulario-cabecalho" fxFlex="40" fxFill fxLayoutAlign="center center" ></div>
+                <div class="formulario-campos" fxFlex="35" fxFill fxLayoutAlign="space-between none" fxLayout="column" >
+                    <div fxFlex="20" fxFill fxLayoutAlign="center center"></div>
+                    <app-username fxFlex="20" fxFill fxLayoutAlign="space-between center" fxFill></app-username><br/>
+                    <app-password fxFlex="20" fxFill fxLayoutAlign="space-between center" fxFill></app-password><br/>
+                    <app-bt-access fxFlex="20" fxFill fxLayoutAlign="center center"></app-bt-access>
+                    <div fxFlex="20" fxFill fxLayoutAlign="center center">
+                        <a href="www.google.com" class="link-primary" routerLink="/recuperacao">Esqueceu sua senha?</a>
+                        <!-- <label>Esqueceu sua senha?</label> -->
+                    </div>
+                </div>
+                <div class="formulario-rodape" fxFlex="25" fxFill fxLayoutAlign="center center" ></div>
+            </div>
+        </div>
+    </form>
     <div class="background-rigth" fxFlex="67" fxFill >
     </div>
 </div>

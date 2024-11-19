@@ -2,17 +2,29 @@
 @use "typography.scss" as font;
 
 .background {
-    // background-color: blueviolet;
     height: 100%;
     width: 100%;
 }
 .background-left {
-    background-color: blueviolet;
     position: relative;
-    //position: fixed;
     height: 100%;
     width: 100%;
-    //background-color: paleta.$brazona-verde-escuro-transparente;
     margin: 0%;
-
 }
+.formulario {
+    width: 70%;
+    margin-left: 60px;
+    //background-color: greenyellow;
+    height: 100%;
+    
+}
+.formulario-conteudo {
+    width: 100%;
+    height: 100%;
+}
+
+.formulario-campos {
+    margin: 2px;
+}
+
+

@@ -2,16 +2,21 @@
 @use "typography.scss" as font;
 
 .formulario {
-    position: relative;
-    height: 100%;
-    width: 100%;
     background-color: paleta.$brazona-verde-escuro-transparente;
-    margin: 0%;
+    background-repeat: round;
+    height: 100%;
+    width: 30%;
+    position: fixed;
+    overflow: auto;
 }
 .formulario-linha {
-    position: relative;
+    position: fixed;
     height: 100%;
+    left: 30%;
     width: 1%;
     margin: 0%;
     background-image: url(../../../../../assets/imagens/elemento.png);
+}
+.formulario-conteudo-logo img {
+    height: 22%;
 }
