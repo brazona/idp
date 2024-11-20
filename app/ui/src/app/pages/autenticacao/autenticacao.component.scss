@@ -36,10 +36,20 @@
     text-decoration: none;
     position: relative;
 }
-
+.label-requerid{
+    color: red;
+    position: relative;
+}
 .link-recuperacao:hover{
     color: font.$brazona-font-color-hover;
     //font-size: font.$brazona-font-size-hover;
     font-weight: font.$brazona-font-weight-hover;
     text-decoration: font.$brazona-font-decoration-hover;
 }
+// form.ng-valid {
+//     border-left: 4px solid #4CAF50;
+// }
+
+// form.ng-invalid {
+//     border-left: 4px solid #f44336;
+// }

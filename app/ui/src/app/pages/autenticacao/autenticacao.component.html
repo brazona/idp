@@ -14,12 +14,28 @@
                         fxFill
                     >
                     </app-field-username><br/>
+                    <div fxFlex="10" fxFill fxLayoutAlign="start center" *ngIf="usernameRequerid">
+                        <label class="label-requerid">
+                            Campo obrigatório
+                        </label>
+                    </div>
+                    <div fxFlex="10" fxFill fxLayoutAlign="start center" *ngIf="usernameEmail">
+                        <label class="label-requerid">
+                            Email inválido!
+                        </label>
+                    </div>
+                    <br/>
                     <app-field-password 
                         fxFlex="30" 
                         fxFill 
                         fxLayoutAlign="space-between center" 
                         fxFill (password)="receberPassword($event)" >
                     </app-field-password><br/>
+                    <div fxFlex="10" fxFill fxLayoutAlign="start center" *ngIf="passwordRequerid">
+                        <label class="label-requerid">
+                            Campo obrigatório
+                        </label>
+                    </div><br/>
                     <app-btn-access (onLogar)="logar()" fxFlex="25" fxFill fxLayoutAlign="center center"></app-btn-access><br/>
                     <div fxFlex="20" fxFill fxLayoutAlign="end end">
                         <a class="link-recuperacao" routerLink="/recuperacao">Esqueceu sua senha?</a>

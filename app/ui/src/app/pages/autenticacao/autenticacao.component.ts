@@ -1,5 +1,5 @@
-import {ChangeDetectionStrategy, Component, OnInit, signal} from '@angular/core';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -34,9 +34,15 @@ interface User {
 })
 
 export class AutenticacaoComponent implements OnInit{
-  username:string
+  username:string;
+  usernameRequerid:boolean = false;
+  usernameEmail:boolean = false;
+  passwordRequerid:boolean = false;
   formularioAutenticacao: FormGroup;
   formulario: FormControl;
+  submitted:boolean;
+  FIEL_PASSWORD:string = 'password';
+  FIEL_USERNAME:string = 'username';
 
   constructor(private formBuilder: FormBuilder) {
 
@@ -61,19 +67,58 @@ export class AutenticacaoComponent implements OnInit{
     ]]
     })
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.submitted = false;
+    this.usernameRequerid = false;
+    this.usernameEmail = false;
+    this.passwordRequerid = false;
+  }
   logar(){
-    console.log("Formulário: ", this.formularioAutenticacao.value);
+    
+    this.submitted = true;
+    this.usernameRequerid = false;
+    this.usernameEmail = false;
+    this.passwordRequerid = false;
+
+    this.validacaoFormulario();
+
     if (!this.formularioAutenticacao.valid) {
       console.log("Formulário inválido");
+      alert("Invalido")
       return;
     }
     console.log("Formulário válido", this.formularioAutenticacao.value);
   }
   receberUsername(username:string){
-    this.formularioAutenticacao.controls['username'].setValue(username);   
+    this.formularioAutenticacao.controls[this.FIEL_USERNAME].setValue(username);
+    this.validaCampos(this.FIEL_USERNAME);
   }
   receberPassword(pass:string){
-    this.formularioAutenticacao.controls['password'].setValue(pass);   
+    this.formularioAutenticacao.controls[this.FIEL_PASSWORD].setValue(pass);   
+    this.validaCampos(this.FIEL_PASSWORD);
+  }
+  private validacaoFormulario(){
+    this.validaCampos(this.FIEL_USERNAME);
+    this.validaCampos(this.FIEL_PASSWORD);
+  }
+  private validaCampos(campo:string):void{
+    
+    if(campo == '')
+      return;
+    if(campo == this.FIEL_PASSWORD)
+      this.passwordRequerid = false;
+    if(campo == this.FIEL_USERNAME)
+      this.usernameRequerid = false;
+      this.usernameEmail = false;
+    
+    const erros = this.formularioAutenticacao.get(campo)?.errors || {};
+    const tipoErro = Object.keys(erros)[0]; 
+    debugger
+    if(erros && tipoErro == 'required' && campo == this.FIEL_USERNAME)
+      this.usernameRequerid = true;
+    if(erros && tipoErro == 'email' && campo == this.FIEL_USERNAME)
+      this.usernameEmail = true;
+    if (erros && tipoErro == 'required' && campo == this.FIEL_PASSWORD)
+       this.passwordRequerid = true;
   }
 }
