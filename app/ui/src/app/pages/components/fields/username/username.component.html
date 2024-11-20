@@ -1,5 +1,12 @@
 <div class="form-floating floating-field-username" fxFlex="100" fxFill fxLayoutAlign="center center">
-  <input type="email" class="form-control field-username" id="floatingInput" placeholder="name@example.com">
+  <input 
+    type="email" 
+    class="form-control field-username" 
+    id="floatingInputUsername" 
+    placeholder="name@example.com" 
+    formControlName="username" 
+    (change)="atribuiUsername($event)">
+  <!-- <input type="email" class="form-control field-username" id="floatingInputUsername" (change)="atribuiUsername()"> -->
   <label class="label-field-username" for="floatingInput">Usuário</label>
   <span class="material-icons">person_outline</span>
 </div>

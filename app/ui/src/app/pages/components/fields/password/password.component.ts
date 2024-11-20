@@ -1,24 +1,26 @@
-import {ChangeDetectionStrategy, Component, ElementRef, signal} from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import {ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {MatSelectModule} from '@angular/material/select';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import {MatButtonModule} from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
-import { CommonModule, DOCUMENT } from '@angular/common';
-import { EMPTY } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-field-password',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatFormFieldModule, MatInputModule, MatSelectModule, FlexLayoutModule, MatIconModule],
+  imports: [CommonModule,  MatFormFieldModule, 
+    MatInputModule, MatSelectModule, FlexLayoutModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './password.component.html',
   styleUrl: './password.component.scss'
 })
-export class PasswordComponent {
+export class PasswordComponent implements OnInit{
+
   passVisibility:boolean = false;
+  
+  @Output() public password = new EventEmitter();
+  constructor(){}
+  ngOnInit(): void {}
   showPass(){
     this.passVisibility = !this.passVisibility;
     const password = document.querySelector(".field-password");
@@ -28,5 +30,8 @@ export class PasswordComponent {
   private setType(field:Element){
     const type = field.getAttribute('type') === 'password' ? 'text' : 'password'; 
     field.setAttribute('type', type)
+  }
+  atribuiPassword(event:any){
+    this.password.emit(event.target.value);
   }
 }

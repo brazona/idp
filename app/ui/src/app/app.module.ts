@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatIconModule } from '@angular/material/icon'
 import { MatInput } from '@angular/material/input'
@@ -30,7 +31,7 @@ import { MaterialModule } from './core/material.module';
     MatInput,
     MatToolbar,
     MatSlideToggleModule,
-
+    FormsModule,
     //app
     MaterialModule,
     CoreModule,

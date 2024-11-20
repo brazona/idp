@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-btn-access',
@@ -7,6 +7,15 @@ import { Component } from '@angular/core';
   templateUrl: './access.component.html',
   styleUrl: './access.component.scss'
 })
-export class AccessComponent {
-
+export class AccessComponent implements OnInit{
+  username:string
+  @Output() public onLogar = new EventEmitter();
+  constructor(){}
+  ngOnInit(): void {}
+  logar(){
+    console.log("logando....")
+  }
+  receberUsername(username:string) {
+    this.username = username;
+  }
 }
