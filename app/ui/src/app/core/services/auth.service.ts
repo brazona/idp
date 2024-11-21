@@ -16,6 +16,7 @@ export class AuthService extends GenericService{
 
   private authBase64: string = "";
   private isUserAuth: boolean = false;
+  private readonly URL:string = 'http://localhost:7782/api/v1/auth/authentication'
   private body: User = {
     grant_type:"",
     username:"",
@@ -29,20 +30,15 @@ export class AuthService extends GenericService{
     super(router)
   }
 
-  login(auth: Auth): Observable <any>{
+  login(user: User): Observable <any>{
     return new Observable((observer) => {
-      this.builderBody(auth);
       this.builderHeader64();
-      const bodyResquest = new HttpParams()
-        .set('username', auth.login)
-        .set('password', auth.password)
-        .set('grant_type', "this.body.grant_type");
       this.http.post<Token>(
-        this.env.APP_API.URL+'/authentication/oauth/token', 
-        bodyResquest.toString(), 
+        this.env.APP_API.URL+'/v1/auth/authentication', 
+        JSON.stringify(user),
         {
           headers: new HttpHeaders()
-            .set('Content-Type', 'application/x-www-form-urlencoded')
+            .set('Content-Type', 'application/json')
             .set('Authorization', `Basic ${this.authBase64}`),
           observe: 'response'
         }

@@ -1,10 +1,7 @@
 package br.brazona.idp.api.infrastructure.entities;
 
 
-import br.brazona.idp.api.domain.dto.SessionDTO;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +18,9 @@ public class SessionEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id", unique = true, nullable = false)
     private Long id;
     private Long user_id;
     private String jwt_token;
@@ -32,13 +32,14 @@ public class SessionEntity implements Serializable {
     public SessionEntity() {
     }
 
-    public SessionEntity(SessionDTO sessionDTO) {
-        this.id = sessionDTO.getId();
-        this.user_id = sessionDTO.getUser_id();
-        this.jwt_token = sessionDTO.getJwt_token();
-        this.access_token = sessionDTO.getAccess_token();
-        this.expires_in = sessionDTO.getExpires_in();
-        this.refresh_expires_in = sessionDTO.getRefresh_expires_in();
-        this.refresh_token = sessionDTO.getRefresh_token();
+    public SessionEntity(Long user_id, String access_token) {
+        this.user_id = user_id;
+        this.access_token = access_token;
+    }
+
+    public SessionEntity(Long id, Long user_id, String access_token) {
+        this.id = id;
+        this.user_id = user_id;
+        this.access_token = access_token;
     }
 }

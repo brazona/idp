@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -27,7 +28,7 @@ public class JwtUtils {
 
     @Value("${jwt.expiration_ms}")
     private int jwtExpirationMs;
-
+    private static BCryptPasswordEncoder passwordEcorder = new BCryptPasswordEncoder();
     Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
     public String generateJwtToken(Authentication authentication) {
@@ -80,4 +81,15 @@ public class JwtUtils {
         return false;
     }
 
+    public String bcryptEncryptor(String plainText) {
+        return passwordEcorder.encode(plainText);
+    }
+
+    public Boolean doPasswordsMatch(String rawPassword, String encodedPassword) {
+        return passwordEcorder.matches(rawPassword, encodedPassword);
+    }
+
+    public Boolean passwordsMatch(String rawPassword, String encodedPassword) {
+        return rawPassword.equalsIgnoreCase(encodedPassword);
+    }
 }

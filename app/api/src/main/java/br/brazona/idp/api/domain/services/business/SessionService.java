@@ -1,39 +1,52 @@
 package br.brazona.idp.api.domain.services.business;
 
 import br.brazona.idp.api.domain.dto.SessionDTO;
+import br.brazona.idp.api.domain.views.business.SessionVO;
+import br.brazona.idp.api.domain.views.business.UserDetailsVO;
 import br.brazona.idp.api.infrastructure.entities.SessionEntity;
 import br.brazona.idp.api.infrastructure.repositories.SessionRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class SessionService {
 
     @Autowired
     private SessionRepository sessionRepository;
+    @Autowired
+    private SessionDTO sessionDTO;
+    @Autowired
+    private UserService userService;
     private final static String SERVICE_LOG = "Service started SessionService: {}";
-    Logger logger = LoggerFactory.getLogger(SessionService.class);
 
-    public void save(SessionDTO sessionDTO){
-        logger.info(SERVICE_LOG, "save");
 
-        SessionDTO sessionCurrent = getByUserId(sessionDTO.getUser_id());
+    public void createUpdate(SessionVO sessionVO) {
+        UserDetailsVO userVO = userService.getByUsername(sessionVO.getUsername());
+        SessionVO sessionCurrent = getByUserId(userVO.getId());
         if (sessionCurrent != null){
-            sessionDTO.setId(sessionCurrent.getId());
+            sessionCurrent.setAccess_token(sessionVO.getAccess_token());
+            sessionRepository.save(sessionDTO.toEntityByID(sessionCurrent));
+        } else {
+            sessionVO.setUser_id(userVO.getId());
+            SessionEntity sessionEntity = sessionDTO.toEntity(sessionVO);
+            try {
+                sessionRepository.save(sessionEntity);
+            } catch (Exception e) {
+                log.error(e.getMessage());
+            }
         }
 
-        sessionRepository.save(new SessionEntity());
-        logger.info("Stored session");
+        log.info("Stored session");
     }
 
-    public SessionDTO getByUserId(Long id){
+    public SessionVO getByUserId(Long id) {
         SessionEntity session = sessionRepository.findByUserId(id);
         if (session == null){
-            logger.info("Session not found");
+            log.info("Session not found");
             return null;
         }
-        return new SessionDTO(session);
+        return sessionDTO.toVO(session);
     }
 }
