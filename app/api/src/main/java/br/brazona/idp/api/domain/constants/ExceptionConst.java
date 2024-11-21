@@ -12,5 +12,7 @@ public class ExceptionConst {
     public final static String UNAVAILABLE_SERVICE_INFO = "Service {}: unavailable";
     public final static String UNAVAILABLE_SERVICE_DEBUG = "Service {}: unavailable, response: {}";
     public final static String UNAVAILABLE_SERVICE_ERROR = "Service currently unavailable, please try again later!";
+    public final static String INVALID_FORMAT = "Invalid format";
+    public final static String INVALID_FIELD = "Invalid field: {}";
 
 }

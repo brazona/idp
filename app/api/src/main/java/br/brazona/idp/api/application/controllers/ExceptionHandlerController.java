@@ -1,6 +1,7 @@
 package br.brazona.idp.api.application.controllers;
 
 import br.brazona.idp.api.domain.constants.ExceptionConst;
+import br.brazona.idp.api.domain.exceptions.BadRequestException;
 import br.brazona.idp.api.domain.exceptions.UserNotFoundException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataAccessException;
@@ -59,6 +60,11 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         logger.error("500 Status Code", ex);
         final String bodyOfResponse = "This should be application specific";
         return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
+    }
+
+    @ExceptionHandler({BadRequestException.class})
+    protected ResponseEntity<Object> handleBadRequest(final RuntimeException ex, final WebRequest request) {
+        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
 }
