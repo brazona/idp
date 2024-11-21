@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { AutenticacaoComponent } from './autenticacao/autenticacao.component';
 import { RecuperacaoComponent } from './recuperacao/recuperacao.component';
 import { ComponentsModule } from './components/components.module';
+import { AuthService } from '../core/services/auth.service';
 
 @NgModule({
   declarations: [  
@@ -17,5 +18,8 @@ import { ComponentsModule } from './components/components.module';
     AutenticacaoComponent,
     RecuperacaoComponent    
   ],
+  providers: [
+    AuthService
+  ]
 })
 export class PagesModule { }

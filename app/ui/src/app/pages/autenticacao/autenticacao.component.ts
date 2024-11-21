@@ -16,11 +16,9 @@ import { FormComponent } from '../components/background/form/form.component';
 import { UsernameComponent } from '../components/fields/username/username.component';
 import { PasswordComponent } from '../components/fields/password/password.component';
 import { AccessComponent } from '../components/buttons/access/access.component';
+import { User } from 'src/app/core/interfaces/user/user';
+import { AuthService } from 'src/app/core/services/auth.service';
 
-interface User {
-  username:string,
-  password:string
-}
 @Component({
   selector: 'app-autenticacao',
   standalone: true,
@@ -44,7 +42,7 @@ export class AutenticacaoComponent implements OnInit{
   FIEL_PASSWORD:string = 'password';
   FIEL_USERNAME:string = 'username';
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private service: AuthService) {
 
     // **************************************************
     // Abaixo utilizamos o formBuilder para construir
@@ -72,6 +70,7 @@ export class AutenticacaoComponent implements OnInit{
     this.usernameRequerid = false;
     this.usernameEmail = false;
     this.passwordRequerid = false;
+    
   }
   logar(){
     
@@ -81,13 +80,21 @@ export class AutenticacaoComponent implements OnInit{
     this.passwordRequerid = false;
 
     this.validacaoFormulario();
-
+    
     if (!this.formularioAutenticacao.valid) {
-      console.log("Formulário inválido");
-      alert("Invalido")
       return;
     }
-    console.log("Formulário válido", this.formularioAutenticacao.value);
+    var user: User = {
+      username:this.formularioAutenticacao.get(this.FIEL_USERNAME)?.value,
+      password:this.formularioAutenticacao.get(this.FIEL_PASSWORD)?.value,
+      grant_type:this.FIEL_PASSWORD
+    }
+    debugger
+    this.service.login(user).subscribe(
+      res => {
+        console.log('resposta: ', res);
+      }
+    );
   }
   receberUsername(username:string){
     this.formularioAutenticacao.controls[this.FIEL_USERNAME].setValue(username);
@@ -113,7 +120,7 @@ export class AutenticacaoComponent implements OnInit{
     
     const erros = this.formularioAutenticacao.get(campo)?.errors || {};
     const tipoErro = Object.keys(erros)[0]; 
-    debugger
+    
     if(erros && tipoErro == 'required' && campo == this.FIEL_USERNAME)
       this.usernameRequerid = true;
     if(erros && tipoErro == 'email' && campo == this.FIEL_USERNAME)
