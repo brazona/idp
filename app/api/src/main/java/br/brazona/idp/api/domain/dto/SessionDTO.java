@@ -2,6 +2,7 @@ package br.brazona.idp.api.domain.dto;
 
 import br.brazona.idp.api.domain.constants.ExceptionConst;
 import br.brazona.idp.api.domain.exceptions.BadRequestException;
+import br.brazona.idp.api.domain.exceptions.NotFoundException;
 import br.brazona.idp.api.domain.utils.ExceptionUtil;
 import br.brazona.idp.api.domain.views.business.SessionVO;
 import br.brazona.idp.api.infrastructure.entities.SessionEntity;
@@ -27,7 +28,10 @@ public class SessionDTO {
     }
 
     private void validateEntity(SessionEntity entity) {
-        if (entity.getId() == null || entity.getId() == 0) {
+        if (entity == null) {
+            throw new NotFoundException(
+                    exceptionUtil.replaceKey(ExceptionConst.NOT_FOUND_ERROR, "session"));
+        } else if (entity.getId() == null || entity.getId() == 0) {
             throw new BadRequestException(
                     exceptionUtil.replaceKey(ExceptionConst.INVALID_FIELD, "id"));
         } else if (entity.getUser_id() == null || entity.getUser_id() == 0) {

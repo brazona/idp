@@ -1,8 +1,8 @@
 package br.brazona.idp.api.domain.constants;
 
 public class ExceptionConst {
-    public final static String  ACCESS_DENIED = "access denied";
-    public final static String  NOT_FOUND = "not found";
+    public final static String ACCESS_DENIED = "access denied";
+    public final static String NOT_FOUND = "not found";
     public final static String NOT_FOUND_INFO = "{} not found: {}";
     public final static String NOT_FOUND_ERROR = "{} not found";
     public final static String FOUND_INFO = "{} found: {}";

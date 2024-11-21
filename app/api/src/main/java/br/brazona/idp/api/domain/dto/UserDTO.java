@@ -2,6 +2,7 @@ package br.brazona.idp.api.domain.dto;
 
 import br.brazona.idp.api.domain.constants.ExceptionConst;
 import br.brazona.idp.api.domain.exceptions.BadRequestException;
+import br.brazona.idp.api.domain.exceptions.NotFoundException;
 import br.brazona.idp.api.domain.utils.ExceptionUtil;
 import br.brazona.idp.api.domain.views.business.UserDetailsVO;
 import br.brazona.idp.api.domain.views.business.UserRequestVO;
@@ -35,7 +36,10 @@ public class UserDTO {
     }
 
     private void validateEntity(UsersEntity entity) {
-        if (entity.getId() == null || entity.getId() == 0) {
+        if (entity == null) {
+            throw new NotFoundException(
+                    exceptionUtil.replaceKey(ExceptionConst.NOT_FOUND_ERROR, "user"));
+        } else if (entity.getId() == null || entity.getId() == 0) {
             throw new BadRequestException(
                     exceptionUtil.replaceKey(ExceptionConst.INVALID_FIELD, "id"));
         } else if (entity.getUsername() == null || entity.getUsername().isEmpty()) {
