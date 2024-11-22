@@ -36,6 +36,7 @@ public class AuthDTO {
     }
 
     public AuthResponseBusinessVO responseBusiness(UserDetails vo, AuthRequestBusinessVO request) {
+        log.info("transform data auth response");
         validateVO(vo);
         validateRequest(request);
         List<GrantedAuthority> grantedAuths = new ArrayList<>();
@@ -44,11 +45,14 @@ public class AuthDTO {
         );
         SecurityContextHolder.getContext()
                 .setAuthentication(authentication);
-
+        log.info("validated match password");
         Boolean valid = jwtUtils.doPasswordsMatch(request.getPassword(), vo.getPassword());
 
-        if (!valid)
+        if (!valid) {
+            log.error(ExceptionConst.ACCESS_DENIED);
             throw new AccessDeniedException(ExceptionConst.ACCESS_DENIED);
+        }
+        log.info("success validated match password");
         String jwt = jwtUtils.generateJwtToken(authentication);
 
         return new AuthResponseBusinessVO(jwt);
@@ -56,12 +60,15 @@ public class AuthDTO {
 
     private void validateVO(UserDetails vo) {
         if (vo == null) {
+            log.error(ExceptionConst.NOT_FOUND_ERROR, "user");
             throw new UserNotFoundException(
                     exceptionUtil.replaceKey(ExceptionConst.NOT_FOUND_ERROR, "user"));
         } else if (vo.getUsername() == null || vo.getUsername().isEmpty()) {
+            log.error(ExceptionConst.NOT_FOUND_ERROR, "username");
             throw new BadRequestException(
                     exceptionUtil.replaceKey(ExceptionConst.INVALID_FIELD, "username"));
         } else if (vo.getPassword() == null || vo.getPassword().isEmpty()) {
+            log.error(ExceptionConst.NOT_FOUND_ERROR, "password");
             throw new BadRequestException(
                     exceptionUtil.replaceKey(ExceptionConst.INVALID_FIELD, "password"));
         }
@@ -70,9 +77,11 @@ public class AuthDTO {
 
     private void validateRequest(AuthRequestBusinessVO request) {
         if (request == null) {
+            log.error(ExceptionConst.NOT_FOUND_ERROR, "user");
             throw new NotFoundException(
                     exceptionUtil.replaceKey(ExceptionConst.NOT_FOUND_ERROR, "user"));
         } else if (request.getPassword() == null || request.getPassword().isEmpty()) {
+            log.error(ExceptionConst.NOT_FOUND_ERROR, "password");
             throw new BadRequestException(
                     exceptionUtil.replaceKey(ExceptionConst.INVALID_FIELD, "password"));
         }

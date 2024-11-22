@@ -1,10 +1,12 @@
 package br.brazona.idp.api.application.controllers;
 
+import br.brazona.idp.api.domain.constants.ExceptionConst;
 import br.brazona.idp.api.domain.exceptions.AccessDeniedException;
 import br.brazona.idp.api.domain.exceptions.BadRequestException;
 import br.brazona.idp.api.domain.exceptions.NotFoundException;
 import br.brazona.idp.api.domain.exceptions.UserNotFoundException;
 import br.brazona.idp.api.domain.views.business.ApiErrorVO;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -20,6 +22,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.util.Objects;
 
+@Slf4j
 @ControllerAdvice
 public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 
@@ -31,6 +34,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleNotfound(final RuntimeException ex, final WebRequest request) {
         ApiErrorVO apiError =
                 new ApiErrorVO(HttpStatus.NOT_FOUND, ex.getLocalizedMessage());
+        log.error(ExceptionConst.NOT_FOUND_ERROR, ex.getLocalizedMessage());
         return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 
@@ -38,6 +42,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleBadRequest(final ConstraintViolationException ex, final WebRequest request) {
         ApiErrorVO apiError =
                 new ApiErrorVO(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage());
+        log.error(ExceptionConst.BAD_REQUEST_ERROR, ex.getLocalizedMessage());
         return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
@@ -45,6 +50,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleBadRequest(final DataIntegrityViolationException ex, final WebRequest request) {
         ApiErrorVO apiError =
                 new ApiErrorVO(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage());
+        log.error(ExceptionConst.BAD_REQUEST_ERROR, ex.getLocalizedMessage());
         return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
@@ -52,14 +58,16 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleConflict(final RuntimeException ex, final WebRequest request) {
         ApiErrorVO apiError =
                 new ApiErrorVO(HttpStatus.CONFLICT, ex.getLocalizedMessage());
+        log.error(ExceptionConst.BAD_REQUEST_ERROR, ex.getLocalizedMessage());
         return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
 
     @ExceptionHandler({ NullPointerException.class, IllegalArgumentException.class, IllegalStateException.class })
     public ResponseEntity<Object> handleInternal(final RuntimeException ex, final WebRequest request) {
-        logger.error("500 Status Code", ex);
+
         ApiErrorVO apiError =
                 new ApiErrorVO(HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage());
+        log.error(ExceptionConst.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage());
         return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 
@@ -67,6 +75,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleBadRequest(final RuntimeException ex, final WebRequest request) {
         ApiErrorVO apiError =
                 new ApiErrorVO(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage());
+        log.error(ExceptionConst.BAD_REQUEST_ERROR, ex.getLocalizedMessage());
         return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
