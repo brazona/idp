@@ -5,11 +5,13 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.io.Serial;
 import java.util.Collection;
 
 @Component
 @Getter
 public class UserDetailsVO implements UserDetails {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private Long id;
