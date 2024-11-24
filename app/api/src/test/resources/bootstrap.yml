@@ -1,0 +1,14 @@
+spring:
+  profiles:
+    active: ${SPRING_ACTIVE_PROFILE}
+  application:
+    name: idp
+  cloud:
+    config:
+      uri: ${CONFIG_SERVER_HOST}
+      fail-fast: true
+      username: ${CONFIG_SERVER_USER}
+      password: ${CONFIG_SERVER_PASS}
+    compatibility-verifier:
+      enabled: false
+
