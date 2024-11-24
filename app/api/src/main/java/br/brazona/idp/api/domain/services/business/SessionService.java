@@ -1,3 +1,6 @@
+/**
+ * @author Brazona Tech
+ **/
 package br.brazona.idp.api.domain.services.business;
 
 import br.brazona.idp.api.domain.dto.SessionDTO;
@@ -21,7 +24,9 @@ public class SessionService {
     private UserService userService;
     private final static String SERVICE_LOG = "Service started SessionService: {}";
 
-
+    /**
+     * @param sessionVO Instance of the session class, with value referring to the user session.
+     **/
     public void createUpdate(SessionVO sessionVO) {
         UserDetailsVO userVO = userService.getByUsername(sessionVO.getUsername());
         SessionVO sessionCurrent = getByUserId(userVO.getId());
@@ -40,7 +45,10 @@ public class SessionService {
 
         log.info("Stored session");
     }
-
+    /**
+     * @param id Object of the User class, with the application's authentication values.
+     * @return AuthResponseBusinessVO A user's session data.
+     **/
     public SessionVO getByUserId(Long id) {
         SessionEntity session = sessionRepository.findByUserId(id);
         if (session == null){

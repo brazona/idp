@@ -1,3 +1,6 @@
+/**
+ * @author Brazona Tech
+ **/
 package br.brazona.idp.api.domain.dto;
 
 import br.brazona.idp.api.domain.constants.ExceptionConst;
@@ -34,7 +37,11 @@ public class AuthDTO {
         final UserDetails principal = new User(name, password, grantedAuths);
         return new UsernamePasswordAuthenticationToken(principal, password, grantedAuths);
     }
-
+    /**
+     * @param request  credentials for authentication, username and password for access registration.
+     * @param vo instance of the user details class ( UserDetails).
+     * @return ResponseEntity<Object> excess relative to the process.
+     **/
     public AuthResponseBusinessVO responseBusiness(UserDetails vo, AuthRequestBusinessVO request) {
         log.info("transform data auth response");
         validateVO(vo);
@@ -58,6 +65,9 @@ public class AuthDTO {
         return new AuthResponseBusinessVO(jwt);
     }
 
+    /**
+     * @param vo instance of the user details class ( UserDetails).
+     **/
     private void validateVO(UserDetails vo) {
         if (vo == null) {
             log.error(ExceptionConst.NOT_FOUND_ERROR, "user");
@@ -74,7 +84,9 @@ public class AuthDTO {
         }
 
     }
-
+    /**
+     * @param request credentials for authentication, username and password for access registration.
+     **/
     private void validateRequest(AuthRequestBusinessVO request) {
         if (request == null) {
             log.error(ExceptionConst.NOT_FOUND_ERROR, "user");

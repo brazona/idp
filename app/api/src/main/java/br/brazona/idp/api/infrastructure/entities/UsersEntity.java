@@ -30,9 +30,8 @@ public class UsersEntity implements Serializable, GenericEntity {
 
     public UsersEntity() {
     }
-    public UsersEntity(Long id, String name, String email, String password, Boolean isAccountNonExpired, Boolean isAccountNonLocked,
+    public UsersEntity(String name, String email, String password, Boolean isAccountNonExpired, Boolean isAccountNonLocked,
                        Boolean isCredentialsNonExpired, Boolean isEnabled ) {
-        this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;

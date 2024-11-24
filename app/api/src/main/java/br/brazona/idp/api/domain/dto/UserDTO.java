@@ -1,3 +1,6 @@
+/**
+ * @author Brazona Tech
+ **/
 package br.brazona.idp.api.domain.dto;
 
 import br.brazona.idp.api.domain.constants.ExceptionConst;
@@ -21,7 +24,10 @@ public class UserDTO {
 
         );
     }
-
+    /**
+     * @param entity Instance of the session class, with value referring to the user.
+     * @return UserDetailsVO User entity, with access data to the application.
+     **/
     public UserDetailsVO toVO(UsersEntity entity) {
         validateEntity(entity);
         return new UserDetailsVO(
@@ -34,7 +40,9 @@ public class UserDTO {
                 entity.getIsEnabled()
         );
     }
-
+    /**
+     * @param entity Instance of the session class, with value referring to the user.
+     **/
     private void validateEntity(UsersEntity entity) {
         if (entity == null) {
             throw new NotFoundException(

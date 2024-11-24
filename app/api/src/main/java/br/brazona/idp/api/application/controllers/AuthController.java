@@ -1,3 +1,6 @@
+/**
+ * @author Brazona Tech
+ **/
 package br.brazona.idp.api.application.controllers;
 
 import br.brazona.idp.api.application.interfaces.IAuthController;

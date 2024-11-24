@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/v1/auth")
 public interface IAuthController {
 
+    /**
+     * @author Brazona Tech
+     * @param auth credentials for authentication, username and password for access registration.
+     * @return ResponseEntity<AuthResponseBusinessVO> Access token, used to validate access to application resources through authorization.
+     */
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping(value = "/authentication", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<AuthResponseBusinessVO> authentication(

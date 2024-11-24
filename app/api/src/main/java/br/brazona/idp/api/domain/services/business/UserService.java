@@ -1,3 +1,6 @@
+/**
+ * @author Brazona Tech
+ **/
 package br.brazona.idp.api.domain.services.business;
 
 import br.brazona.idp.api.domain.dto.UserDTO;
@@ -15,7 +18,10 @@ public class UserService {
     private UsersRepository usersRepository;
     @Autowired
     private UserDTO userDTO;
-
+    /**
+     * @param username user name system identifier..
+     * @return UserDetailsVO Application access token, containing authorization data for services and resources..
+     **/
     public UserDetailsVO getByUsername(String username) {
         return userDTO.toVO(usersRepository.findByUsername(username));
     }

@@ -1,3 +1,6 @@
+/**
+ * @author Brazona Tech
+ **/
 package br.brazona.idp.api.domain.services.business;
 
 
@@ -26,12 +29,10 @@ public class AuthService implements UserDetailsService {
     @Autowired
     private AuthDTO authDTO;
 
-    public Boolean authorization(String user_id) {
-
-        return false;
-
-    }
-
+    /**
+     * @param user Object of the User class, with the application's authentication values.
+     * @return AuthResponseBusinessVO Application access token, containing authorization data for services and resources..
+     **/
     public AuthResponseBusinessVO authentication(AuthRequestBusinessVO user) {
         return authDTO.responseBusiness(loadUserByUsername(user.getUsername()), user);
     }
@@ -56,5 +57,9 @@ public class AuthService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userService.getByUsername(username);
+    }
+
+    public boolean authorization(String username) {
+        return true;
     }
 }

@@ -1,3 +1,6 @@
+/**
+ * @author Brazona Tech
+ **/
 package br.brazona.idp.api.application.controllers;
 
 import br.brazona.idp.api.domain.constants.ExceptionConst;
@@ -30,6 +33,11 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         super();
     }
 
+    /**
+     * @param request  credentials for authentication, username and password for access registration.
+     * @param ex excess relative to the process.
+     * @return ResponseEntity<Object> excess relative to the process.
+     **/
     @ExceptionHandler({UserNotFoundException.class})
     public ResponseEntity<Object> handleNotfound(final RuntimeException ex, final WebRequest request) {
         ApiErrorVO apiError =
@@ -37,7 +45,11 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         log.error(ExceptionConst.NOT_FOUND_ERROR, ex.getLocalizedMessage());
         return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
-
+    /**
+     * @param request  credentials for authentication, username and password for access registration.
+     * @param ex excess relative to the process.
+     * @return ResponseEntity<Object> excess relative to the process.
+     **/
     @ExceptionHandler({ ConstraintViolationException.class })
     public ResponseEntity<Object> handleBadRequest(final ConstraintViolationException ex, final WebRequest request) {
         ApiErrorVO apiError =
@@ -45,7 +57,11 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         log.error(ExceptionConst.BAD_REQUEST_ERROR, ex.getLocalizedMessage());
         return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
-
+    /**
+     * @param request  credentials for authentication, username and password for access registration.
+     * @param ex excess relative to the process.
+     * @return ResponseEntity<Object> excess relative to the process.
+     **/
     @ExceptionHandler({ DataIntegrityViolationException.class })
     public ResponseEntity<Object> handleBadRequest(final DataIntegrityViolationException ex, final WebRequest request) {
         ApiErrorVO apiError =
@@ -53,7 +69,11 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         log.error(ExceptionConst.BAD_REQUEST_ERROR, ex.getLocalizedMessage());
         return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
-
+    /**
+     * @param request  credentials for authentication, username and password for access registration.
+     * @param ex excess relative to the process.
+     * @return ResponseEntity<Object> excess relative to the process.
+     **/
     @ExceptionHandler({ InvalidDataAccessApiUsageException.class, DataAccessException.class })
     public ResponseEntity<Object> handleConflict(final RuntimeException ex, final WebRequest request) {
         ApiErrorVO apiError =
@@ -61,7 +81,11 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         log.error(ExceptionConst.BAD_REQUEST_ERROR, ex.getLocalizedMessage());
         return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
-
+    /**
+     * @param request  credentials for authentication, username and password for access registration.
+     * @param ex excess relative to the process.
+     * @return ResponseEntity<Object> excess relative to the process.
+     **/
     @ExceptionHandler({ NullPointerException.class, IllegalArgumentException.class, IllegalStateException.class })
     public ResponseEntity<Object> handleInternal(final RuntimeException ex, final WebRequest request) {
 
@@ -70,7 +94,11 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         log.error(ExceptionConst.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage());
         return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
-
+    /**
+     * @param request  credentials for authentication, username and password for access registration.
+     * @param ex excess relative to the process.
+     * @return ResponseEntity<Object> excess relative to the process.
+     **/
     @ExceptionHandler({BadRequestException.class})
     public ResponseEntity<Object> handleBadRequest(final RuntimeException ex, final WebRequest request) {
         ApiErrorVO apiError =
@@ -78,7 +106,11 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         log.error(ExceptionConst.BAD_REQUEST_ERROR, ex.getLocalizedMessage());
         return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
-
+    /**
+     * @param request  credentials for authentication, username and password for access registration.
+     * @param ex excess relative to the process.
+     * @return ResponseEntity<Object> excess relative to the process.
+     **/
     @ExceptionHandler({MethodArgumentTypeMismatchException.class})
     public ResponseEntity<Object> handleMethodArgumentTypeMismatch(
             MethodArgumentTypeMismatchException ex, WebRequest request) {
@@ -90,14 +122,22 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         return new ResponseEntity<Object>(
                 apiError, new HttpHeaders(), apiError.getStatus());
     }
-
+    /**
+     * @param request  credentials for authentication, username and password for access registration.
+     * @param ex excess relative to the process.
+     * @return ResponseEntity<Object> excess relative to the process.
+     **/
     @ExceptionHandler({AccessDeniedException.class})
     public ResponseEntity<Object> handleAccessDeniedException(final RuntimeException ex, final WebRequest request) {
         ApiErrorVO apiError =
                 new ApiErrorVO(HttpStatus.FORBIDDEN, ex.getLocalizedMessage());
         return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.FORBIDDEN, request);
     }
-
+    /**
+     * @param request  credentials for authentication, username and password for access registration.
+     * @param ex excess relative to the process.
+     * @return ResponseEntity<Object> excess relative to the process.
+     **/
     @ExceptionHandler({NotFoundException.class})
     public ResponseEntity<Object> handleNotFoundException(final RuntimeException ex, final WebRequest request) {
         ApiErrorVO apiError =

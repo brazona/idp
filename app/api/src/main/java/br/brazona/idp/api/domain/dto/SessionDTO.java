@@ -1,3 +1,6 @@
+/**
+ * @author Brazona Tech
+ **/
 package br.brazona.idp.api.domain.dto;
 
 import br.brazona.idp.api.domain.constants.ExceptionConst;
@@ -18,15 +21,23 @@ public class SessionDTO {
         validateEntity(entity);
         return new SessionVO(entity.getId(), entity.getUser_id(), entity.getAccess_token());
     }
-
+    /**
+     * @param vo Instance of the session class, with value referring to the user session.
+     * @return SessionEntity Entity class x table relationship.
+     **/
     public SessionEntity toEntity(SessionVO vo) {
         return new SessionEntity(vo.getUser_id(), vo.getAccess_token());
     }
-
+    /**
+     * @param vo Instance of the session class, with value referring to the user session.
+     * @return SessionEntity Entity class x table relationship.
+     **/
     public SessionEntity toEntityByID(SessionVO vo) {
         return new SessionEntity(vo.getId(), vo.getUser_id(), vo.getAccess_token());
     }
-
+    /**
+     * @param entity Instance of the session class, with value referring to the user session.
+     **/
     private void validateEntity(SessionEntity entity) {
         if (entity == null) {
             throw new NotFoundException(
