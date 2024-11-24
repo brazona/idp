@@ -26,12 +26,6 @@ public class AuthService implements UserDetailsService {
     @Autowired
     private AuthDTO authDTO;
 
-    public Boolean authorization(String user_id) {
-
-        return false;
-
-    }
-
     public AuthResponseBusinessVO authentication(AuthRequestBusinessVO user) {
         return authDTO.responseBusiness(loadUserByUsername(user.getUsername()), user);
     }
@@ -56,5 +50,9 @@ public class AuthService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userService.getByUsername(username);
+    }
+
+    public boolean authorization(String username) {
+        return true;
     }
 }

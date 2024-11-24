@@ -9,15 +9,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
+import static br.brazona.idp.api.domain.constants.UnitTestConst.*;
 import static io.restassured.RestAssured.given;
+
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AuthControllerTest {
-    private static final String USERNAME = "cezar.silva@gmail.com";
-    private static final String PASSWORD = "admin";
-    private static final String PASSWORD_FAKE = "admin1";
-    private static final String USERNAME_FAKE = "cezar1.silva@gmail.com";
-    private static final String URI = "/api/v1/auth/authentication";
 
     @LocalServerPort
     private int port;
