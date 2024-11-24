@@ -3,12 +3,12 @@
 #             https://www.jetbrains.com/help/qodana/qodana-yaml.html            #
 #-------------------------------------------------------------------------------#
 version: "1.0"
-#Specify inspection profile for code analysis
+failThreshold: 0
 profile:
   name: qodana.starter
 #Enable inspections
 #include:
-#  - name: <SomeEnabledInspectionId>
+#  - name: JvmCoverageInspection
 #Disable inspections
 #exclude:
 #  - name: <SomeDisabledInspectionId>
@@ -24,3 +24,15 @@ projectJDK: 21 #(Applied in CI/CD pipeline)
 linter: jetbrains/qodana-jvm-community:latest
 include:
   - name: UNUSED_IMPORT
+  - name: JvmCoverageInspection
+exclude:
+  - name: Annotator
+  - name: AnotherInspectionId
+    paths:
+      - relative/path
+      - another/relative/path
+  - name: All
+    paths:
+      - asm-test/src/main/java/org
+      - benchmarks
+      - tools

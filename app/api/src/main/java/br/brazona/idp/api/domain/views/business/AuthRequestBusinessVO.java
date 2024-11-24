@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Getter
-public class AuthRequestBusinessVO {
+public class AuthRequestBusinessVO extends AbstractVO {
 
 
     private Long id;

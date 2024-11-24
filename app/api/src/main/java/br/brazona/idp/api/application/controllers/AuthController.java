@@ -19,10 +19,6 @@ public class AuthController implements IAuthController {
     @Autowired
     private SessionService sessionService;
 
-    public AuthController(SessionService sessionService) {
-        this.sessionService = sessionService;
-    }
-
     @Override
     public ResponseEntity<AuthResponseBusinessVO> authentication(AuthRequestBusinessVO auth) {
         log.info("endpoint: /v1/auth/authentication");
