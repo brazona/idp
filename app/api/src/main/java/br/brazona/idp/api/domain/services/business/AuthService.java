@@ -1,6 +1,3 @@
-/**
- * @author Brazona Tech
- **/
 package br.brazona.idp.api.domain.services.business;
 
 
