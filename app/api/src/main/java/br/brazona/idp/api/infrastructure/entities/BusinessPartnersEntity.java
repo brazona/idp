@@ -10,6 +10,16 @@ import org.springframework.stereotype.Component;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+* 
+* Class Entity Business Partners
+* 
+* @author Brazona Tech
+* @version 1.0
+* @since 1.0
+*
+**/
+
 @Entity
 @Table(name = "business_partners")
 @Getter
@@ -25,4 +35,11 @@ public class BusinessPartnersEntity implements Serializable {
     private String document;
     private GenderEnum genderEnum;
     private Integer user_id;
+    /**
+     *
+     * Method constructor class.
+     *
+     **/
+    public BusinessPartnersEntity() {
+    }
 }

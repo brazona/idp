@@ -38,6 +38,7 @@
 		<maven.compiler.target>21</maven.compiler.target>
 		<liquibase.version>4.28.0</liquibase.version>
 		<restassured.version>4.4.0</restassured.version>
+		<maven.javadoc.version>3.6.3</maven.javadoc.version>
 	</properties>
     <modules>
 		<module>api</module>

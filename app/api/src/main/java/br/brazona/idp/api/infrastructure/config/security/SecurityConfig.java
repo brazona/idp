@@ -35,6 +35,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
+/**
+* 
+* Class that configuration security application.
+* 
+* @author Brazona Tech
+* @version 1.0
+* @since 1.0
+*
+**/
 @Configuration
 @EnableWebSecurity
 @ComponentScan("br.brazona.idp.api.domain.config.security")
@@ -54,7 +63,22 @@ public class SecurityConfig {
 
     @Autowired
     private AuthService authService;
+    /**
+     *
+     * Method constructor.
+     *
+     **/
+    public SecurityConfig() {
+    }
 
+    /**
+     *
+     * Method that intercepts request to apply security strategy.
+     *
+     * @param http class HttpSecurity
+     * @return SecurityFilterChain, security class.
+     *
+     **/
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -68,7 +92,13 @@ public class SecurityConfig {
                              .anyRequest().access(customAuthManager()));
         return http.build();
     }
-
+    /**
+     *
+     * Method that implements color rules to access the application.
+     *
+     * @return CorsConfigurationSource, CORS configuration class.
+     *
+     **/
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfig = new CorsConfiguration();
@@ -81,7 +111,13 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", corsConfig);
         return source;
     }
-
+    /**
+     *
+     * Method that implements color rules to access the application.
+     *
+     * @return FilterRegistrationBean, CORS configuration class.
+     *
+     **/
     @Bean
     public FilterRegistrationBean<CorsFilter> corsFilter() {
         FilterRegistrationBean<CorsFilter> bean
@@ -96,6 +132,13 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     *
+     * Method that implements user authorization rules.
+     *
+     * @return AuthorizationManager, AUTHORIZATION configuration class.
+     *
+     **/
     AuthorizationManager<RequestAuthorizationContext> customAuthManager() {
         return new AuthorizationManager<RequestAuthorizationContext>() {
             
@@ -124,6 +167,7 @@ public class SecurityConfig {
             }
         };
     }
+
     private String parseJwt(HttpServletRequest request) {
         String headerAuth = request.getHeader("Authorization");
 
@@ -133,6 +177,14 @@ public class SecurityConfig {
 
         return null;
     }
+    /**
+     *
+     * Method that implements user authorization rules.
+     *
+     * @param authenticationConfiguration, object class that authentication config.
+     * @return AuthenticationManager, AUTHENTICATION configuration class.
+     *
+     **/
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();

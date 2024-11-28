@@ -11,6 +11,16 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+* 
+* Class that transforms authentication data.
+* 
+* @author Brazona Tech
+* @version 1.0
+* @since 1.0
+*
+**/
+
 @Slf4j
 @EnableAutoConfiguration
 @EntityScan(basePackages = { "br.brazona.idp.api.infrastructure.entities" })
@@ -21,8 +31,19 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableCaching
 @SpringBootApplication
 public class IdpApplication {
+    /**
+     *
+     * Class constructor.
+     *
+     **/
+    public IdpApplication() {
+    }
 
-
+    /**
+     *
+     * Class Main.
+     *
+     **/
     public static void main(String[] args) {
         SpringApplication.run(IdpApplication.class, args);
         log.error("br.brazona.idp.api: LOG ERROR");

@@ -8,6 +8,16 @@ import org.springframework.stereotype.Component;
 import java.io.Serial;
 import java.util.Collection;
 
+/**
+* 
+* Class that transforms authentication data.
+* 
+* @author Brazona Tech
+* @version 1.0
+* @since 1.0
+*
+**/
+
 @Component
 @Getter
 public class UserDetailsVO implements UserDetails {
@@ -38,10 +48,27 @@ public class UserDetailsVO implements UserDetails {
     public String getUsername() {
         return username;
     }
-
+    /**
+     * 
+     * Method that provides the object with authentication data.
+     * 
+     * */
     public UserDetailsVO() {
     }
-
+    /**
+     * 
+     * Method that provides the object with authentication data.
+     *
+     * @param id Object of the User class, with the application's authentication values.
+     * @param name Object of the User class, with the application's authentication values.
+     * @param username Object of the User class, with the application's authentication values.
+     * @param password Object of the User class, with the application's authentication values.
+     * @param isAccountNonExpired Object of the User class, with the application's authentication values.
+     * @param isAccountNonLocked Object of the User class, with the application's authentication values.
+     * @param isCredentialsNonExpired Object of the User class, with the application's authentication values.
+     * @param isEnabled Object of the User class, with the application's authentication values.
+     * 
+     **/
     public UserDetailsVO(Long id, String name, String username, String password,
                          Boolean isAccountNonExpired, Boolean isAccountNonLocked, Boolean isCredentialsNonExpired, Boolean isEnabled) {
         this.id = id;

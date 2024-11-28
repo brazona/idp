@@ -8,6 +8,15 @@ import org.springframework.stereotype.Component;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+* 
+* Class entity Session.
+* 
+* @author Brazona Tech
+* @version 1.0
+* @since 1.0
+*
+**/
 
 @Entity
 @Table(name = "session")
@@ -29,14 +38,34 @@ public class SessionEntity implements Serializable {
     private String refresh_expires_in;
     private String refresh_token;
 
+    /**
+     *
+     * Class constructor.
+     *
+     **/
     public SessionEntity() {
     }
-
+    /**
+     * 
+     * Method that provides the object with authentication data.
+     * 
+     * @param user_id identificador
+     * @param access_token identificador
+     * 
+     **/
     public SessionEntity(Long user_id, String access_token) {
         this.user_id = user_id;
         this.access_token = access_token;
     }
-
+    /**
+     * 
+     * Method that provides the object with authentication data.
+     *
+     * @param id identificador 
+     * @param user_id identificador
+     * @param access_token identificador
+     * 
+     **/
     public SessionEntity(Long id, Long user_id, String access_token) {
         this.id = id;
         this.user_id = user_id;

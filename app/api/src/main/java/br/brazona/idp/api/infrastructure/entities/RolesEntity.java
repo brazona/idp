@@ -9,6 +9,16 @@ import lombok.Getter;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+* 
+* Class entity Roles
+* 
+* @author Brazona Tech
+* @version 1.0
+* @since 1.0
+*
+**/
+
 @Entity
 @Table(name="roles")
 @Getter
@@ -20,10 +30,21 @@ public class RolesEntity implements Serializable {
     @Id
     private Long id;
     private RolesEnum name;
-
+    /**
+     *
+     * Class constructor.
+     *
+     **/
     public RolesEntity() {
     }
-
+    /**
+     * 
+     * Method that provides the object with authentication data.
+     * 
+     * @param id Object of the User class, with the application's authentication values.
+     * @param name Object of the User class, with the application's authentication values.
+     * 
+     **/
     public RolesEntity(Long id, RolesEnum name) {
         this.id = id;
         this.name = name;

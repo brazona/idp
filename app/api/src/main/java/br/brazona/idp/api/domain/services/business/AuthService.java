@@ -16,6 +16,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+* 
+* Business rule service: [ AuthService ], which implements functionalities related to: [ Authorization and Authentication ] .
+* 
+* @author Brazona Tech
+* @version 1.0
+* @since 1.0
+*
+**/
+
 @Slf4j
 @Service
 public class AuthService implements UserDetailsService {
@@ -25,14 +35,36 @@ public class AuthService implements UserDetailsService {
 
     @Autowired
     private AuthDTO authDTO;
+    /**
+     *
+     * Method constructor class.
+     *
+     **/
+    public AuthService() {
+    }
 
     /**
+     * 
+     * Method that provides the object with authentication data.
+     * 
      * @param user Object of the User class, with the application's authentication values.
-     * @return AuthResponseBusinessVO Application access token, containing authorization data for services and resources..
+     * @return AuthResponseBusinessVO.class, view object
+     *
      **/
     public AuthResponseBusinessVO authentication(AuthRequestBusinessVO user) {
         return authDTO.responseBusiness(loadUserByUsername(user.getUsername()), user);
     }
+
+    /**
+     * 
+     * Method that provides the object with authentication data.
+     * 
+     * @param name  credentials for authentication, username and password for access registration.
+     * @param password instance of the user details class ( UserDetails).
+     * @param grantedAuths instance of the user details class ( UserDetails).
+     * @return UsernamePasswordAuthenticationToken, username authentication.
+     *
+     **/
 
     private static UsernamePasswordAuthenticationToken authenticateAgainstThirdPartyAndGetAuthentication(String name, String password, List<GrantedAuthority> grantedAuths) {
         final UserDetails principal = new User(name, password, grantedAuths);
@@ -56,6 +88,14 @@ public class AuthService implements UserDetailsService {
         return userService.getByUsername(username);
     }
 
+    /**
+     * 
+     * Method that provides the object with authentication data.
+     * 
+     * @param username  credentials for authentication, username and password for access registration.
+     * @return boolean, true witch valid and false witch not authorization.
+     *
+     **/
     public boolean authorization(String username) {
         return true;
     }

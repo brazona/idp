@@ -162,7 +162,20 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>3.6.2</version>
+						<version>${maven.javadoc.version}</version>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+								<configuration>
+									<show>public</show>
+									<failOnError>true</failOnError>
+									<failOnWarnings>true</failOnWarnings>
+								</configuration>
+							</execution>
+						</executions>
 					</plugin>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
@@ -199,8 +212,8 @@
 							<append>true</append>
 							<excludes>
 								<exclude>**/dto/*</exclude>
-								<exclude>**/parse/*</exclude>
-								<exclude>**/entity/*</exclude>
+								<exclude>**/views/*</exclude>
+								<exclude>**/entities/*</exclude>
 							</excludes>
 						</configuration>
 						<executions>

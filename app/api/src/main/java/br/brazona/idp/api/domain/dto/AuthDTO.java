@@ -1,6 +1,3 @@
-/**
- * @author Brazona Tech
- **/
 package br.brazona.idp.api.domain.dto;
 
 import br.brazona.idp.api.domain.constants.ExceptionConst;
@@ -25,6 +22,16 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+* 
+* Class that transforms authentication data.
+* 
+* @author Brazona Tech
+* @version 1.0
+* @since 1.0
+*
+**/
+
 @Slf4j
 @Component
 public class AuthDTO {
@@ -33,14 +40,35 @@ public class AuthDTO {
     @Autowired
     private ExceptionUtil exceptionUtil;
 
+    /**
+     *
+     * Method constructor of class.
+     *
+     **/
+    public AuthDTO() {
+    }
+
+    /**
+     * 
+     * Method that provides the object with authentication data.
+     * 
+     * @param name  credentials for authentication, username and password for access registration.
+     * @param password instance of the user details class ( UserDetails).
+     * @param grantedAuths instance of the user details class ( UserDetails).
+     * @return UsernamePasswordAuthenticationToken, class with data user authentication.
+     **/
     private static UsernamePasswordAuthenticationToken authenticateAgainstThirdPartyAndGetAuthentication(String name, String password, List<GrantedAuthority> grantedAuths) {
         final UserDetails principal = new User(name, password, grantedAuths);
         return new UsernamePasswordAuthenticationToken(principal, password, grantedAuths);
     }
     /**
+     * 
+     * Method that provides the object with authentication data.
+     * 
      * @param request  credentials for authentication, username and password for access registration.
      * @param vo instance of the user details class ( UserDetails).
-     * @return ResponseEntity<Object> excess relative to the process.
+     * @return AuthResponseBusinessVO, class with data token user.
+     *
      **/
     public AuthResponseBusinessVO responseBusiness(UserDetails vo, AuthRequestBusinessVO request) {
         log.info("transform data auth response");
@@ -66,7 +94,13 @@ public class AuthDTO {
     }
 
     /**
+     * 
+     * Method that provides the object with authentication data.
+     * 
      * @param vo instance of the user details class ( UserDetails).
+     * @exception NotFoundException session not found.
+     * @exception BadRequestException field not present
+     *
      **/
     private void validateVO(UserDetails vo) {
         if (vo == null) {
@@ -85,7 +119,11 @@ public class AuthDTO {
 
     }
     /**
+     * 
+     * Method that provides the object with authentication data.
+     * 
      * @param request credentials for authentication, username and password for access registration.
+     *
      **/
     private void validateRequest(AuthRequestBusinessVO request) {
         if (request == null) {

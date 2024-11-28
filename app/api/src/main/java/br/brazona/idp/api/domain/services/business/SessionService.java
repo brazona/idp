@@ -1,6 +1,3 @@
-/**
- * @author Brazona Tech
- **/
 package br.brazona.idp.api.domain.services.business;
 
 import br.brazona.idp.api.domain.dto.SessionDTO;
@@ -11,6 +8,16 @@ import br.brazona.idp.api.infrastructure.repositories.SessionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+/**
+*
+ * Business rule service: [ SessionService ], which implements functionalities related to: [ Users Sessions ] .
+* 
+* @author Brazona Tech
+* @version 1.0
+* @since 1.0
+*
+**/
 
 @Slf4j
 @Service
@@ -23,9 +30,20 @@ public class SessionService {
     @Autowired
     private UserService userService;
     private final static String SERVICE_LOG = "Service started SessionService: {}";
+    /**
+     *
+     * Method constructor.
+     *
+     **/
+    public SessionService() {
+    }
 
     /**
-     * @param sessionVO Instance of the session class, with value referring to the user session.
+     *
+     * Method that record the object with session user data.
+     *
+     * @param sessionVO object with the data to create or update record.
+     *
      **/
     public void createUpdate(SessionVO sessionVO) {
         UserDetailsVO userVO = userService.getByUsername(sessionVO.getUsername());
@@ -46,8 +64,12 @@ public class SessionService {
         log.info("Stored session");
     }
     /**
+     * 
+     * Method that provides the object with authentication data.
+     * 
      * @param id Object of the User class, with the application's authentication values.
-     * @return AuthResponseBusinessVO A user's session data.
+     * @return SessionVO view object witch data
+     * 
      **/
     public SessionVO getByUserId(Long id) {
         SessionEntity session = sessionRepository.findByUserId(id);

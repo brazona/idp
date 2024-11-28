@@ -9,6 +9,16 @@ import org.springframework.stereotype.Component;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+* 
+* Class entity Services by Organization.
+* 
+* @author Brazona Tech
+* @version 1.0
+* @since 1.0
+*
+**/
+
 @Entity
 @Table(name = "services_by_organizations")
 @Getter
@@ -26,9 +36,25 @@ public class ServicesByOrganizationsEntity implements Serializable {
     private Integer business_partner_id;
     private Integer role_id;
 
+    /**
+     *
+     * Class constructor.
+     *
+     **/
     public ServicesByOrganizationsEntity() {
     }
-
+    /**
+     * 
+     * Method that provides the object with authentication data.
+     * 
+     * @param id Object of the User class, with the application's authentication values.
+     * @param name Object of the User class, with the application's authentication values.
+     * @param organization_id Object of the User class, with the application's authentication values.
+     * @param service_id Object of the User class, with the application's authentication values.
+     * @param business_partner_id Object of the User class, with the application's authentication values.
+     * @param role_id Object of the User class, with the application's authentication values.
+     * 
+     **/
     public ServicesByOrganizationsEntity(Long id, String name, Integer organization_id,
                                          Integer service_id, Integer business_partner_id,
                                          Integer role_id) {

@@ -1,13 +1,7 @@
 /**
- * Package that contains classes for web endpoints and similar.
- * <p>
- * The project architecture follows the DDD - Domain Driven Design concept,
- * with the purpose of building an application with a standardized structure and adopting concepts
- * about global organization and contemporary software development conventions.
- * </p>
- *
+ * Application package, layer that contains classes that interact with the application's web interface with the graphical interface.
  * @author brazona Tech
  * @version 1.0
  * @since 1.0
- */
+ **/
 package br.brazona.idp.api.application;

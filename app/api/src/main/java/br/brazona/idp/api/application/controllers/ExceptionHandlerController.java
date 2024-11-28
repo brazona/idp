@@ -1,6 +1,3 @@
-/**
- * @author Brazona Tech
- **/
 package br.brazona.idp.api.application.controllers;
 
 import br.brazona.idp.api.domain.constants.ExceptionConst;
@@ -25,19 +22,35 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.util.Objects;
 
+/**
+* 
+* Class that controls error responses to the web interface through the api.
+* 
+* @author Brazona Tech
+* @version 1.0
+* @since 1.0
+*
+**/
 @Slf4j
 @ControllerAdvice
 public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
-
+    /**
+     *
+     * Class constructor.
+     *
+     **/
     public ExceptionHandlerController() {
         super();
     }
-
-    /**
-     * @param request  credentials for authentication, username and password for access registration.
-     * @param ex excess relative to the process.
-     * @return ResponseEntity<Object> excess relative to the process.
-     **/
+     /**
+     * 
+     * Method that returns not found, http status 404 when exception is UserNotFoundException.class
+     * 
+     * @param ex Exception class.
+     * @param request request class.
+     * @return a response with http standard
+     *
+     **/ 
     @ExceptionHandler({UserNotFoundException.class})
     public ResponseEntity<Object> handleNotfound(final RuntimeException ex, final WebRequest request) {
         ApiErrorVO apiError =
@@ -46,9 +59,12 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
     /**
-     * @param request  credentials for authentication, username and password for access registration.
-     * @param ex excess relative to the process.
-     * @return ResponseEntity<Object> excess relative to the process.
+     * Method that returns Wrong format, http status 400 when exception is ConstraintViolationException.class
+     *
+     * @param ex Exception class.
+     * @param request request class.
+     * @return a response with http standard
+     * 
      **/
     @ExceptionHandler({ ConstraintViolationException.class })
     public ResponseEntity<Object> handleBadRequest(final ConstraintViolationException ex, final WebRequest request) {
@@ -58,9 +74,13 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
     /**
-     * @param request  credentials for authentication, username and password for access registration.
-     * @param ex excess relative to the process.
-     * @return ResponseEntity<Object> excess relative to the process.
+     * 
+     * Method that returns Wrong format, http status 400 when exception is DataIntegrityViolationException.class
+     *
+     * @param ex Exception class.
+     * @param request request class.
+     * @return a response with http standard
+     * 
      **/
     @ExceptionHandler({ DataIntegrityViolationException.class })
     public ResponseEntity<Object> handleBadRequest(final DataIntegrityViolationException ex, final WebRequest request) {
@@ -70,9 +90,13 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
     /**
-     * @param request  credentials for authentication, username and password for access registration.
-     * @param ex excess relative to the process.
-     * @return ResponseEntity<Object> excess relative to the process.
+     * 
+     * Method that returns Wrong format, http status 400 when exception is InvalidDataAccessApiUsageException.class
+     *
+     * @param ex Exception class.
+     * @param request request class.
+     * @return a response with http standard
+     * 
      **/
     @ExceptionHandler({ InvalidDataAccessApiUsageException.class, DataAccessException.class })
     public ResponseEntity<Object> handleConflict(final RuntimeException ex, final WebRequest request) {
@@ -82,9 +106,13 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
     /**
-     * @param request  credentials for authentication, username and password for access registration.
-     * @param ex excess relative to the process.
-     * @return ResponseEntity<Object> excess relative to the process.
+     * 
+     * Method that returns Wrong format, http status 400 when exception is IllegalArgumentException.class
+     *
+     * @param ex Exception class.
+     * @param request request class.
+     * @return a response with http standard
+     * 
      **/
     @ExceptionHandler({ NullPointerException.class, IllegalArgumentException.class, IllegalStateException.class })
     public ResponseEntity<Object> handleInternal(final RuntimeException ex, final WebRequest request) {
@@ -95,9 +123,13 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
     /**
-     * @param request  credentials for authentication, username and password for access registration.
-     * @param ex excess relative to the process.
-     * @return ResponseEntity<Object> excess relative to the process.
+     * 
+     * Method that returns not found, http status 404 when exception is UserNotFoundException.class
+     *
+     * @param ex Exception class.
+     * @param request request class.
+     * @return a response with http standard
+     * 
      **/
     @ExceptionHandler({BadRequestException.class})
     public ResponseEntity<Object> handleBadRequest(final RuntimeException ex, final WebRequest request) {
@@ -107,41 +139,52 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
     /**
-     * @param request  credentials for authentication, username and password for access registration.
-     * @param ex excess relative to the process.
-     * @return ResponseEntity<Object> excess relative to the process.
+     * 
+     * Method that returns not found, http status 404 when exception is UserNotFoundException.class
+     *
+     * @param ex Exception class.
+     * @param request request class.
+     * @return a response with http standard
+     * 
      **/
     @ExceptionHandler({MethodArgumentTypeMismatchException.class})
     public ResponseEntity<Object> handleMethodArgumentTypeMismatch(
             MethodArgumentTypeMismatchException ex, WebRequest request) {
-        String error =
-                ex.getName() + " should be of type " + Objects.requireNonNull(ex.getRequiredType()).getName();
-
         ApiErrorVO apiError =
                 new ApiErrorVO(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage());
-        return new ResponseEntity<Object>(
-                apiError, new HttpHeaders(), apiError.getStatus());
+        log.error(ExceptionConst.BAD_REQUEST_ERROR, ex.getLocalizedMessage());
+        return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
     /**
-     * @param request  credentials for authentication, username and password for access registration.
-     * @param ex excess relative to the process.
-     * @return ResponseEntity<Object> excess relative to the process.
+     * 
+     * Method that returns not found, http status 404 when exception is UserNotFoundException.class
+     *
+     * @param ex Exception class.
+     * @param request request class.
+     * @return a response with http standard
+     * 
      **/
     @ExceptionHandler({AccessDeniedException.class})
     public ResponseEntity<Object> handleAccessDeniedException(final RuntimeException ex, final WebRequest request) {
         ApiErrorVO apiError =
                 new ApiErrorVO(HttpStatus.FORBIDDEN, ex.getLocalizedMessage());
+        log.error(ExceptionConst.ACCESS_DENIED, ex.getLocalizedMessage());
         return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.FORBIDDEN, request);
     }
     /**
-     * @param request  credentials for authentication, username and password for access registration.
-     * @param ex excess relative to the process.
-     * @return ResponseEntity<Object> excess relative to the process.
+     * 
+     * Method that returns not found, http status 404 when exception is UserNotFoundException.class
+     *
+     * @param ex Exception class.
+     * @param request request class.
+     * @return a response with http standard
+     * 
      **/
     @ExceptionHandler({NotFoundException.class})
     public ResponseEntity<Object> handleNotFoundException(final RuntimeException ex, final WebRequest request) {
         ApiErrorVO apiError =
                 new ApiErrorVO(HttpStatus.NOT_FOUND, ex.getLocalizedMessage());
+        log.error(ExceptionConst.NOT_FOUND, ex.getLocalizedMessage());
         return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 

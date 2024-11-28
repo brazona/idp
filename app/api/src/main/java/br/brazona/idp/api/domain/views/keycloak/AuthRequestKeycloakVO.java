@@ -4,7 +4,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-
+/**
+* 
+* Class that transforms authentication data.
+* 
+* @author Brazona Tech
+* @version 1.0
+* @since 1.0
+*
+**/
 @Component
 @Setter
 public class AuthRequestKeycloakVO {
@@ -20,10 +28,25 @@ public class AuthRequestKeycloakVO {
     private String username;
     @JsonProperty(value = "password", required = true)
     private String password;
-
+    /**
+     * 
+     * Method that provides the object with authentication data.
+     * 
+     * */
     public AuthRequestKeycloakVO(){
 
     }
+    /**
+     * 
+     * Method that provides the object with authentication data.
+     * 
+     * @param clientId jwt token
+     * @param grantType jwt token
+     * @param username jwt token
+     * @param password jwt token
+     * @param clientSecret jwt token
+     * 
+     * */
     public AuthRequestKeycloakVO(String clientId, String grantType, String username, String password, String clientSecret) {
         this.clientId = clientId;
         this.grantType = grantType;

@@ -1,6 +1,3 @@
-/**
- * @author Brazona Tech
- **/
 package br.brazona.idp.api.application.controllers;
 
 import br.brazona.idp.api.application.interfaces.IAuthController;
@@ -14,6 +11,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+* 
+* Class that provides endpoint for user authentication and authorization.
+* 
+* @author Brazona Tech
+* @version 1.0
+* @since 1.0
+*
+**/
+
 @Slf4j
 @RestController
 public class AuthController implements IAuthController {
@@ -22,6 +29,22 @@ public class AuthController implements IAuthController {
     @Autowired
     private SessionService sessionService;
 
+    /**
+     *
+     * Class constructor.
+     *
+     **/
+     public AuthController() {
+    }
+
+    /**
+     * 
+     * User authentication method, when valid the information provides an access token.
+     * 
+     * @param auth credentials for authentication, username and password for access registration.
+     * @return a response with the token value
+     *
+     **/                                                                                                                        
     @Override
     public ResponseEntity<AuthResponseBusinessVO> authentication(AuthRequestBusinessVO auth) {
         log.info("endpoint: /v1/auth/authentication");
