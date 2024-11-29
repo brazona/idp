@@ -1,8 +1,10 @@
 package br.brazona.idp.api.infrastructure.config.security;
 
 import br.brazona.idp.api.domain.services.business.AuthService;
+import br.brazona.idp.api.domain.services.business.UserService;
 import br.brazona.idp.api.domain.utils.EnvUtil;
 import br.brazona.idp.api.domain.utils.JwtUtils;
+import br.brazona.idp.api.domain.views.business.UserDetailsVO;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.catalina.filters.CorsFilter;
 import org.apache.commons.lang3.ArrayUtils;
@@ -78,6 +80,8 @@ public class SecurityConfig {
 
     @Autowired
     private AuthService authService;
+    @Autowired
+    private UserService userService;
     /**
      *
      * Method constructor.
@@ -212,16 +216,14 @@ public class SecurityConfig {
         return new AuthorizationDecision(true);
     }
     private AuthorizationDecision authorizationBearer(String auth){
-        byte[] basicTokenDecoded = Base64.getDecoder().decode(auth.substring(BASIC_LENGTH));
         String jwt = auth.substring(BEARER_LENGTH);
         if (jwt.isEmpty() || !jwtUtils.validateJwtToken(jwt))
             return new AuthorizationDecision(false);
 
         String username = jwtUtils.getUserNameFromJwtToken(jwt);
         UserDetails userDetails = authService.loadUserByUsername(username);
-
+        UserDetailsVO userDetailsVO = userService.getUserByUsername(username);
         return new AuthorizationDecision(
-                authService.authorization(userDetails.getUsername())
-        );
+                authService.authorization(userDetailsVO.getId(), jwt));
     }
 }

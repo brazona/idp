@@ -54,4 +54,16 @@ public class AuthController implements IAuthController {
                 .header("Authorization", "Bearer "+tokenDTO.getToken())
                 .body(tokenDTO);
     }
+
+    /**
+     * User authentication method, when valid the information provides an access token.
+     *
+     * @param token description
+     * @return a response with the token value
+     */
+    @Override
+    public ResponseEntity<String> authorization(String token) {
+        log.debug(token);
+        return ResponseEntity.ok().body("Autorizado");
+    }
 }

@@ -56,6 +56,9 @@ public class SessionEntity implements Serializable {
     public SessionEntity(Long user_id, String access_token) {
         this.user_id = user_id;
         this.access_token = access_token;
+        this.jwt_token = access_token;
+        this.refresh_token = access_token;
+
     }
     /**
      * 

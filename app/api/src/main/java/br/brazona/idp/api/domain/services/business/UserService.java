@@ -43,4 +43,14 @@ public class UserService {
     public UserDetailsVO getByUsername(String username) {
         return userDTO.toVO(usersRepository.findByUsername(username));
     }
+    /**
+     *
+     * Method that provides the object with authentication data.
+     *
+     * @param username Object of the User class, with the application's authentication values.
+     * @return UserDetailsVO, object class User Details
+     **/
+    public UserDetailsVO getUserByUsername(String username) {
+        return userDTO.toVO(usersRepository.findByUsername(username));
+    }
 }

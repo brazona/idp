@@ -33,4 +33,16 @@ public interface IAuthController {
     @PostMapping(value = "/authentication", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<AuthResponseBusinessVO> authentication(
             @RequestBody AuthRequestBusinessVO auth);
+
+    /**
+     *
+     * User authentication method, when valid the information provides an access token.
+     *
+     *
+     * @return a response with the token value
+     *
+     **/
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PostMapping(value = "/authorization")
+    ResponseEntity<String> authorization(@RequestHeader(required = true, value = "Authorization") String token);
 }

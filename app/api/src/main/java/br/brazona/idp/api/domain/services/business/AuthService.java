@@ -4,6 +4,7 @@ package br.brazona.idp.api.domain.services.business;
 import br.brazona.idp.api.domain.dto.AuthDTO;
 import br.brazona.idp.api.domain.views.business.AuthRequestBusinessVO;
 import br.brazona.idp.api.domain.views.business.AuthResponseBusinessVO;
+import br.brazona.idp.api.domain.views.business.SessionVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,6 +36,8 @@ public class AuthService implements UserDetailsService {
 
     @Autowired
     private AuthDTO authDTO;
+    @Autowired
+    private SessionService sessionService;
     /**
      *
      * Method constructor class.
@@ -92,11 +95,13 @@ public class AuthService implements UserDetailsService {
      * 
      * Method that provides the object with authentication data.
      * 
-     * @param username  credentials for authentication, username and password for access registration.
+     * @param user_id  credentials for authentication, username and password for access registration.
+     * @param access_token  credentials for authentication, username and password for access registration.
      * @return boolean, true witch valid and false witch not authorization.
      *
      **/
-    public boolean authorization(String username) {
-        return true;
+    public boolean authorization(Long user_id, String access_token) {
+       SessionVO sessionVO = sessionService.getByUserId(user_id);
+       return sessionVO.getAccess_token().equals(access_token);
     }
 }
