@@ -1,6 +1,7 @@
 package br.brazona.idp.api.infrastructure.config.security;
 
 import br.brazona.idp.api.domain.services.business.AuthService;
+import br.brazona.idp.api.domain.utils.EnvUtil;
 import br.brazona.idp.api.domain.utils.JwtUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.catalina.filters.CorsFilter;
@@ -8,6 +9,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -32,6 +34,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -51,6 +54,18 @@ public class SecurityConfig {
 
     private final static String SERVICE_LOG = "Service started SecurityConfig: {}";
     Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
+    private static final int BASIC_LENGTH = 6;
+    private static final int BEARER_LENGTH = 7;
+    private static final String BASIC_USERNAME = "idp.security.basic.username";
+    private static final String BASIC_PASSWORD = "idp.security.basic.password";
+    @Autowired
+    private EnvUtil envUtil;
+//    private static final String BASIC_USERNAME = "usuario";
+//    private static final String BASIC_PASSWORD = "123456";
+//    @Value("${idp.security.basic.username}")
+//    private String BASIC_USERNAME;
+//    @Value("${idp.security.basic.password}")
+//    private int BASIC_PASSWORD;
 
 
     private static final String[] PUBLIC = {
@@ -88,7 +103,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorizeHttpRequests) ->
                      authorizeHttpRequests
-                             .requestMatchers(PUBLIC).permitAll()
+                             //.requestMatchers(PUBLIC).permitAll()
                              .anyRequest().access(customAuthManager()));
         return http.build();
     }
@@ -145,38 +160,23 @@ public class SecurityConfig {
             @Override
             public AuthorizationDecision check(Supplier<Authentication> authentication, RequestAuthorizationContext object) {
 
-                HttpServletRequest request = object.getRequest();
-                String path =  request.getRequestURI();
-                if (ArrayUtils.contains(PUBLIC, path)){
-                    logger.info(SERVICE_LOG, "router public");
-                    return new AuthorizationDecision(true);
+                String headerAuth = object.getRequest().getHeader("Authorization");
+                String path =  object.getRequest().getRequestURI();
+
+                if (headerAuth == null || headerAuth.isEmpty())
+                    return new AuthorizationDecision(false);
+                else if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")){
+                    return authorizationBearer(headerAuth);
+                } else if (StringUtils.hasText(headerAuth)
+                        && headerAuth.startsWith("Basic ") && ArrayUtils.contains(PUBLIC, path)) {
+                    return authorizationBasic(headerAuth);
+                }else {
+                    return new AuthorizationDecision(false);
                 }
-                String jwt = parseJwt(object.getRequest());
-
-                if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
-                    String username = jwtUtils.getUserNameFromJwtToken(jwt);
-
-                    UserDetails userDetails = authService.loadUserByUsername(username);
-
-                    return new AuthorizationDecision(
-                            authService.authorization(userDetails.getUsername())
-                    );
-                }
-
-                return new AuthorizationDecision(false);
             }
         };
     }
 
-    private String parseJwt(HttpServletRequest request) {
-        String headerAuth = request.getHeader("Authorization");
-
-        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
-            return headerAuth.substring(7);
-        }
-
-        return null;
-    }
     /**
      *
      * Method that implements user authorization rules.
@@ -189,5 +189,39 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
+    private AuthorizationDecision authorizationBasic(String auth){
+        byte[] basicTokenDecoded = Base64.getDecoder().decode(auth.substring(BASIC_LENGTH));
+        String username = envUtil.getEnvValue(BASIC_USERNAME);
+        String password = envUtil.getEnvValue(BASIC_PASSWORD);
 
+        if (username == null || username.isEmpty() || password == null || password.isEmpty())
+            return new AuthorizationDecision(false);
+
+        String basicTokenValue = new String(
+                Base64.getDecoder().decode(auth.substring(BASIC_LENGTH)));
+
+        if (!basicTokenValue.contains(":"))
+            return new AuthorizationDecision(false);
+
+        String[] basicAuthsSplit = basicTokenValue.split(":");
+
+        if (!basicAuthsSplit[0].equals(username)
+                || !basicAuthsSplit[1].equals(password)) {
+            return new AuthorizationDecision(false);
+        }
+        return new AuthorizationDecision(true);
+    }
+    private AuthorizationDecision authorizationBearer(String auth){
+        byte[] basicTokenDecoded = Base64.getDecoder().decode(auth.substring(BASIC_LENGTH));
+        String jwt = auth.substring(BEARER_LENGTH);
+        if (jwt.isEmpty() || !jwtUtils.validateJwtToken(jwt))
+            return new AuthorizationDecision(false);
+
+        String username = jwtUtils.getUserNameFromJwtToken(jwt);
+        UserDetails userDetails = authService.loadUserByUsername(username);
+
+        return new AuthorizationDecision(
+                authService.authorization(userDetails.getUsername())
+        );
+    }
 }

@@ -8,6 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static br.brazona.idp.api.domain.constants.UnitTestConst.*;
 import static io.restassured.RestAssured.given;
@@ -18,7 +19,7 @@ public class AuthControllerTest {
 
     @LocalServerPort
     private int port;
-
+    private static final BCryptPasswordEncoder passwordEcorder = new BCryptPasswordEncoder();
     @BeforeEach
     public void setUp() {
         RestAssured.port = port;

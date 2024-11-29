@@ -51,7 +51,7 @@ public class AuthController implements IAuthController {
         AuthResponseBusinessVO tokenDTO = service.authentication(auth);
         sessionService.createUpdate(new SessionVO(auth.getUsername(), tokenDTO.getToken()));
         return ResponseEntity.ok()
-                .header("Authorization", tokenDTO.getToken())
+                .header("Authorization", "Bearer "+tokenDTO.getToken())
                 .body(tokenDTO);
     }
 }

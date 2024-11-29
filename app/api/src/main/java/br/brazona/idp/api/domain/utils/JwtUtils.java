@@ -37,8 +37,7 @@ public class JwtUtils {
     private String jwtSecret;
     @Value("${jwt.expiration_ms}")
     private int jwtExpirationMs;
-    private static BCryptPasswordEncoder passwordEcorder = new BCryptPasswordEncoder();
-
+    private static final BCryptPasswordEncoder passwordEcorder = new BCryptPasswordEncoder();
     /**
      *
      * Method constructor.
