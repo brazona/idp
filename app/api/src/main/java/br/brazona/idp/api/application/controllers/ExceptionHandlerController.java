@@ -1,10 +1,7 @@
 package br.brazona.idp.api.application.controllers;
 
 import br.brazona.idp.api.domain.constants.ExceptionConst;
-import br.brazona.idp.api.domain.exceptions.AccessDeniedException;
-import br.brazona.idp.api.domain.exceptions.BadRequestException;
-import br.brazona.idp.api.domain.exceptions.NotFoundException;
-import br.brazona.idp.api.domain.exceptions.UserNotFoundException;
+import br.brazona.idp.api.domain.exceptions.*;
 import br.brazona.idp.api.domain.views.business.ApiErrorVO;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.ConstraintViolationException;
@@ -186,6 +183,23 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
                 new ApiErrorVO(HttpStatus.NOT_FOUND, ex.getLocalizedMessage());
         log.error(ExceptionConst.NOT_FOUND, ex.getLocalizedMessage());
         return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
+    /**
+     *
+     * Method that returns not found, http status 404 when exception is UserNotFoundException.class
+     *
+     * @param ex Exception class.
+     * @param request request class.
+     * @return a response with http standard
+     *
+     **/
+    @ExceptionHandler({EmailNotSendException.class})
+    public ResponseEntity<Object> handleEmailNotSendException(final RuntimeException ex, final WebRequest request) {
+        ApiErrorVO apiError =
+                new ApiErrorVO(HttpStatus.SERVICE_UNAVAILABLE, ex.getLocalizedMessage());
+        log.error(ExceptionConst.SERVICE_UNAVAILABLE, ex.getLocalizedMessage());
+        return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.SERVICE_UNAVAILABLE, request);
     }
 
 }

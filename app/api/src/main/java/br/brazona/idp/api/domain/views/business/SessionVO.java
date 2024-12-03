@@ -66,6 +66,7 @@ public class SessionVO {
     public SessionVO(Long user_id, String access_token) {
         this.user_id = user_id;
         this.access_token = access_token;
+        this.jwt_token = access_token;
     }
     /**
      * 
@@ -78,6 +79,7 @@ public class SessionVO {
     public SessionVO(String username, String access_token) {
         this.username = username;
         this.access_token = access_token;
+        this.jwt_token = access_token;
     }
     /**
      * 
@@ -92,5 +94,6 @@ public class SessionVO {
         this.id = id;
         this.user_id = user_id;
         this.access_token = access_token;
+        this.jwt_token = access_token;
     }
 }

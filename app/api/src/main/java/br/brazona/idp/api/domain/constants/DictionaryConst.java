@@ -41,6 +41,8 @@ public class DictionaryConst {
     public final static String ADM_ORG = "ADMINISTRADOR DA ORGANIZAÇÃO";
     /** constant USER_ORG **/
     public final static String USER_ORG = "USUÁRIO DA ORGANIZAÇÃO";
+
+
     /**
      *
      * Class constructor.

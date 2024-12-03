@@ -3,9 +3,7 @@ package br.brazona.idp.api.application.controllers;
 import br.brazona.idp.api.application.interfaces.IAuthController;
 import br.brazona.idp.api.domain.services.business.AuthService;
 import br.brazona.idp.api.domain.services.business.SessionService;
-import br.brazona.idp.api.domain.views.business.AuthRequestBusinessVO;
-import br.brazona.idp.api.domain.views.business.AuthResponseBusinessVO;
-import br.brazona.idp.api.domain.views.business.SessionVO;
+import br.brazona.idp.api.domain.views.business.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -66,4 +64,30 @@ public class AuthController implements IAuthController {
         log.debug(token);
         return ResponseEntity.ok().body("Autorizado");
     }
+
+    /**
+     * User authentication method, when valid the information provides an access token.
+     *
+     * @param auth  credentials for authentication, username and password for access registration.
+     * @param token DDDD
+     * @return a response with the token value
+     **/
+    @Override
+    public ResponseEntity<ForgotResponseVO> forgotPassword(AuthRequestBusinessVO auth, String token) {
+        return ResponseEntity.ok()
+                .body(service.forgotPassword(auth));
+    }
+
+    /**
+     * User authentication method, when valid the information provides an access token.
+     *
+     * @param auth  credentials for authentication, username and password for access registration.
+     * @return a response with the token value
+     **/
+    @Override
+    public ResponseEntity<ForgotResponseVO> updatePassword(UpdatePassRequestBusinessVO auth) {
+        return ResponseEntity.ok()
+                .body(service.updatePassword(auth));
+    }
+
 }

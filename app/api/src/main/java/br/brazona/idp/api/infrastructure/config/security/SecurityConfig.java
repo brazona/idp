@@ -62,17 +62,16 @@ public class SecurityConfig {
     private static final String BASIC_PASSWORD = "idp.security.basic.password";
     @Autowired
     private EnvUtil envUtil;
-//    private static final String BASIC_USERNAME = "usuario";
-//    private static final String BASIC_PASSWORD = "123456";
-//    @Value("${idp.security.basic.username}")
-//    private String BASIC_USERNAME;
-//    @Value("${idp.security.basic.password}")
-//    private int BASIC_PASSWORD;
-
 
     private static final String[] PUBLIC = {
             "/api/v1/auth/authentication"
             ,"/v1/auth/authentication"
+            ,"/v1/auth/forgot"
+            ,"/api/v1/auth/forgot"
+            ,"/v1/auth/update/password"
+            ,"/api/v1/auth/update/password"
+            ,"/api/v1/auth/update"
+            ,"/v1/auth/update"
     };
 
     @Autowired

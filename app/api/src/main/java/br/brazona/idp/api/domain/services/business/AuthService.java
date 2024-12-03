@@ -1,10 +1,12 @@
 package br.brazona.idp.api.domain.services.business;
 
 
+import br.brazona.idp.api.domain.constants.DictionaryConst;
+import br.brazona.idp.api.domain.constants.MailConst;
 import br.brazona.idp.api.domain.dto.AuthDTO;
-import br.brazona.idp.api.domain.views.business.AuthRequestBusinessVO;
-import br.brazona.idp.api.domain.views.business.AuthResponseBusinessVO;
-import br.brazona.idp.api.domain.views.business.SessionVO;
+import br.brazona.idp.api.domain.services.external.EmailService;
+import br.brazona.idp.api.domain.utils.JwtUtils;
+import br.brazona.idp.api.domain.views.business.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,6 +18,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static br.brazona.idp.api.domain.utils.RandomPasswordGeneratorUtil.generateRandomPassword;
 
 /**
 * 
@@ -33,11 +37,14 @@ public class AuthService implements UserDetailsService {
 
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private JwtUtils jwtUtils;
     @Autowired
     private AuthDTO authDTO;
     @Autowired
     private SessionService sessionService;
+    @Autowired
+    private EmailService emailService;
     /**
      *
      * Method constructor class.
@@ -102,6 +109,34 @@ public class AuthService implements UserDetailsService {
      **/
     public boolean authorization(Long user_id, String access_token) {
        SessionVO sessionVO = sessionService.getByUserId(user_id);
-       return sessionVO.getAccess_token().equals(access_token);
+       Boolean isUser = userService.getUsernameByUpdate(sessionVO.getUser_id());
+        return !isUser && sessionVO.getAccess_token().equals(access_token);
+    }
+    public ForgotResponseVO forgotPassword(AuthRequestBusinessVO authRequestBusinessVO){
+        String randomPass = generateRandomPassword(10);
+        UserRequestVO userRequestVO = userService.getUserVOByUsername(authRequestBusinessVO.getUsername());
+        userRequestVO.setPassword(jwtUtils.bcryptEncryptor(randomPass));
+        userRequestVO.setIsUpdatePassword(true);
+        String subject = MailConst.SUBJECT_SEND_MAIL.replace("_USER_", userRequestVO.getName());
+        String msg = MailConst.MAIL_HTML_FORGOT.replace("_USER_", userRequestVO.getName());
+        msg = msg.replace("_NEW_PASS_",randomPass);
+        Boolean valid = false;
+        if (emailService.send(userRequestVO.getUsername(), subject, msg))
+            valid = userService.createOrUpdate(userRequestVO);
+        String message = valid ? MailConst.MSG_SEND_MAIL : MailConst.MSG_NOT_SEND_MAIL;
+        return new ForgotResponseVO(valid, message);
+    }
+
+    public ForgotResponseVO updatePassword(UpdatePassRequestBusinessVO authUpdateRequestBusinessVO){
+        UserRequestVO userRequestVO = userService.updatePassworUser(authUpdateRequestBusinessVO);
+        userRequestVO.setPassword(jwtUtils.bcryptEncryptor(authUpdateRequestBusinessVO.getPasswordNew()));
+        userRequestVO.setIsUpdatePassword(false);
+        String subject = MailConst.SUBJECT_SEND_MAIL_UPDATE_PASS.replace("_USER_", userRequestVO.getName());
+        String msg = MailConst.MAIL_HTML_UPDATE_PASS.replace("_USER_", userRequestVO.getName());
+        Boolean valid = false;
+        if (emailService.send(userRequestVO.getUsername(), subject, msg))
+            valid = userService.createOrUpdate(userRequestVO);
+        String message = valid ? MailConst.MSG_SEND_MAIL : MailConst.MSG_NOT_SEND_MAIL;
+        return new ForgotResponseVO(valid, message);
     }
 }

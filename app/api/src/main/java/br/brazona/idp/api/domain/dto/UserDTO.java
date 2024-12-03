@@ -1,9 +1,13 @@
 package br.brazona.idp.api.domain.dto;
 
 import br.brazona.idp.api.domain.constants.ExceptionConst;
+import br.brazona.idp.api.domain.exceptions.AccessDeniedException;
 import br.brazona.idp.api.domain.exceptions.BadRequestException;
 import br.brazona.idp.api.domain.exceptions.NotFoundException;
 import br.brazona.idp.api.domain.utils.ExceptionUtil;
+import br.brazona.idp.api.domain.utils.JwtUtils;
+import br.brazona.idp.api.domain.views.business.AuthUpdateRequestBusinessVO;
+import br.brazona.idp.api.domain.views.business.UpdatePassRequestBusinessVO;
 import br.brazona.idp.api.domain.views.business.UserDetailsVO;
 import br.brazona.idp.api.domain.views.business.UserRequestVO;
 import br.brazona.idp.api.infrastructure.entities.UsersEntity;
@@ -25,6 +29,8 @@ import org.springframework.stereotype.Component;
 public class UserDTO {
     @Autowired
     private ExceptionUtil exceptionUtil;
+    @Autowired
+    private JwtUtils jwtUtils;
     /**
      *
      * Method constructor class.
@@ -42,9 +48,40 @@ public class UserDTO {
      *
      **/
     public UsersEntity toEntity(UserRequestVO vo) {
+        // public UsersEntity(Long id, String name, String email, String password) {
         return new UsersEntity(
-
+                vo.getId(),
+                vo.getName(),
+                vo.getUsername(),
+                vo.getPassword(),
+                vo.getIsAccountNonExpired(),
+                vo.getIsCredentialsNonExpired(),
+                vo.getIsAccountNonLocked(),
+                vo.getIsEnabled(),
+                vo.getIsUpdatePassword()
         );
+    }
+    /**
+     *
+     * Method that provides the object with Users data.
+     *
+     * @param vo Instance of the UserRequestVO class, with value referring to the user.
+     * @return object entity of class UsersEntity
+     *
+     **/
+    public UserRequestVO updateToEntity(UpdatePassRequestBusinessVO vo, UserRequestVO userRequestVO) {
+        if (!vo.getPasswordNew().equals(vo.getPasswordRepeat()))
+            throw new BadRequestException(
+                    exceptionUtil.replaceKey(ExceptionConst.INVALID_FIELD, "password_new_repeat"));
+        else if (!jwtUtils.doPasswordsMatch(vo.getPassword(), userRequestVO.getPassword()))
+            throw new BadRequestException(
+               exceptionUtil.replaceKey(ExceptionConst.INVALID_FIELD, "password_old"));
+
+//        else if (!vo.getPassword().equals(userRequestVO.getPassword()))
+//            throw new BadRequestException(
+//                    exceptionUtil.replaceKey(ExceptionConst.INVALID_FIELD, "password_old"));
+        userRequestVO.setPassword(vo.getPasswordNew());
+        return userRequestVO;
     }
     /**
      *
@@ -57,13 +94,36 @@ public class UserDTO {
     public UserDetailsVO toVO(UsersEntity entity) {
         validateEntity(entity);
         return new UserDetailsVO(
-                entity.getId(), entity.getName(),
+                entity.getId(),
+                entity.getName(),
                 entity.getUsername(),
                 entity.getPassword(),
                 entity.getIsAccountNonExpired(),
                 entity.getIsCredentialsNonExpired(),
                 entity.getIsAccountNonLocked(),
                 entity.getIsEnabled()
+        );
+    }
+    /**
+     *
+     * Method that provides the object with Users data.
+     *
+     * @param entity Instance of the UsersEntity class, with value referring to the user.
+     * @return object view object of class UserDetailsVO
+     *
+     **/
+    public UserRequestVO toUserVO(UsersEntity entity) {
+        return new UserRequestVO(
+                entity.getId(),
+                entity.getName(),
+                entity.getUsername(),
+                entity.getPassword(),
+                entity.getIsAccountNonExpired(),
+                entity.getIsCredentialsNonExpired(),
+                entity.getIsAccountNonLocked(),
+                entity.getIsEnabled(),
+                entity.getIsUpdatePassword()
+
         );
     }
     /**
@@ -100,6 +160,8 @@ public class UserDTO {
         } else if (entity.getIsEnabled() == null) {
             throw new BadRequestException(
                     exceptionUtil.replaceKey(ExceptionConst.INVALID_FIELD, "isEnabled"));
+        }else if (entity.getIsUpdatePassword()) {
+            throw new AccessDeniedException(ExceptionConst.ACCESS_DENIED_PASSWORD);
         }
 
     }

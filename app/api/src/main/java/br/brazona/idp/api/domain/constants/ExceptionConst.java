@@ -13,6 +13,8 @@ package br.brazona.idp.api.domain.constants;
 public class ExceptionConst {
     /** constant ACCESS_DENIED **/
     public final static String ACCESS_DENIED = "access denied";
+    /** constant ACCESS_DENIED **/
+    public final static String ACCESS_DENIED_PASSWORD = "access denied, atualize o password";
     /** constant NOT_FOUND **/
     public final static String NOT_FOUND = "not found";
     /** constant NOT_FOUND_INFO **/
@@ -41,6 +43,9 @@ public class ExceptionConst {
     public final static String INVALID_FIELD = "Invalid field: {}";
     /** constant INTERNAL_SERVER_ERROR **/
     public final static String INTERNAL_SERVER_ERROR = "Internal Server Error: {}";
+
+    /** constant ACCESS_DENIED **/
+    public final static String SERVICE_UNAVAILABLE = "Service unavailable";
 
     /**
      *

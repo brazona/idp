@@ -1,6 +1,7 @@
 package br.brazona.idp.api.domain.views.business;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,7 @@ import java.util.Collection;
 
 @Component
 @Getter
+@Setter
 public class UserDetailsVO implements UserDetails {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -32,7 +34,7 @@ public class UserDetailsVO implements UserDetails {
     private Boolean isAccountNonLocked;
     private Boolean isCredentialsNonExpired;
     private Boolean isEnabled;
-
+    private Boolean isUpdatePassword;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -50,6 +50,7 @@ public class SessionService {
         SessionVO sessionCurrent = getByUserId(userVO.getId());
         if (sessionCurrent != null){
             sessionCurrent.setAccess_token(sessionVO.getAccess_token());
+            sessionCurrent.setJwt_token(sessionVO.getAccess_token());
             sessionRepository.save(sessionDTO.toEntityByID(sessionCurrent));
         } else {
             sessionVO.setUser_id(userVO.getId());

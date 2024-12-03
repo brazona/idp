@@ -1,7 +1,6 @@
 package br.brazona.idp.api.application.interfaces;
 
-import br.brazona.idp.api.domain.views.business.AuthRequestBusinessVO;
-import br.brazona.idp.api.domain.views.business.AuthResponseBusinessVO;
+import br.brazona.idp.api.domain.views.business.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -45,4 +44,30 @@ public interface IAuthController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping(value = "/authorization")
     ResponseEntity<String> authorization(@RequestHeader(required = true, value = "Authorization") String token);
+
+    /**
+     *
+     * User authentication method, when valid the information provides an access token.
+     *
+     * @param auth credentials for authentication, username and password for access registration.
+     * @return a response with the token value
+     *
+     **/
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping(value = "/forgot", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity<ForgotResponseVO> forgotPassword(
+            @RequestBody AuthRequestBusinessVO auth, @RequestHeader(required = true, value = "Authorization") String token);
+
+    /**
+     *
+     * User authentication method, when valid the information provides an access token.
+     *
+     * @param auth credentials for authentication, username and password for access registration.
+     * @return a response with the token value
+     *
+     **/
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping(value = "/update/password", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity<ForgotResponseVO> updatePassword(
+            @RequestBody UpdatePassRequestBusinessVO auth);
 }
