@@ -31,12 +31,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -81,6 +83,10 @@ public class SecurityConfig {
     private AuthService authService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private CustomCorsConfiguration customCorsConfiguration;
+    @Autowired
+    private CustomAuthManager customAuthManager;
     /**
      *
      * Method constructor.
@@ -101,83 +107,17 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
             http
-                .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(
-                        corsConfigurationSource()))
+                .cors(corsConfigurer ->
+                        corsConfigurer.configurationSource(customCorsConfiguration))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorizeHttpRequests) ->
                      authorizeHttpRequests
-                             //.requestMatchers(PUBLIC).permitAll()
-                             .anyRequest().access(customAuthManager()));
+                             .anyRequest().access(customAuthManager.customAuthManager()));
         return http.build();
     }
-    /**
-     *
-     * Method that implements color rules to access the application.
-     *
-     * @return CorsConfigurationSource, CORS configuration class.
-     *
-     **/
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.setAllowedOrigins(List.of("*"));
-        corsConfig.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "DELETE", "PATCH"));
-        corsConfig.setAllowCredentials(true);
-        corsConfig.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", corsConfig);
-        return source;
-    }
-    /**
-     *
-     * Method that implements color rules to access the application.
-     *
-     * @return FilterRegistrationBean, CORS configuration class.
-     *
-     **/
-    @Bean
-    public FilterRegistrationBean<CorsFilter> corsFilter() {
-        FilterRegistrationBean<CorsFilter> bean
-                = new FilterRegistrationBean<>(new CorsFilter());
-        bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
-        return bean;
-    }
-
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    /**
-     *
-     * Method that implements user authorization rules.
-     *
-     * @return AuthorizationManager, AUTHORIZATION configuration class.
-     *
-     **/
-    AuthorizationManager<RequestAuthorizationContext> customAuthManager() {
-        return new AuthorizationManager<RequestAuthorizationContext>() {
-            
-            @Override
-            public AuthorizationDecision check(Supplier<Authentication> authentication, RequestAuthorizationContext object) {
-
-                String headerAuth = object.getRequest().getHeader("Authorization");
-                String path =  object.getRequest().getRequestURI();
-
-                if (headerAuth == null || headerAuth.isEmpty())
-                    return new AuthorizationDecision(false);
-                else if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")){
-                    return authorizationBearer(headerAuth);
-                } else if (StringUtils.hasText(headerAuth)
-                        && headerAuth.startsWith("Basic ") && ArrayUtils.contains(PUBLIC, path)) {
-                    return authorizationBasic(headerAuth);
-                }else {
-                    return new AuthorizationDecision(false);
-                }
-            }
-        };
     }
 
     /**
@@ -191,38 +131,5 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
-    }
-    private AuthorizationDecision authorizationBasic(String auth){
-        byte[] basicTokenDecoded = Base64.getDecoder().decode(auth.substring(BASIC_LENGTH));
-        String username = envUtil.getEnvValue(BASIC_USERNAME);
-        String password = envUtil.getEnvValue(BASIC_PASSWORD);
-
-        if (username == null || username.isEmpty() || password == null || password.isEmpty())
-            return new AuthorizationDecision(false);
-
-        String basicTokenValue = new String(
-                Base64.getDecoder().decode(auth.substring(BASIC_LENGTH)));
-
-        if (!basicTokenValue.contains(":"))
-            return new AuthorizationDecision(false);
-
-        String[] basicAuthsSplit = basicTokenValue.split(":");
-
-        if (!basicAuthsSplit[0].equals(username)
-                || !basicAuthsSplit[1].equals(password)) {
-            return new AuthorizationDecision(false);
-        }
-        return new AuthorizationDecision(true);
-    }
-    private AuthorizationDecision authorizationBearer(String auth){
-        String jwt = auth.substring(BEARER_LENGTH);
-        if (jwt.isEmpty() || !jwtUtils.validateJwtToken(jwt))
-            return new AuthorizationDecision(false);
-
-        String username = jwtUtils.getUserNameFromJwtToken(jwt);
-        UserDetails userDetails = authService.loadUserByUsername(username);
-        UserDetailsVO userDetailsVO = userService.getUserByUsername(username);
-        return new AuthorizationDecision(
-                authService.authorization(userDetailsVO.getId(), jwt));
     }
 }

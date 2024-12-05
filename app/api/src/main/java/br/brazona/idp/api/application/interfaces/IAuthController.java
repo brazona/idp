@@ -43,14 +43,14 @@ public interface IAuthController {
      **/
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping(value = "/authorization")
-    ResponseEntity<String> authorization(@RequestHeader(required = true, value = "Authorization") String token);
+    ResponseEntity<AuthorizationResponseVO> authorization(@RequestHeader(required = true, value = "Authorization") String token);
 
     /**
      *
-     * User authentication method, when valid the information provides an access token.
+     * Endpoint that recovers the user's password.
      *
-     * @param auth credentials for authentication, username and password for access registration.
-     * @return a response with the token value
+     * @param auth Registered email information
+     * @return Returns information if the password is updated.
      *
      **/
     @ResponseStatus(HttpStatus.CREATED)
@@ -60,10 +60,10 @@ public interface IAuthController {
 
     /**
      *
-     * User authentication method, when valid the information provides an access token.
+     * Endpoint that updates the user's password.
      *
      * @param auth credentials for authentication, username and password for access registration.
-     * @return a response with the token value
+     * @return Returns information if the password is updated.
      *
      **/
     @ResponseStatus(HttpStatus.CREATED)

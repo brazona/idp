@@ -6,6 +6,7 @@ import br.brazona.idp.api.domain.dto.MailDTO;
 import br.brazona.idp.api.domain.exceptions.EmailNotSendException;
 import br.brazona.idp.api.domain.utils.ExceptionUtil;
 import br.brazona.idp.api.domain.views.MailSSlVO;
+import br.brazona.idp.api.domain.views.business.EmailSendlVO;
 import br.brazona.idp.api.domain.views.business.UserDetailsVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,10 @@ public class EmailService {
     final String password = "imlhlsxvwxgsgusr";
     final String send_mail = "brazonatech@gmail.com";
 
-    public Boolean send(String email, String subject, String messageMail){
+    public Boolean send(EmailSendlVO emailSendlVO){
+        String email = emailSendlVO.getRecipient();
+        String messageMail = emailSendlVO.getContent();
+        String subject = emailSendlVO.getSubject();
 
         log.info("Iniciado envio de email para recuperação de senha do usuário: {}", email);
         MailSSlVO mailSSlVO = mailDTO.propertiesTotTlsVo();

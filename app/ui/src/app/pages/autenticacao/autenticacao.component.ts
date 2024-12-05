@@ -22,9 +22,9 @@ import { AuthService } from 'src/app/core/services/auth.service';
 @Component({
   selector: 'app-autenticacao',
   standalone: true,
-  imports: [RouterLink, RouterOutlet, MatButtonToggleModule, 
-    FlexLayoutModule, MatFormFieldModule, MatIconModule, MatInputModule, 
-    MatButtonModule, MatDividerModule, FormsModule, ReactiveFormsModule, 
+  imports: [RouterLink, RouterOutlet, MatButtonToggleModule,
+    FlexLayoutModule, MatFormFieldModule, MatIconModule, MatInputModule,
+    MatButtonModule, MatDividerModule, FormsModule, ReactiveFormsModule,
     PageComponent, FormComponent, UsernameComponent, PasswordComponent, AccessComponent, CommonModule ],
 
   templateUrl: './autenticacao.component.html',
@@ -70,24 +70,23 @@ export class AutenticacaoComponent implements OnInit{
     this.usernameRequerid = false;
     this.usernameEmail = false;
     this.passwordRequerid = false;
-    
+
   }
   logar(){
-    
+
     this.submitted = true;
     this.usernameRequerid = false;
     this.usernameEmail = false;
     this.passwordRequerid = false;
 
     this.validacaoFormulario();
-    
+
     if (!this.formularioAutenticacao.valid) {
       return;
     }
     var user: User = {
       username:this.formularioAutenticacao.get(this.FIEL_USERNAME)?.value,
       password:this.formularioAutenticacao.get(this.FIEL_PASSWORD)?.value,
-      grant_type:this.FIEL_PASSWORD
     }
     debugger
     this.service.login(user).subscribe(
@@ -101,7 +100,7 @@ export class AutenticacaoComponent implements OnInit{
     this.validaCampos(this.FIEL_USERNAME);
   }
   receberPassword(pass:string){
-    this.formularioAutenticacao.controls[this.FIEL_PASSWORD].setValue(pass);   
+    this.formularioAutenticacao.controls[this.FIEL_PASSWORD].setValue(pass);
     this.validaCampos(this.FIEL_PASSWORD);
   }
   private validacaoFormulario(){
@@ -109,7 +108,7 @@ export class AutenticacaoComponent implements OnInit{
     this.validaCampos(this.FIEL_PASSWORD);
   }
   private validaCampos(campo:string):void{
-    
+
     if(campo == '')
       return;
     if(campo == this.FIEL_PASSWORD)
@@ -117,10 +116,10 @@ export class AutenticacaoComponent implements OnInit{
     if(campo == this.FIEL_USERNAME)
       this.usernameRequerid = false;
       this.usernameEmail = false;
-    
+
     const erros = this.formularioAutenticacao.get(campo)?.errors || {};
-    const tipoErro = Object.keys(erros)[0]; 
-    
+    const tipoErro = Object.keys(erros)[0];
+
     if(erros && tipoErro == 'required' && campo == this.FIEL_USERNAME)
       this.usernameRequerid = true;
     if(erros && tipoErro == 'email' && campo == this.FIEL_USERNAME)

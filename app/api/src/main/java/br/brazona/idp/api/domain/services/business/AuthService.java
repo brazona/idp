@@ -1,8 +1,9 @@
 package br.brazona.idp.api.domain.services.business;
 
 
-import br.brazona.idp.api.domain.constants.DictionaryConst;
+import br.brazona.idp.api.domain.constants.LogsConst;
 import br.brazona.idp.api.domain.constants.MailConst;
+import br.brazona.idp.api.domain.constants.ServicesConst;
 import br.brazona.idp.api.domain.dto.AuthDTO;
 import br.brazona.idp.api.domain.services.external.EmailService;
 import br.brazona.idp.api.domain.utils.JwtUtils;
@@ -62,6 +63,7 @@ public class AuthService implements UserDetailsService {
      *
      **/
     public AuthResponseBusinessVO authentication(AuthRequestBusinessVO user) {
+        log.info(LogsConst.SERVICE_INFO, ServicesConst.AUTH_SERVICE_AUTHENTICATION);
         return authDTO.responseBusiness(loadUserByUsername(user.getUsername()), user);
     }
 
@@ -108,35 +110,47 @@ public class AuthService implements UserDetailsService {
      *
      **/
     public boolean authorization(Long user_id, String access_token) {
-       SessionVO sessionVO = sessionService.getByUserId(user_id);
+        log.info(LogsConst.SERVICE_INFO, ServicesConst.AUTH_SERVICE_AUTHORIZATION);
+        SessionVO sessionVO = sessionService.getByUserId(user_id);
        Boolean isUser = userService.getUsernameByUpdate(sessionVO.getUser_id());
         return !isUser && sessionVO.getAccess_token().equals(access_token);
     }
     public ForgotResponseVO forgotPassword(AuthRequestBusinessVO authRequestBusinessVO){
+        log.info(LogsConst.SERVICE_INFO, ServicesConst.AUTH_SERVICE_FORGOT);
+
         String randomPass = generateRandomPassword(10);
         UserRequestVO userRequestVO = userService.getUserVOByUsername(authRequestBusinessVO.getUsername());
         userRequestVO.setPassword(jwtUtils.bcryptEncryptor(randomPass));
         userRequestVO.setIsUpdatePassword(true);
-        String subject = MailConst.SUBJECT_SEND_MAIL.replace("_USER_", userRequestVO.getName());
-        String msg = MailConst.MAIL_HTML_FORGOT.replace("_USER_", userRequestVO.getName());
-        msg = msg.replace("_NEW_PASS_",randomPass);
+
         Boolean valid = false;
-        if (emailService.send(userRequestVO.getUsername(), subject, msg))
+        if (emailService.send(PrepareEmailForgotPassword(userRequestVO, randomPass)))
             valid = userService.createOrUpdate(userRequestVO);
         String message = valid ? MailConst.MSG_SEND_MAIL : MailConst.MSG_NOT_SEND_MAIL;
         return new ForgotResponseVO(valid, message);
     }
 
     public ForgotResponseVO updatePassword(UpdatePassRequestBusinessVO authUpdateRequestBusinessVO){
+        log.info(LogsConst.SERVICE_INFO, ServicesConst.AUTH_SERVICE_UPDATE_PASSWORD);
         UserRequestVO userRequestVO = userService.updatePassworUser(authUpdateRequestBusinessVO);
         userRequestVO.setPassword(jwtUtils.bcryptEncryptor(authUpdateRequestBusinessVO.getPasswordNew()));
         userRequestVO.setIsUpdatePassword(false);
-        String subject = MailConst.SUBJECT_SEND_MAIL_UPDATE_PASS.replace("_USER_", userRequestVO.getName());
-        String msg = MailConst.MAIL_HTML_UPDATE_PASS.replace("_USER_", userRequestVO.getName());
+
         Boolean valid = false;
-        if (emailService.send(userRequestVO.getUsername(), subject, msg))
+        if (emailService.send(PrepareEmailUpdatePassword(userRequestVO)))
             valid = userService.createOrUpdate(userRequestVO);
         String message = valid ? MailConst.MSG_SEND_MAIL : MailConst.MSG_NOT_SEND_MAIL;
         return new ForgotResponseVO(valid, message);
+    }
+    private EmailSendlVO PrepareEmailForgotPassword(UserRequestVO userRequestVO, String randomPass){
+        String subject = MailConst.SUBJECT_SEND_MAIL.replace("_USER_", userRequestVO.getName());
+        String msg = MailConst.MAIL_HTML.replace("_USER_", userRequestVO.getName());
+        msg = msg.replace("_NEW_PASS_",randomPass);
+        return new EmailSendlVO(userRequestVO.getUsername(),subject, msg);
+    }
+    private EmailSendlVO PrepareEmailUpdatePassword(UserRequestVO userRequestVO){
+        String subject = MailConst.SUBJECT_SEND_MAIL_UPDATE_PASS.replace("_USER_", userRequestVO.getName());
+        String msg = MailConst.MAIL_HTML_UPDATE_PASS.replace("_USER_", userRequestVO.getName());
+        return new EmailSendlVO(userRequestVO.getUsername(),subject, msg);
     }
 }

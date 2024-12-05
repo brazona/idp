@@ -17,8 +17,8 @@ export class AuthService extends GenericService{
   private authBase64: string = "";
   private isUserAuth: boolean = false;
   private readonly URL:string = 'http://localhost:7782/api/v1/auth/authentication'
+  //private URL:string = 'https://d77b-2804-dec-237-2f00-4c56-fe4-838a-811d.ngrok-free.app/api/v1/auth/authentication'
   private body: User = {
-    grant_type:"",
     username:"",
     password:""
   };
@@ -26,6 +26,10 @@ export class AuthService extends GenericService{
     access_token:"",
     expires_in:0
   };
+  // Headers
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  }
   constructor(router: Router, private http: HttpClient) {
     super(router)
   }
@@ -33,9 +37,8 @@ export class AuthService extends GenericService{
   login(user: User): Observable <any>{
     return new Observable((observer) => {
       this.builderHeader64();
-      this.http.post<Token>(
-        this.env.APP_API.URL+'/v1/auth/authentication', 
-        JSON.stringify(user),
+      return this.http.post<Token>(this.URL, JSON.stringify(user),
+      //this.http.post<Token>(this.env.APP_API.URL+'/v1/auth/authentication',JSON.stringify(user),
         {
           headers: new HttpHeaders()
             .set('Content-Type', 'application/json')
@@ -53,7 +56,7 @@ export class AuthService extends GenericService{
           observer.next(true);
         }
       );
-      
+
     }
 
   )}
@@ -87,14 +90,13 @@ export class AuthService extends GenericService{
     return this.isUserAuth;
   }
   private builderBody(auth:Auth){
-    this.body.grant_type = "this.env.APP_API.GRANT"
     this.body.username = auth.login;
     this.body.password = auth.password;
   }
   private builderHeader64(){
-    this.authBase64 = window.btoa("this.env.APP_API.AUTH_USER" + ':' + "this.env.APP_API.AUTH_PASS");
+    this.authBase64 = window.btoa(this.env.APP_API.BASIC_AUTH.AUTH_USER + ':' + this.env.APP_API.BASIC_AUTH.AUTH_PASS);
   }
- 
-  
+
+
 }
 

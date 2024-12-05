@@ -46,6 +46,8 @@ public class ExceptionConst {
 
     /** constant ACCESS_DENIED **/
     public final static String SERVICE_UNAVAILABLE = "Service unavailable";
+    public final static String AUTHORIZED = "authorized request";
+    public final static String UNAUTHORIZED = "unauthorized request";
 
     /**
      *
