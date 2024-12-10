@@ -48,6 +48,7 @@ export class AuthService extends GenericService{
       )
       .subscribe(
         res =>{
+          console.log('response: ', res);
           this.router.navigate(['/home']);
           observer.next(true);
         },

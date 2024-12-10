@@ -7,7 +7,7 @@ import { MatToolbar } from '@angular/material/toolbar'
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-
+import { ToastrModule} from "ngx-toastr";
 import * as moment from 'moment';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -32,6 +32,7 @@ import { MaterialModule } from './core/material.module';
     MatToolbar,
     MatSlideToggleModule,
     FormsModule,
+    ToastrModule.forRoot(),
     //app
     MaterialModule,
     CoreModule,
