@@ -9,6 +9,16 @@ import org.springframework.stereotype.Component;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+* 
+* Class entity Services.
+* 
+* @author Brazona Tech
+* @version 1.0
+* @since 1.0
+*
+**/
+
 @Entity
 @Table(name = "services")
 @Getter
@@ -23,9 +33,21 @@ public class ServicesEntity implements Serializable {
     private String name;
     private String sigla;
 
+    /**
+     *
+     * Class constructor.
+     *
+     **/
     public ServicesEntity() {
     }
-
+    /**
+     * 
+     * Method that provides the object with authentication data.
+     * @param id identificador
+     * @param name identificador
+     * @param sigla identificador
+     * 
+     **/
     public ServicesEntity(Long id, String name, String sigla) {
         this.id = id;
         this.name = name;

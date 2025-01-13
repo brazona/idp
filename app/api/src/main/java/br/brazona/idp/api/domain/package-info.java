@@ -1,5 +1,5 @@
 /**
- * This module is about impact of the final keyword on performance
+ * Package that contains classes that address the application's business rules.
  * <p>
  * This module explores  if there are any performance benefits from
  * using the final keyword in our code. This module examines the performance

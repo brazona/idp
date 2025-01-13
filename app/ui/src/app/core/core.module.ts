@@ -10,16 +10,23 @@ import { coreGuard } from './guards/core.guard';
 import { Interceptor } from './interceptors/interceptor';
 
 
-@NgModule({ declarations: [], imports: [CommonModule,
-        BrowserModule,
-        BrowserAnimationsModule,
-        RouterModule], providers: [
-        coreGuard,
-        Interceptor, {
-            provide: HTTP_INTERCEPTORS,
-            useClass: Interceptor,
-            multi: true,
-        },
-        provideHttpClient(withInterceptorsFromDi())
-    ] })
+@NgModule(
+    { 
+        declarations: [], 
+        imports: [
+            CommonModule,
+            BrowserModule,
+            BrowserAnimationsModule,
+            RouterModule
+         ], 
+        providers: [
+            coreGuard,
+            Interceptor, 
+            {
+                provide: HTTP_INTERCEPTORS,
+                useClass: Interceptor,
+                multi: true,
+            },
+            provideHttpClient(withInterceptorsFromDi())
+        ] })
 export class CoreModule { }

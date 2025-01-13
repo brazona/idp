@@ -1,25 +1,40 @@
 package br.brazona.idp.api.domain.views.business;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.io.Serial;
 import java.util.Collection;
+
+/**
+* 
+* Class that transforms authentication data.
+* 
+* @author Brazona Tech
+* @version 1.0
+* @since 1.0
+*
+**/
 
 @Component
 @Getter
+@Setter
 public class UserDetailsVO implements UserDetails {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private Long id;
     private String name;
     private String username;
-
-    @JsonIgnore
     private String password;
-
+    private Boolean isAccountNonExpired;
+    private Boolean isAccountNonLocked;
+    private Boolean isCredentialsNonExpired;
+    private Boolean isEnabled;
+    private Boolean isUpdatePassword;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -35,24 +50,56 @@ public class UserDetailsVO implements UserDetails {
     public String getUsername() {
         return username;
     }
+    /**
+     * 
+     * Method that provides the object with authentication data.
+     * 
+     * */
+    public UserDetailsVO() {
+    }
+    /**
+     * 
+     * Method that provides the object with authentication data.
+     *
+     * @param id Object of the User class, with the application's authentication values.
+     * @param name Object of the User class, with the application's authentication values.
+     * @param username Object of the User class, with the application's authentication values.
+     * @param password Object of the User class, with the application's authentication values.
+     * @param isAccountNonExpired Object of the User class, with the application's authentication values.
+     * @param isAccountNonLocked Object of the User class, with the application's authentication values.
+     * @param isCredentialsNonExpired Object of the User class, with the application's authentication values.
+     * @param isEnabled Object of the User class, with the application's authentication values.
+     * 
+     **/
+    public UserDetailsVO(Long id, String name, String username, String password,
+                         Boolean isAccountNonExpired, Boolean isAccountNonLocked, Boolean isCredentialsNonExpired, Boolean isEnabled) {
+        this.id = id;
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        this.isAccountNonExpired = isAccountNonExpired;
+        this.isAccountNonLocked = isAccountNonLocked;
+        this.isCredentialsNonExpired = isCredentialsNonExpired;
+        this.isEnabled = isEnabled;
+    }
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return this.isAccountNonExpired;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return this.isAccountNonLocked;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return this.isCredentialsNonExpired;
     }
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.isEnabled;
     }
 }
