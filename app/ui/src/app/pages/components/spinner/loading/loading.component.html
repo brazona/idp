@@ -1,0 +1,14 @@
+@if(loading$ | async) {
+  <div class="spinner-container">
+    <app-background-page></app-background-page>
+    <div class="progress">
+      <div class="indeterminate"></div>
+    </div>
+    @if(customLoadingIndicator) {
+      <ng-container
+        *ngTemplateOutlet="customLoadingIndicator" />
+    } @else {
+      <mat-spinner />
+    }
+  </div>
+}

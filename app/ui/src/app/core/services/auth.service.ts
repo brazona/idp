@@ -10,6 +10,7 @@ import {NotificationInterface} from "../interfaces/notification/notification.int
 import {NotificationTypeEnum} from "../enuns/notificationType.enum";
 import {NotificationMessageEnum} from "../enuns/notificationMessage.enum";
 import {AuthorizationInterface} from "../interfaces/auth/authorization.interface";
+import {LoadingService} from "./loading.service";
 
 @Injectable({
   providedIn: 'root'
@@ -25,13 +26,14 @@ export class AuthService extends GenericService{
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   }
-  constructor(router: Router, private http: HttpClient, private notication: NotificationService) {
+  constructor(router: Router, private http: HttpClient, private notication: NotificationService
+              , private loadingService: LoadingService) {
     super(router)
   }
 
   authentication(user: User): Observable <any>{
-    console.log('authentication');
     this.builderHeader64();
+    this.loadingService.loadingOn();
     return new Observable((observer) => {
       this.http.post<Token>(this.URL,JSON.stringify(user),
         {
@@ -46,13 +48,14 @@ export class AuthService extends GenericService{
           this.notication.sendMessage({
             message: NotificationMessageEnum.auth_success, type: NotificationTypeEnum.success});
           this.setSession(res.body?.token);
-          console.log('res: ', res);
+          this.loadingService.loadingOff();
           this.router.navigate(["/home"]);
           observer.next(true);
         },
         (err: string) =>{
           this.notication.sendMessage({message: NotificationMessageEnum.auth_error, type: NotificationTypeEnum.error})
           console.log(err);
+          this.loadingService.loadingOff();
           observer.next(true);
         }
       );
@@ -63,6 +66,7 @@ export class AuthService extends GenericService{
   authorization(token: String): Observable<boolean> | boolean {
     console.log('authorization');
     this.isAuthorization = false;
+    this.loadingService.loadingOn();
     return new Observable((observer) => {
         this.http.post<AuthorizationInterface>(this.URL_AUTHORIZATION,JSON.stringify(token),
           {
@@ -74,13 +78,14 @@ export class AuthService extends GenericService{
         )
           .subscribe(
             res =>{
-              console.log('res: ', res);
               this.isAuthorization = res.body?.is_authorized;
+              this.loadingService.loadingOff();
               observer.next(true);
             },
             (err: string) =>{
               this.notication.sendMessage({message: NotificationMessageEnum.authorization_error, type: NotificationTypeEnum.error})
               console.log(err);
+              this.loadingService.loadingOff();
               this.router.navigate(["/autenticacao"]);
               observer.next(true);
             }
@@ -88,7 +93,9 @@ export class AuthService extends GenericService{
 
       }
 
-    )}
+    )
+
+  }
   private setSession(token: string | undefined) {
     if (typeof token === "string") {
       console.log('token: ', token);
@@ -105,6 +112,7 @@ export class AuthService extends GenericService{
     return false;
   }
   private verifyTokenStorage(): Observable<boolean> | boolean {
+    this.isUserAuth = false;
     if(localStorage['token'] != null) {
       this.isUserAuth =  true;
     }

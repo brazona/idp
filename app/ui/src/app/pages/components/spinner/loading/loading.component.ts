@@ -1,20 +1,20 @@
-import {Component, ContentChild, Input, TemplateRef} from '@angular/core';
-import {BackgroundLoadingComponent} from "../components/background/loading/background.loading.component";
-import {AsyncPipe, NgTemplateOutlet} from "@angular/common";
-import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {Component, ContentChild, Input, OnInit, TemplateRef} from '@angular/core';
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {AsyncPipe, NgIf, NgTemplateOutlet} from "@angular/common";
 import {Observable, tap} from "rxjs";
-import {LoadingService} from "../../core/services/loading.service";
+import {LoadingService} from "../../../../core/services/loading.service";
 import {RouteConfigLoadEnd, RouteConfigLoadStart, Router} from "@angular/router";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {PageComponent} from "../../background/page/page.component";
 
 @Component({
-  selector: 'app-autorizacao',
+  selector: "loading-indicator",
+  templateUrl: './loading.component.html',
+  styleUrl: './loading.component.scss',
+  imports: [MatProgressSpinnerModule, AsyncPipe, NgIf, NgTemplateOutlet, MatProgressBarModule, PageComponent],
   standalone: true,
-  imports: [BackgroundLoadingComponent, AsyncPipe, MatProgressSpinner, NgTemplateOutlet, BackgroundLoadingComponent],
-  templateUrl: './autorizacao.component.html',
-  styleUrl: './autorizacao.component.scss'
 })
-export class AutorizacaoComponent {
-
+export class LoadingComponent implements OnInit{
   loading$: Observable<boolean>;
 
   @Input()

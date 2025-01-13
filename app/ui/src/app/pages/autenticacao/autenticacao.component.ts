@@ -9,7 +9,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatDividerModule} from '@angular/material/divider';
 import {FormControl, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms'
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import {CommonModule, NgIf} from '@angular/common';
 
 import { PageComponent } from '../components/background/page/page.component';
 import { FormComponent } from '../components/background/form/form.component';
@@ -27,7 +27,7 @@ import {NotificationInterface} from "../../core/interfaces/notification/notifica
   imports: [RouterLink, RouterOutlet, MatButtonToggleModule,
     FlexLayoutModule, MatFormFieldModule, MatIconModule, MatInputModule,
     MatButtonModule, MatDividerModule, FormsModule, ReactiveFormsModule,
-    PageComponent, FormComponent, UsernameComponent, PasswordComponent, AccessComponent, CommonModule ],
+    PageComponent, FormComponent, UsernameComponent, PasswordComponent, AccessComponent, NgIf],
 
   templateUrl: './autenticacao.component.html',
   styleUrl: './autenticacao.component.scss'
