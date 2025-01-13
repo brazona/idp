@@ -7,10 +7,10 @@
                 <div class="formulario-cabecalho" fxFlex="40" fxFill fxLayoutAlign="center center" ></div>
                 <div class="formulario-campos" fxFlex="35" fxFill fxLayoutAlign="space-between none" fxLayout="column" >
                     <div fxFlex="20" fxFill fxLayoutAlign="center center"></div>
-                    <app-field-username 
-                        (username)="receberUsername($event)" 
-                        fxFlex="30" 
-                        fxFill fxLayoutAlign="space-between center" 
+                    <app-field-username
+                        (username)="receberUsername($event)"
+                        fxFlex="30"
+                        fxFill fxLayoutAlign="space-between center"
                         fxFill
                     >
                     </app-field-username><br/>
@@ -25,10 +25,10 @@
                         </label>
                     </div>
                     <br/>
-                    <app-field-password 
-                        fxFlex="30" 
-                        fxFill 
-                        fxLayoutAlign="space-between center" 
+                    <app-field-password
+                        fxFlex="30"
+                        fxFill
+                        fxLayoutAlign="space-between center"
                         fxFill (password)="receberPassword($event)" >
                     </app-field-password><br/>
                     <div fxFlex="10" fxFill fxLayoutAlign="start center" *ngIf="passwordRequerid">

@@ -18,7 +18,12 @@ export class coreGuard implements CanActivate, CanLoad {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean>|Promise<boolean>|boolean {
-    return this.verificarAcesso();
+    console.log('rota: '+route);
+    var valido = this.verificarAcesso();
+    if (!valido){
+      this.router.navigate(["/autenticacao"]);
+    }
+    return valido;
   }
 
   private verificarAcesso(): Observable<boolean> | boolean {

@@ -8,15 +8,14 @@ import { ComponentsModule } from './components/components.module';
 import { AuthService } from '../core/services/auth.service';
 
 @NgModule({
-  declarations: [  
+  declarations: [
   ],
   imports: [
     FlexLayoutModule,
     FormsModule,
     //app
-    ComponentsModule,
     AutenticacaoComponent,
-    RecuperacaoComponent    
+    RecuperacaoComponent
   ],
   providers: [
     AuthService

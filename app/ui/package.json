@@ -8,8 +8,8 @@
     "build": "npm run env && ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "clean": "rm -rf ./node_modules package-lock.json .cache dist",
-    "reinstall": "npm run clean && npm cache clean && npm install",
+    "clean": "rm -rf ./node_modules package-lock.json .cache dist .angular",
+    "reinstall": "npm run clean && npm cache clean --force && npm install --force",
     "env": "cp ./src/assets/env.template.js ./src/assets/env.js"
   },
   "private": true,

@@ -8,14 +8,15 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ToastrModule} from "ngx-toastr";
-import * as moment from 'moment';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { PagesModule } from './pages/pages.module';
 import { MaterialModule } from './core/material.module';
-
+import {ComponentsModule} from "./pages/components/components.module";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {AutorizacaoComponent} from "./pages/autorizacao/autorizacao.component";
 
 
 @NgModule({
@@ -32,6 +33,8 @@ import { MaterialModule } from './core/material.module';
     MatToolbar,
     MatSlideToggleModule,
     FormsModule,
+    MatProgressSpinnerModule,
+    // imports: [MatProgressSpinnerModule, AsyncPipe, NgIf, NgTemplateOutlet],
     ToastrModule.forRoot(
       {
         timeOut: 5000, // 5 seconds
@@ -46,7 +49,9 @@ import { MaterialModule } from './core/material.module';
     //app
     MaterialModule,
     CoreModule,
-    PagesModule
+    PagesModule,
+    ComponentsModule,
+    AutorizacaoComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

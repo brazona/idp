@@ -1,10 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {ToastrService} from "ngx-toastr";
+import {LoadingComponent} from "./pages/components/spinner/loading/loading.component";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+
 })
 export class AppComponent implements OnInit{
   title = 'app-ui';

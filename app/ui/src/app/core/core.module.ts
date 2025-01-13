@@ -8,20 +8,22 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { coreGuard } from './guards/core.guard';
 import { Interceptor } from './interceptors/interceptor';
+import {LoadingInterceptor} from "./interceptors/loading.interceptor";
 
 
 @NgModule(
-    { 
-        declarations: [], 
+    {
+        declarations: [],
         imports: [
             CommonModule,
             BrowserModule,
             BrowserAnimationsModule,
             RouterModule
-         ], 
+         ],
         providers: [
             coreGuard,
-            Interceptor, 
+            Interceptor,
+            LoadingInterceptor,
             {
                 provide: HTTP_INTERCEPTORS,
                 useClass: Interceptor,
