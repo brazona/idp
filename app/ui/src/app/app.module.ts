@@ -32,7 +32,17 @@ import { MaterialModule } from './core/material.module';
     MatToolbar,
     MatSlideToggleModule,
     FormsModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot(
+      {
+        timeOut: 5000, // 5 seconds
+        closeButton: true,
+        progressBar: true,
+        countDuplicates: true,
+        tapToDismiss: true,
+        positionClass: 'bottom-right',
+        progressAnimation: "decreasing"
+      }
+    ),
     //app
     MaterialModule,
     CoreModule,

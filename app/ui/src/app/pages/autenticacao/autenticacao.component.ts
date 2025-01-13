@@ -18,6 +18,8 @@ import { PasswordComponent } from '../components/fields/password/password.compon
 import { AccessComponent } from '../components/buttons/access/access.component';
 import { User } from 'src/app/core/interfaces/user/user';
 import { AuthService } from 'src/app/core/services/auth.service';
+import {NotificationService} from "../../core/services/notification.service";
+import {NotificationInterface} from "../../core/interfaces/notification/notification.interface";
 
 @Component({
   selector: 'app-autenticacao',
@@ -41,8 +43,8 @@ export class AutenticacaoComponent implements OnInit{
   submitted:boolean;
   FIEL_PASSWORD:string = 'password';
   FIEL_USERNAME:string = 'username';
-
-  constructor(private formBuilder: FormBuilder, private service: AuthService) {
+  notificacao: NotificationInterface;
+  constructor(private formBuilder: FormBuilder, private service: AuthService, private notication: NotificationService) {
 
     // **************************************************
     // Abaixo utilizamos o formBuilder para construir
@@ -88,10 +90,11 @@ export class AutenticacaoComponent implements OnInit{
       username:this.formularioAutenticacao.get(this.FIEL_USERNAME)?.value,
       password:this.formularioAutenticacao.get(this.FIEL_PASSWORD)?.value,
     }
-    debugger
-    this.service.login(user).subscribe(
+
+    this.service.authentication(user).subscribe(
       res => {
-        console.log('resposta: ', res);
+
+
       }
     );
   }

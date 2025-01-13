@@ -11,6 +11,6 @@ export class AppComponent implements OnInit{
   constructor(private toastr: ToastrService) {
   }
   ngOnInit() {
-    this.toastr.info("This is a test message")
+    // this.toastr.info("This is a test message")
   }
 }
