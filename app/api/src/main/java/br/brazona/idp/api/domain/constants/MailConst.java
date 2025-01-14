@@ -227,14 +227,14 @@ public class MailConst {
             "    <div class=\"email-container\">\n" +
             "        <!-- Cabeçalho -->\n" +
             "        <div class=\"header\">\n" +
-            "            <img src=\"https://via.placeholder.com/150\" alt=\"Logo\">\n" +
+            "             <img src=\"https://i.ibb.co/fFFpRfk/logotipo-idp.png\" alt=\"logotipo-idp\" border=\"0\">\n" +
             "            <h1>_USER_ , Esqueceu sua senha?</h1>\n" +
             "        </div>\n" +
             "\n" +
             "        <!-- Corpo do email -->\n" +
             "        <p>Olá,</p>\n" +
             "        <p>Parece que você solicitou a recuperação de senha para sua conta. Não se preocupe, é muito simples!</p>\n" +
-            "        <p>Para redefinir sua senha, basta clicar no botão abaixo:</p>\n" +
+            "        <p>Para redefinir sua senha, use o código de validação abaixo :</p>\n" +
             "            <h1>_NEW_PASS_</h1>\n" +
             "\n" +
             "        <p>Se você não solicitou a recuperação de senha, por favor, ignore este email.</p>\n" +
@@ -267,7 +267,7 @@ public class MailConst {
             "<td height=\"20\" colspan=\"3\" style=\"line-height:20px\">&nbsp;</td>\n" +
             "</tr>\n" +
             "<tr>\n" +
-            "<td height=\"1\" colspan=\"3\" style=\"line-height:1px\"><span style=\"color:#FFFFFF; display:none!important; font-size:1px\">&nbsp; Alguém solicitou recentemente para redefinir sua senha do Sistema Semadec'16. Clique aqui para cirar uma nova senha. Não solicitou esta alteração? Se você não solicitou a alteração de sua senha, desconsidere este e-mail . &nbsp;</span></td>\n" +
+            "<td height=\"1\" colspan=\"3\" style=\"line-height:1px\"><span style=\"color:#FFFFFF; display:none!important; font-size:1px\">&nbsp; Alguém solicitou recentemente para redefinir sua senha do Sistema Brazona IDP. Clique aqui para cirar uma nova senha. Não solicitou esta alteração? Se você não solicitou a alteração de sua senha, desconsidere este e-mail . &nbsp;</span></td>\n" +
             "</tr>\n" +
             "<tr>\n" +
             "<td width=\"15\" style=\"display:block; width:15px\">&nbsp;&nbsp;&nbsp;</td>\n" +
@@ -278,7 +278,7 @@ public class MailConst {
             "<td height=\"16\" colspan=\"3\" style=\"line-height:16px\">&nbsp;</td>\n" +
             "</tr>\n" +
             "<tr>\n" +
-            "<td width=\"100%\" style=\"\"><a href=\"http://eventos.ifrn.edu.br/semadeczn/admin/index.php/site/login\" target=\"_blank\" style=\"color:rgb(60,141,188); text-decoration:none; font-family: 'Helvetica Neue', sans-serif; font-size:23px; line-height:32px\">Semadec'16</a></td>\n" +
+            "<td width=\"100%\" style=\"\"><a href=\"http://eventos.ifrn.edu.br/semadeczn/admin/index.php/site/login\" target=\"_blank\" style=\"color:rgb(60,141,188); text-decoration:none; font-family: 'Helvetica Neue', sans-serif; font-size:23px; line-height:32px\">Brazona IDP</a></td>\n" +
             "</tr>\n" +
             "<tr style=\"border-bottom:solid 1px #e5e5e5\">\n" +
             "<td height=\"16\" colspan=\"3\" style=\"line-height:16px\">&nbsp;</td>\n" +
@@ -298,7 +298,7 @@ public class MailConst {
             "</tr>\n" +
             "<tr>\n" +
             "<td style=\"\"><span style=\" font-family: 'Source Sans Pro', sans-serif; font-size:17px; line-height:21px; color:#141823\">\n" +
-            "<p>Alguém solicitou recentemente para redefinir sua senha do Sistema Semadec'16.</p>\n" +
+            "<p>Alguém solicitou recentemente para redefinir sua senha do Sistema Brazona IDP.</p>\n" +
             "<!-- coloca  o link para a alteração de senha -->\n" +
             "<p><a href=\"aqui \" target=\"_blank\" style=\"color:rgb(38,120,214); text-decoration:none\">NEW_PASS</a></p>\n" +
             "\n" +
@@ -341,7 +341,7 @@ public class MailConst {
             "</tr>\n" +
             "<tr>\n" +
             "<td style=\"font-family: 'Source Sans Pro', sans-serif; font-size:11px; color:#aaaaaa; line-height:16px\">\n" +
-            "Essa mensagem foi enviada pela equipe Sistema Semadec'16.<br>\n" +
+            "Essa mensagem foi enviada pela equipe Sistema Brazona IDP.<br>\n" +
             "</td>\n" +
             "</tr>\n" +
             "</tbody>\n" +

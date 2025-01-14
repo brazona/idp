@@ -90,9 +90,7 @@ export class RecuperacaoComponent implements OnInit{
       return;
     }
     var email = this.formularioRecuperacao.get(this.FIEL_EMAIL)?.value;
-
     this.service.recovery(email).subscribe(
-
     );
   }
   receberOnEmail(email:string){

@@ -106,4 +106,16 @@ public class AuthController implements IAuthController {
                 .body(service.updatePassword(auth));
     }
 
+    /**
+     * Endpoint that validate the code the recovery access
+     *
+     * @param auth information the username and code.
+     **/
+    @Override
+    public void validateCode(AuthValidateCodeRequestBusinessVO auth) {
+        log.info(LogsConst.ENDPOINT_INFO, EndpointsConst.AUTH_VALIDATE_CODE);
+        log.debug(LogsConst.ENDPOINT_DEBUG, auth, "null");
+        service.validateCode(auth);
+    }
+
 }

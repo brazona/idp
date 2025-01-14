@@ -74,6 +74,8 @@ public class SecurityConfig {
             ,"/api/v1/auth/update/password"
             ,"/api/v1/auth/update"
             ,"/v1/auth/update"
+            ,"/api/v1/auth/validate/code"
+            ,"/v1/auth/validate/code"
     };
 
     @Autowired

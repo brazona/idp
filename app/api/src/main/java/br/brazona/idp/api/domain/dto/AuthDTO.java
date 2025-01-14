@@ -9,6 +9,8 @@ import br.brazona.idp.api.domain.utils.ExceptionUtil;
 import br.brazona.idp.api.domain.utils.JwtUtils;
 import br.brazona.idp.api.domain.views.business.AuthRequestBusinessVO;
 import br.brazona.idp.api.domain.views.business.AuthResponseBusinessVO;
+import br.brazona.idp.api.domain.views.business.AuthValidateCodeRequestBusinessVO;
+import br.brazona.idp.api.domain.views.business.UserRequestVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -135,6 +137,73 @@ public class AuthDTO {
             throw new BadRequestException(
                     exceptionUtil.replaceKey(ExceptionConst.INVALID_FIELD, "password"));
         }
+
+    }
+
+    /**
+     *
+     * Method that provides the object with authentication data.
+     *
+     * @param validateCodeRequestBusinessVO  credentials for authentication, username and password for access registration.
+     * @param userRequestVO instance of the user details class ( UserDetails).
+     * @return AuthResponseBusinessVO, class with data token user.
+     *
+     **/
+    public boolean userToValidateCode(AuthValidateCodeRequestBusinessVO validateCodeRequestBusinessVO,
+                                                     UserRequestVO userRequestVO) {
+        log.info("transform data auth validate code recovery");
+        validateCodeRecoveryRequestVO(validateCodeRequestBusinessVO, userRequestVO);
+        return true;
+    }
+
+    /**
+     *
+     * Method that provides the object with validate code recovery data.
+     *
+     * @param vo instance of the user class.
+     * @param voCode instance of the code the recovery class.
+     * @exception NotFoundException session not found.
+     * @exception BadRequestException field not present
+     *
+     **/
+    private void validateCodeRecoveryRequestVO(AuthValidateCodeRequestBusinessVO voCode, UserRequestVO vo) {
+        if (vo == null) {
+            log.error(ExceptionConst.NOT_FOUND_ERROR, "user");
+            throw new UserNotFoundException(
+                    exceptionUtil.replaceKey(ExceptionConst.NOT_FOUND_ERROR, "user"));
+        } else if (vo.getUsername() == null || vo.getUsername().isEmpty()) {
+            log.error(ExceptionConst.NOT_FOUND_ERROR, "username");
+            throw new BadRequestException(
+                    exceptionUtil.replaceKey(ExceptionConst.INVALID_FIELD, "username"));
+        } else if (vo.getPassword() == null || vo.getPassword().isEmpty()) {
+            log.error(ExceptionConst.NOT_FOUND_ERROR, "password");
+            throw new BadRequestException(
+                    exceptionUtil.replaceKey(ExceptionConst.INVALID_FIELD, "password"));
+        } else if (voCode == null) {
+            log.error(ExceptionConst.NOT_FOUND_ERROR, "user");
+            throw new UserNotFoundException(
+                    exceptionUtil.replaceKey(ExceptionConst.NOT_FOUND_ERROR, "user"));
+        } else if (voCode.getUsername() == null || voCode.getUsername().isEmpty()) {
+            log.error(ExceptionConst.INVALID_FIELD, "username");
+            throw new BadRequestException(
+                    exceptionUtil.replaceKey(ExceptionConst.INVALID_FIELD, "username"));
+        } else if (voCode.getCode() == null || voCode.getCode().isEmpty()) {
+            log.error(ExceptionConst.INVALID_FIELD, "password");
+            throw new BadRequestException(
+                    exceptionUtil.replaceKey(ExceptionConst.INVALID_FIELD, "code"));
+        } else if (!voCode.getUsername().equalsIgnoreCase(vo.getUsername())) {
+            log.error(ExceptionConst.BAD_REQUEST_ERROR, "username");
+            throw new BadRequestException(
+                    exceptionUtil.replaceKey(ExceptionConst.BAD_REQUEST_ERROR, "username"));
+        } else if (!jwtUtils.doPasswordsMatch(voCode.getCode(), vo.getPassword())) {
+            log.error(ExceptionConst.ACCESS_DENIED, "username");
+            throw new AccessDeniedException(ExceptionConst.ACCESS_DENIED);
+        } else if (!vo.getIsUpdatePassword()) {
+            log.error(ExceptionConst.ACCESS_DENIED, "username");
+            throw new AccessDeniedException(ExceptionConst.ACCESS_DENIED);
+        }
+
+
 
     }
 }

@@ -52,6 +52,7 @@ export class AuthService extends GenericService{
               this.notication.sendMessage({
                 message: NotificationMessageEnum.recovery_success, type: NotificationTypeEnum.success});
               this.loadingService.loadingOff();
+              this.storageService.setItemStorage('is_user_update', 'true');
               this.router.navigate(["/recuperacao/validacao"]);
               observer.next(true);
             },
@@ -163,10 +164,6 @@ export class AuthService extends GenericService{
   }
   private getHeaderToken(): HttpHeaders {
     let token: string | null = this.storageService.getItemStorage('token');
-    var token1: string = localStorage['token'];
-    console.log('token: ', token);
-    console.log('token1: ', token1);
-    debugger
     return new HttpHeaders()
       .set('Content-Type', 'application/json')
       .set('Authorization', `Bearer ${token}`);

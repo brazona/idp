@@ -1,10 +1,13 @@
 package br.brazona.idp.api.domain.services.business;
 
 
+import br.brazona.idp.api.domain.constants.ExceptionConst;
 import br.brazona.idp.api.domain.constants.LogsConst;
 import br.brazona.idp.api.domain.constants.MailConst;
 import br.brazona.idp.api.domain.constants.ServicesConst;
 import br.brazona.idp.api.domain.dto.AuthDTO;
+import br.brazona.idp.api.domain.exceptions.AccessDeniedException;
+import br.brazona.idp.api.domain.exceptions.UserNotFoundException;
 import br.brazona.idp.api.domain.services.external.EmailService;
 import br.brazona.idp.api.domain.utils.JwtUtils;
 import br.brazona.idp.api.domain.views.business.*;
@@ -142,9 +145,19 @@ public class AuthService implements UserDetailsService {
         String message = valid ? MailConst.MSG_SEND_MAIL : MailConst.MSG_NOT_SEND_MAIL;
         return new ForgotResponseVO(valid, message);
     }
+    public void validateCode(AuthValidateCodeRequestBusinessVO authValidateCodeRequestBusinessVO){
+
+        log.info(LogsConst.SERVICE_INFO, ServicesConst.AUTH_SERVICE_VALIDATE_CODE_RECOVERY);
+        UserRequestVO userRequestVO = userService.getUserVOByUsername(authValidateCodeRequestBusinessVO.getUsername());
+        if (!authDTO.userToValidateCode(authValidateCodeRequestBusinessVO, userRequestVO)){
+            log.error(ExceptionConst.ACCESS_DENIED, "user");
+            throw new AccessDeniedException(ExceptionConst.ACCESS_DENIED);
+        }
+
+    }
     private EmailSendlVO PrepareEmailForgotPassword(UserRequestVO userRequestVO, String randomPass){
         String subject = MailConst.SUBJECT_SEND_MAIL.replace("_USER_", userRequestVO.getName());
-        String msg = MailConst.MAIL_HTML.replace("_USER_", userRequestVO.getName());
+        String msg = MailConst.MAIL_HTML_FORGOT.replace("_USER_", userRequestVO.getName());
         msg = msg.replace("_NEW_PASS_",randomPass);
         return new EmailSendlVO(userRequestVO.getUsername(),subject, msg);
     }
