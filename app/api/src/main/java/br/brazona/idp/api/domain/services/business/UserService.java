@@ -72,7 +72,10 @@ public class UserService {
      * @return UserDetailsVO, object class User Details
      **/
     public UserRequestVO getUserVOByUsername(String username) {
-        return userDTO.toUserVO(usersRepository.findByUsername(username));
+        UsersEntity usersEntity = usersRepository.findByUsername(username);
+        if (usersEntity == null)
+            throw new UserNotFoundException(exceptionUtil.replaceKey(ExceptionConst.NOT_FOUND_ERROR, "user"));
+        return userDTO.toUserVO(usersEntity);
     }
     /**
      *
