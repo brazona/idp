@@ -34,6 +34,7 @@ import {NotificationInterface} from "../../core/interfaces/notification/notifica
 })
 
 export class AutenticacaoComponent implements OnInit{
+
   username:string;
   usernameRequerid:boolean = false;
   usernameEmail:boolean = false;
@@ -44,6 +45,7 @@ export class AutenticacaoComponent implements OnInit{
   FIEL_PASSWORD:string = 'password';
   FIEL_USERNAME:string = 'username';
   notificacao: NotificationInterface;
+
   constructor(private formBuilder: FormBuilder, private service: AuthService, private notication: NotificationService) {
 
     // **************************************************

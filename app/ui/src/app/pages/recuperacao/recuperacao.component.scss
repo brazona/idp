@@ -1,28 +1,55 @@
-:host {
-  display: flex;
-  justify-content: center;
-  margin: 100px 0px;
-}
+@use "pallete-color.scss" as paleta;
+@use "typography.scss" as font;
 
-.mat-form-field {
+.background {
+  height: 100%;
   width: 100%;
-  min-width: 300px;
+}
+.background-left {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  margin: 0%;
+}
+.formulario {
+  width: 70%;
+  margin-left: 60px;
+  //background-color: greenyellow;
+  height: 100%;
+
+}
+.formulario-conteudo {
+  width: 100%;
+  height: 100%;
 }
 
-mat-card-title,
-mat-card-content {
-  display: flex;
-  justify-content: center;
+.formulario-campos {
+  margin: 2px;
 }
 
-.error {
-  padding: 16px;
-  width: 300px;
-  color: white;
-  background-color: red;
+.link-recuperacao{
+  color: font.$brazona-font-color;
+  font-family: font.$brazona-font-family;
+  font-weight: font.$brazona-font-weight;
+  font-size: font.$brazona-font-size;
+  font-style: font.$brazona-font-style;
+  text-decoration: none;
+  position: relative;
 }
+.label-requerid{
+  color: red;
+  position: relative;
+}
+.link-recuperacao:hover{
+  color: font.$brazona-font-color-hover;
+  //font-size: font.$brazona-font-size-hover;
+  font-weight: font.$brazona-font-weight-hover;
+  text-decoration: font.$brazona-font-decoration-hover;
+}
+// form.ng-valid {
+//     border-left: 4px solid #4CAF50;
+// }
 
-.button {
-  display: flex;
-  justify-content: flex-end;
-}
+// form.ng-invalid {
+//     border-left: 4px solid #f44336;
+// }

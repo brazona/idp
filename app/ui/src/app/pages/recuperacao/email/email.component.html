@@ -1,0 +1,25 @@
+<div class="formulario-campos" fxFlex="100" fxFill fxLayoutAlign="none" fxLayout="column">
+  <app-field-email
+    (email)="receberEmail($event)"
+    fxFlex="30"
+    fxFill fxLayoutAlign="none"
+    fxFill
+  >
+  </app-field-email><br/>
+  <div fxFlex="10" fxFill fxLayoutAlign="start center" *ngIf="emailRequerid">
+    <label class="label-requerid">
+      Campo obrigatório
+    </label>
+  </div>
+  <div fxFlex="10" fxFill fxLayoutAlign="start center" *ngIf="usernameEmail">
+    <label class="label-requerid">
+      Por favor insira um endereço de e-mail válido
+    </label>
+  </div>
+  <br/>
+  <app-btn-forgot (onRecuperar)="recuperar()" fxFlex="25" fxFill fxLayoutAlign="center center"></app-btn-forgot><br/>
+  <div fxFlex="20" fxFill fxLayoutAlign="end end">
+    <a class="link-recuperacao" routerLink="/autenticacao">Volte para Autenticação</a>
+  </div>
+</div>
+

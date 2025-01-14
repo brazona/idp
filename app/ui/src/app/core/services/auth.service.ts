@@ -1,7 +1,7 @@
 import {Router} from '@angular/router';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Token} from '../interfaces/token/token'
 import {GenericService} from './generic.service';
 import {User} from '../interfaces/user/user';
@@ -11,6 +11,7 @@ import {NotificationTypeEnum} from "../enuns/notificationType.enum";
 import {NotificationMessageEnum} from "../enuns/notificationMessage.enum";
 import {AuthorizationInterface} from "../interfaces/auth/authorization.interface";
 import {LoadingService} from "./loading.service";
+import {StorageService} from "./storage.service";
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,9 @@ export class AuthService extends GenericService{
 
   private authBase64: string = "";
   private isUserAuth: boolean = false;
+
   private isAuthorization: boolean | undefined = false;
+  private readonly URL_API:string = 'http://localhost:7782/api'
   private readonly URL:string = 'http://localhost:7782/api/v1/auth/authentication'
   private readonly URL_AUTHORIZATION:string = 'http://localhost:7782/api/v1/auth/authorization'
   // Headers
@@ -27,10 +30,45 @@ export class AuthService extends GenericService{
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   }
   constructor(router: Router, private http: HttpClient, private notication: NotificationService
-              , private loadingService: LoadingService) {
+              , private loadingService: LoadingService, private storageService: StorageService) {
     super(router)
   }
+  recovery(email: string): Observable <any>{
+    this.loadingService.loadingOn();
+    let user: User = {
+      username: email,
+      password: email
+    }
+    return new Observable((observer) => {
+        this.http.post<Token>(this.URL_API+'/v1/auth/forgot',JSON.stringify(user),
+          {
+            headers: this.getHeaderBasic(),
+            observe: 'response'
+          }
+        )
+          .subscribe(
+            res =>{
 
+              this.notication.sendMessage({
+                message: NotificationMessageEnum.recovery_success, type: NotificationTypeEnum.success});
+              this.loadingService.loadingOff();
+              this.router.navigate(["/recuperacao/validacao"]);
+              observer.next(true);
+            },
+            (err: HttpErrorResponse) =>{
+              if (err.status == 404)
+                this.notication.sendMessage({message: NotificationMessageEnum.recovery_error, type: NotificationTypeEnum.error})
+              else
+                this.notication.sendMessage({message: NotificationMessageEnum.recovery_error, type: NotificationTypeEnum.error})
+              console.log(err);
+              this.loadingService.loadingOff();
+              observer.next(true);
+            }
+          );
+
+      }
+
+    )};
   authentication(user: User): Observable <any>{
     this.builderHeader64();
     this.loadingService.loadingOn();
@@ -62,9 +100,8 @@ export class AuthService extends GenericService{
 
     }
 
-  )}
+  )};
   authorization(token: String): Observable<boolean> | boolean {
-    console.log('authorization');
     this.isAuthorization = false;
     this.loadingService.loadingOn();
     return new Observable((observer) => {
@@ -120,6 +157,24 @@ export class AuthService extends GenericService{
   }
   private builderHeader64(){
     this.authBase64 = window.btoa(this.env.APP_API.BASIC_AUTH.USERNAME + ':' + this.env.APP_API.BASIC_AUTH.PASSWORD);
+  }
+  private getBasic(): string{
+    return window.btoa(this.env.APP_API.BASIC_AUTH.USERNAME + ':' + this.env.APP_API.BASIC_AUTH.PASSWORD);
+  }
+  private getHeaderToken(): HttpHeaders {
+    let token: string | null = this.storageService.getItemStorage('token');
+    var token1: string = localStorage['token'];
+    console.log('token: ', token);
+    console.log('token1: ', token1);
+    debugger
+    return new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `Bearer ${token}`);
+  }
+  private getHeaderBasic(): HttpHeaders {
+    return new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `Basic ${this.getBasic()}`);
   }
 }
 
