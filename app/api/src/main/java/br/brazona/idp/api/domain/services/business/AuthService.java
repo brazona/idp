@@ -116,11 +116,11 @@ public class AuthService implements UserDetailsService {
      * @return boolean, true witch valid and false witch not authorization.
      *
      **/
-    public boolean authorization(Long user_id, String access_token) {
+    public boolean authorization(Long user_id, String access_token, Boolean isAuthorization) {
         log.info(LogsConst.SERVICE_INFO, ServicesConst.AUTH_SERVICE_AUTHORIZATION);
         SessionVO sessionVO = sessionService.getByUserId(user_id);
        Boolean isUser = userService.getUsernameByUpdate(sessionVO.getUser_id());
-        return !isUser && sessionVO.getAccess_token().equals(access_token);
+        return (!isUser || isAuthorization) && sessionVO.getAccess_token().equals(access_token);
     }
     public ForgotResponseVO forgotPassword(AuthRequestBusinessVO authRequestBusinessVO){
         log.info(LogsConst.SERVICE_INFO, ServicesConst.AUTH_SERVICE_FORGOT);
@@ -131,9 +131,9 @@ public class AuthService implements UserDetailsService {
         userRequestVO.setIsUpdatePassword(true);
 
         Boolean valid = false;
-        if (emailService.send(PrepareEmailForgotPassword(userRequestVO, randomPass)))
+        if (emailService.send(prepareEmailForgotPassword(userRequestVO, randomPass)))
             valid = userService.createOrUpdate(userRequestVO);
-        String message = valid ? MailConst.MSG_SEND_MAIL : MailConst.MSG_NOT_SEND_MAIL;
+        String message = valid ? MailConst.FORGOT_MSG_SEND_MAIL : MailConst.FORGOT_MSG_NOT_SEND_MAIL;
         return new ForgotResponseVO(valid, message);
     }
 
@@ -148,12 +148,12 @@ public class AuthService implements UserDetailsService {
         userRequestVO.setIsUpdatePassword(false);
 
         Boolean valid = false;
-        if (emailService.send(PrepareEmailUpdatePassword(userRequestVO)))
+        if (emailService.send(prepareEmailUpdatePassword(userRequestVO)))
             valid = userService.createOrUpdate(userRequestVO);
-        String message = valid ? MailConst.MSG_SEND_MAIL : MailConst.MSG_NOT_SEND_MAIL;
+        String message = valid ? MailConst.UPDATE_MSG_SEND_MAIL : MailConst.UPDATE_MSG_NOT_SEND_MAIL;
         return new ForgotResponseVO(valid, message);
     }
-    public void validateCode(AuthValidateCodeRequestBusinessVO authValidateCodeRequestBusinessVO){
+    public AuthResponseBusinessVO validateCode(AuthValidateCodeRequestBusinessVO authValidateCodeRequestBusinessVO){
 
         log.info(LogsConst.SERVICE_INFO, ServicesConst.AUTH_SERVICE_VALIDATE_CODE_RECOVERY);
         if (!validateUserIsupdate(authValidateCodeRequestBusinessVO.getUsername())){
@@ -165,15 +165,17 @@ public class AuthService implements UserDetailsService {
             log.error(ExceptionConst.ACCESS_DENIED, "user");
             throw new AccessDeniedException(ExceptionConst.ACCESS_DENIED);
         }
-
+        return authDTO.responseBusiness(loadUserByUsername(userRequestVO.getUsername()),
+                new AuthRequestBusinessVO(userRequestVO.getId(),
+                authValidateCodeRequestBusinessVO.getUsername(), authValidateCodeRequestBusinessVO.getCode()));
     }
-    private EmailSendlVO PrepareEmailForgotPassword(UserRequestVO userRequestVO, String randomPass){
+    private EmailSendlVO prepareEmailForgotPassword(UserRequestVO userRequestVO, String randomPass){
         String subject = MailConst.SUBJECT_SEND_MAIL.replace("_USER_", userRequestVO.getName());
         String msg = MailConst.MAIL_HTML_FORGOT.replace("_USER_", userRequestVO.getName());
         msg = msg.replace("_NEW_PASS_",randomPass);
         return new EmailSendlVO(userRequestVO.getUsername(),subject, msg);
     }
-    private EmailSendlVO PrepareEmailUpdatePassword(UserRequestVO userRequestVO){
+    private EmailSendlVO prepareEmailUpdatePassword(UserRequestVO userRequestVO){
         String subject = MailConst.SUBJECT_SEND_MAIL_UPDATE_PASS.replace("_USER_", userRequestVO.getName());
         String msg = MailConst.MAIL_HTML_UPDATE_PASS.replace("_USER_", userRequestVO.getName());
         return new EmailSendlVO(userRequestVO.getUsername(),subject, msg);

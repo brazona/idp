@@ -11,8 +11,10 @@ package br.brazona.idp.api.domain.constants;
 **/
 
 public class MailConst {
-    public final static String MSG_NOT_SEND_MAIL = "Não foi possível enviar o email com os dados de recuperação de acesso, tente novamente mais tarde.";
-    public final static String MSG_SEND_MAIL = "Foi enviado no email cadastrado o código para recuperaração do acesso, verifique no email e informar para cadastrar nova senha.";
+    public final static String FORGOT_MSG_NOT_SEND_MAIL = "Não foi possível enviar o email com os dados de recuperação de acesso, tente novamente mais tarde.";
+    public final static String FORGOT_MSG_SEND_MAIL = "Foi enviado no email cadastrado o código para recuperaração do acesso, verifique no email e informar para cadastrar nova senha.";
+    public final static String UPDATE_MSG_NOT_SEND_MAIL = "Não foi possivel atualizar o password, tente novamente mais tarde.";
+    public final static String UPDATE_MSG_SEND_MAIL = "Passoword atualizado com sucesso!";
     public final static String SUBJECT_SEND_MAIL = "_USER_ esqueceu sua senha?";
     public final static String SUBJECT_SEND_MAIL_UPDATE_PASS = "_USER_ sua senha foi atualizada com sucesso!";
     public final static String MAIL_HOST = "mail.smtp.host";

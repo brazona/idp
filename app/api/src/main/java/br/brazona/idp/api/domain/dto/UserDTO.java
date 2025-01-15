@@ -76,10 +76,6 @@ public class UserDTO {
         else if (!jwtUtils.doPasswordsMatch(vo.getPassword(), userRequestVO.getPassword()))
             throw new BadRequestException(
                exceptionUtil.replaceKey(ExceptionConst.INVALID_FIELD, "password_old"));
-
-//        else if (!vo.getPassword().equals(userRequestVO.getPassword()))
-//            throw new BadRequestException(
-//                    exceptionUtil.replaceKey(ExceptionConst.INVALID_FIELD, "password_old"));
         userRequestVO.setPassword(vo.getPasswordNew());
         return userRequestVO;
     }
@@ -160,10 +156,7 @@ public class UserDTO {
         } else if (entity.getIsEnabled() == null) {
             throw new BadRequestException(
                     exceptionUtil.replaceKey(ExceptionConst.INVALID_FIELD, "isEnabled"));
-        }else if (entity.getIsUpdatePassword()) {
-            throw new AccessDeniedException(ExceptionConst.ACCESS_DENIED_PASSWORD);
         }
-
     }
 
 }

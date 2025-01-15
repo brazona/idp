@@ -81,6 +81,6 @@ public interface IAuthController {
      **/
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping(value = "/validate/code", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    void validateCode(
+    ResponseEntity<AuthResponseBusinessVO>  validateCode(
             @RequestBody AuthValidateCodeRequestBusinessVO auth);
 }
