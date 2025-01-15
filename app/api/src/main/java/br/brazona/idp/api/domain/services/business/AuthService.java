@@ -7,7 +7,6 @@ import br.brazona.idp.api.domain.constants.MailConst;
 import br.brazona.idp.api.domain.constants.ServicesConst;
 import br.brazona.idp.api.domain.dto.AuthDTO;
 import br.brazona.idp.api.domain.exceptions.AccessDeniedException;
-import br.brazona.idp.api.domain.exceptions.UserNotFoundException;
 import br.brazona.idp.api.domain.services.external.EmailService;
 import br.brazona.idp.api.domain.utils.JwtUtils;
 import br.brazona.idp.api.domain.views.business.*;
@@ -67,6 +66,11 @@ public class AuthService implements UserDetailsService {
      **/
     public AuthResponseBusinessVO authentication(AuthRequestBusinessVO user) {
         log.info(LogsConst.SERVICE_INFO, ServicesConst.AUTH_SERVICE_AUTHENTICATION);
+        log.debug("User password encryptor: {}", jwtUtils.bcryptEncryptor(user.getPassword()));
+        if (validateUserIsupdate(user.getUsername())){
+            log.error(ExceptionConst.ACCESS_DENIED, "user");
+            throw new AccessDeniedException(ExceptionConst.ACCESS_DENIED);
+        }
         return authDTO.responseBusiness(loadUserByUsername(user.getUsername()), user);
     }
 
@@ -135,6 +139,10 @@ public class AuthService implements UserDetailsService {
 
     public ForgotResponseVO updatePassword(UpdatePassRequestBusinessVO authUpdateRequestBusinessVO){
         log.info(LogsConst.SERVICE_INFO, ServicesConst.AUTH_SERVICE_UPDATE_PASSWORD);
+        if (!validateUserIsupdate(authUpdateRequestBusinessVO.getUsername())){
+            log.error(ExceptionConst.ACCESS_DENIED, "user");
+            throw new AccessDeniedException(ExceptionConst.ACCESS_DENIED);
+        }
         UserRequestVO userRequestVO = userService.updatePassworUser(authUpdateRequestBusinessVO);
         userRequestVO.setPassword(jwtUtils.bcryptEncryptor(authUpdateRequestBusinessVO.getPasswordNew()));
         userRequestVO.setIsUpdatePassword(false);
@@ -148,6 +156,10 @@ public class AuthService implements UserDetailsService {
     public void validateCode(AuthValidateCodeRequestBusinessVO authValidateCodeRequestBusinessVO){
 
         log.info(LogsConst.SERVICE_INFO, ServicesConst.AUTH_SERVICE_VALIDATE_CODE_RECOVERY);
+        if (!validateUserIsupdate(authValidateCodeRequestBusinessVO.getUsername())){
+            log.error(ExceptionConst.ACCESS_DENIED, "user");
+            throw new AccessDeniedException(ExceptionConst.ACCESS_DENIED);
+        }
         UserRequestVO userRequestVO = userService.getUserVOByUsername(authValidateCodeRequestBusinessVO.getUsername());
         if (!authDTO.userToValidateCode(authValidateCodeRequestBusinessVO, userRequestVO)){
             log.error(ExceptionConst.ACCESS_DENIED, "user");
@@ -165,5 +177,9 @@ public class AuthService implements UserDetailsService {
         String subject = MailConst.SUBJECT_SEND_MAIL_UPDATE_PASS.replace("_USER_", userRequestVO.getName());
         String msg = MailConst.MAIL_HTML_UPDATE_PASS.replace("_USER_", userRequestVO.getName());
         return new EmailSendlVO(userRequestVO.getUsername(),subject, msg);
+    }
+    private Boolean validateUserIsupdate(String username){
+        UserRequestVO userRequestVO = userService.getUserVOByUsername(username);
+        return userRequestVO.getIsUpdatePassword();
     }
 }

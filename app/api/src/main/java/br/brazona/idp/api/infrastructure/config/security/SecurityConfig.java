@@ -65,19 +65,6 @@ public class SecurityConfig {
     @Autowired
     private EnvUtil envUtil;
 
-    private static final String[] PUBLIC = {
-            "/api/v1/auth/authentication"
-            ,"/v1/auth/authentication"
-            ,"/v1/auth/forgot"
-            ,"/api/v1/auth/forgot"
-            ,"/v1/auth/update/password"
-            ,"/api/v1/auth/update/password"
-            ,"/api/v1/auth/update"
-            ,"/v1/auth/update"
-            ,"/api/v1/auth/validate/code"
-            ,"/v1/auth/validate/code"
-    };
-
     @Autowired
     private JwtUtils jwtUtils;
 
