@@ -12,6 +12,7 @@ import {NotificationMessageEnum} from "../enuns/notificationMessage.enum";
 import {AuthorizationInterface} from "../interfaces/auth/authorization.interface";
 import {LoadingService} from "./loading.service";
 import {StorageService} from "./storage.service";
+import {ValidateInterface} from "../interfaces/auth/validate.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +34,7 @@ export class AuthService extends GenericService{
               , private loadingService: LoadingService, private storageService: StorageService) {
     super(router)
   }
+
   recovery(email: string): Observable <any>{
     this.loadingService.loadingOn();
     let user: User = {
@@ -61,6 +63,39 @@ export class AuthService extends GenericService{
                 this.notication.sendMessage({message: NotificationMessageEnum.recovery_error, type: NotificationTypeEnum.error})
               else
                 this.notication.sendMessage({message: NotificationMessageEnum.recovery_error, type: NotificationTypeEnum.error})
+              console.log(err);
+              this.loadingService.loadingOff();
+              observer.next(true);
+            }
+          );
+
+      }
+
+    )};
+  validateCode(validate: ValidateInterface): Observable <any>{
+    this.loadingService.loadingOn();
+    return new Observable((observer) => {
+        this.http.post<Token>(this.URL_API+'/v1/auth/validate/code',JSON.stringify(validate),
+          {
+            headers: this.getHeaderBasic(),
+            observe: 'response'
+          }
+        )
+          .subscribe(
+            res =>{
+
+              this.notication.sendMessage({
+                message: NotificationMessageEnum.validate_code_success, type: NotificationTypeEnum.success});
+              this.loadingService.loadingOff();
+              this.storageService.setItemStorage('is_user_update', 'false');
+              this.router.navigate(["/recuperacao/atualizacao"]);
+              observer.next(true);
+            },
+            (err: HttpErrorResponse) =>{
+              if (err.status == 404)
+                this.notication.sendMessage({message: NotificationMessageEnum.validate_code_error, type: NotificationTypeEnum.error})
+              else
+                this.notication.sendMessage({message: NotificationMessageEnum.validate_code_error, type: NotificationTypeEnum.error})
               console.log(err);
               this.loadingService.loadingOff();
               observer.next(true);

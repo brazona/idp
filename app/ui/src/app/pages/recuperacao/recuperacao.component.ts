@@ -23,6 +23,8 @@ import {AuthService} from "../../core/services/auth.service";
 import {FieldEmailComponent} from "../components/fields/email/field.email.component";
 import {ForgotComponent} from "../components/buttons/forgot/forgot.component";
 import {StorageService} from "../../core/services/storage.service";
+import {RecuperacaoButtomEnum} from "../../core/enuns/recuperacao.buttom.enum";
+import {ValidateInterface} from "../../core/interfaces/auth/validate.interface";
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -42,6 +44,10 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 export class RecuperacaoComponent implements OnInit{
   FIEL_EMAIL:string = 'email';
+  FIEL_CODE:string = 'code';
+  FIEL_PASSWORD:string = 'password';
+  FIEL_REPEAT_PASSWORD:string = 'repeat-password';
+
   emailFormat:boolean = false;
   emailRequerid:boolean = false;
   formularioRecuperacao: FormGroup;
@@ -60,6 +66,12 @@ export class RecuperacaoComponent implements OnInit{
       email: ['', [
         Validators.required,
         Validators.email
+      ]],
+      code: ['', [
+        Validators.required,
+      ]],
+      password: ['', [
+        Validators.required,
       ]]
     });
     this.formulario = this.formBuilder.control({
@@ -75,46 +87,82 @@ export class RecuperacaoComponent implements OnInit{
     this.emailRequerid = false;
   }
   recuperacao(){
+
+    let button_type = this.storageService.getItemStorage('button_type');
     debugger
-    let emailValue = this.storageService.getItemStorage('email');
-    if (emailValue){
-      this.receberOnEmail(emailValue);
+    console.log('button: ', button_type);
+    switch (button_type){
+      case RecuperacaoButtomEnum.forgot:
+        this.forgot();
+        break;
+      case RecuperacaoButtomEnum.validate:
+        this.validate();
+        break;
+      case RecuperacaoButtomEnum.update:
+        this.update();
+        break;
+      default:
+        return;
     }
-    this.submitted = true;
-    this.emailFormat = false;
-    this.emailRequerid = false;
 
-    this.validacaoFormulario();
-
-    if (!this.formularioRecuperacao.valid) {
-      return;
-    }
-    var email = this.formularioRecuperacao.get(this.FIEL_EMAIL)?.value;
-    this.service.recovery(email).subscribe(
-    );
   }
   receberOnEmail(email:string){
-
-    console.log('receberOnEmail', email);
     this.formularioRecuperacao.controls[this.FIEL_EMAIL].setValue(email);
     this.validaCampos(this.FIEL_EMAIL);
   }
-private validacaoFormulario(){
+  private forgot(){
+    console.log('forgot');
+    let email = this.storageService.getItemStorage('email');
+    this.formularioRecuperacao.controls[this.FIEL_EMAIL].setValue(email);
     this.validaCampos(this.FIEL_EMAIL);
+    if (email){
+      this.service.recovery(email).subscribe(
+      );
+    }
+
   }
-private validaCampos(campo:string):void{
-  debugger
-  if(campo == '')
-    return;
-  if(campo == this.FIEL_EMAIL)
-    this.emailRequerid = false;
+  private validate(){
+    console.log('validate');
+    let code = this.storageService.getItemStorage('recuperacao_code');
+    let email = this.storageService.getItemStorage('email');
+    this.formularioRecuperacao.controls[this.FIEL_CODE].setValue(code);
+    console.log('code', code);
+    console.log('email', email);
+    this.validaCampos(this.FIEL_CODE);
+    if (code && email){
+      this.service.validateCode({ username: email, code: code}).subscribe(
+      );
+    }
 
-  const erros = this.formularioRecuperacao.get(campo)?.errors || {};
-  const tipoErro = Object.keys(erros)[0];
+  }
+  private update(){
+    console.log('update');
+     let password = this.storageService.getItemStorage('recuperacao_password');
+     let repeat_password = this.storageService.getItemStorage('recuperacao_repeat_password');
 
-  if(erros && tipoErro == 'required' && campo == this.FIEL_EMAIL)
-    this.emailRequerid = true;
-  if(erros && tipoErro == 'email' && campo == this.FIEL_EMAIL)
-    this.emailFormat = true;
-}
+    this.formularioRecuperacao.controls[this.FIEL_PASSWORD].setValue(password);
+    this.formularioRecuperacao.controls[this.FIEL_REPEAT_PASSWORD].setValue(repeat_password);
+    this.validaCampos(this.FIEL_PASSWORD);
+    this.validaCampos(this.FIEL_REPEAT_PASSWORD);
+
+    if (password && repeat_password){
+      this.service.validateCode({ username: repeat_password, code: repeat_password}).subscribe(
+      );
+    }
+  }
+
+  private validaCampos(campo:string):void{
+    if(campo == '')
+      return;
+    if(campo == this.FIEL_EMAIL)
+      this.emailRequerid = false;
+
+    const erros = this.formularioRecuperacao.get(campo)?.errors || {};
+    const tipoErro = Object.keys(erros)[0];
+
+    if(erros && tipoErro == 'required' && campo == this.FIEL_EMAIL)
+      this.emailRequerid = true;
+    if(erros && tipoErro == 'email' && campo == this.FIEL_EMAIL)
+      this.emailFormat = true;
+  }
 }

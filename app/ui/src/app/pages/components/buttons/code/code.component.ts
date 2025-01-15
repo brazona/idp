@@ -1,4 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {StorageService} from "../../../../core/services/storage.service";
+import {RecuperacaoButtomEnum} from "../../../../core/enuns/recuperacao.buttom.enum";
 
 @Component({
   selector: 'app-btn-code',
@@ -10,10 +12,13 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 export class ButtonCodeComponent implements OnInit{
   codigo:string
   @Output() public onValidar = new EventEmitter();
-  constructor(){}
+  constructor(private storageService: StorageService){}
   ngOnInit(): void {}
+
   validar(){
-    console.log('recuperar forgot');
+    this.storageService.setItemStorage('button_type', RecuperacaoButtomEnum.validate);
+    console.log('ButtonCodeComponent');
+
   }
   receberCodigo(codigo:string) {
     this.codigo = codigo;

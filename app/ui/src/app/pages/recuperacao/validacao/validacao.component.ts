@@ -57,9 +57,10 @@ export class ValidacaoComponent implements OnInit{
 
     this.formularioValidar.controls[this.FIEL_EMAIL].setValue(codigo);
     this.validaCampos(this.FIEL_EMAIL);
-    this.storageService.setItemStorage('user_codigo', codigo);
+    this.storageService.setItemStorage('recuperacao_code', codigo);
   }
   validar(){
+    console.log('ValidacaoComponent');
     this.submitted = true;
   };
   private validacaoFormulario(){
