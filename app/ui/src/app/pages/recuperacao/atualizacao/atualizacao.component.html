@@ -1,1 +1,39 @@
-<p>atualizacao works!</p>
+<div class="formulario-campos" fxFlex="100" fxFill fxLayoutAlign="none" fxLayout="column">
+  <div fxFlex="30" fxFill fxLayoutAlign="start center">
+    <label class="label-message-code">
+      Crie uma nova senha para acessar o sistema.
+    </label>
+  </div>
+  <br/>
+  <app-field-password
+    (password)="receberPassword($event)"
+    fxFlex="30"
+    fxFill fxLayoutAlign="none"
+    fxFill
+  >
+  </app-field-password><br/>
+  <div fxFlex="10" fxFill fxLayoutAlign="start center" *ngIf="passwordRequerid">
+    <label class="label-requerid">
+      Campo obrigatório
+    </label>
+  </div>
+  <br/>
+  <app-field-new-password
+    (new_password)="receberNewPassword($event)"
+    fxFlex="30"
+    fxFill fxLayoutAlign="none"
+    fxFill
+  >
+  </app-field-new-password><br/>
+  <div fxFlex="10" fxFill fxLayoutAlign="start center" *ngIf="passwordRequerid">
+    <label class="label-requerid">
+      Campo obrigatório
+    </label>
+  </div>
+  <br/>
+  <app-btn-new-password (onAtualizar)="atualizar()" fxFlex="25" fxFill fxLayoutAlign="center center"></app-btn-new-password><br/>
+  <div fxFlex="20" fxFill fxLayoutAlign="end end">
+    <a class="link-authenticacao" routerLink="/autenticacao">Volte para Autenticação</a>
+  </div>
+</div>
+

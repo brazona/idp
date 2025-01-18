@@ -24,7 +24,9 @@ import {FieldEmailComponent} from "../components/fields/email/field.email.compon
 import {ForgotComponent} from "../components/buttons/forgot/forgot.component";
 import {StorageService} from "../../core/services/storage.service";
 import {RecuperacaoButtomEnum} from "../../core/enuns/recuperacao.buttom.enum";
-import {ValidateInterface} from "../../core/interfaces/auth/validate.interface";
+import {NotificationMessageEnum} from "../../core/enuns/notificationMessage.enum";
+import {NotificationTypeEnum} from "../../core/enuns/notificationType.enum";
+import {HttpErrorResponse} from "@angular/common/http";
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -46,7 +48,7 @@ export class RecuperacaoComponent implements OnInit{
   FIEL_EMAIL:string = 'email';
   FIEL_CODE:string = 'code';
   FIEL_PASSWORD:string = 'password';
-  FIEL_REPEAT_PASSWORD:string = 'repeat-password';
+  FIEL_REPEAT_PASSWORD:string = 'repeat_password';
 
   emailFormat:boolean = false;
   emailRequerid:boolean = false;
@@ -72,6 +74,9 @@ export class RecuperacaoComponent implements OnInit{
       ]],
       password: ['', [
         Validators.required,
+      ]],
+      repeat_password: ['', [
+        Validators.required,
       ]]
     });
     this.formulario = this.formBuilder.control({
@@ -89,7 +94,6 @@ export class RecuperacaoComponent implements OnInit{
   recuperacao(){
 
     let button_type = this.storageService.getItemStorage('button_type');
-    debugger
     console.log('button: ', button_type);
     switch (button_type){
       case RecuperacaoButtomEnum.forgot:
@@ -117,6 +121,9 @@ export class RecuperacaoComponent implements OnInit{
     this.validaCampos(this.FIEL_EMAIL);
     if (email){
       this.service.recovery(email).subscribe(
+        res => {
+          this.storageService.setItemStorage('is_user_update', 'true');
+        },
       );
     }
 
@@ -126,11 +133,15 @@ export class RecuperacaoComponent implements OnInit{
     let code = this.storageService.getItemStorage('recuperacao_code');
     let email = this.storageService.getItemStorage('email');
     this.formularioRecuperacao.controls[this.FIEL_CODE].setValue(code);
-    console.log('code', code);
-    console.log('email', email);
+
     this.validaCampos(this.FIEL_CODE);
     if (code && email){
       this.service.validateCode({ username: email, code: code}).subscribe(
+        res =>{
+          this.storageService.clearItemStorage('recuperacao_code');
+          this.storageService.clearItemStorage('email');
+          this.storageService.setItemStorage('is_user_update', 'true');
+        },
       );
     }
 
@@ -147,6 +158,9 @@ export class RecuperacaoComponent implements OnInit{
 
     if (password && repeat_password){
       this.service.validateCode({ username: repeat_password, code: repeat_password}).subscribe(
+        res =>{
+          this.storageService.setItemStorage('is_user_update', 'false');
+        },
       );
     }
   }

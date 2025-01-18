@@ -7,4 +7,7 @@ export enum NotificationMessageEnum{
   generic_error = "Serviço indisponível no momento, tente novamente mais tarde.",
   validate_code_success = "O código foi validado com sucesso, atualize a senha para prosseguir ",
   validate_code_error = "Código invalido, digite o código enviado no email ou solicite um novo" ,
+  update_pass_success = "Nova senha cadastrada com sucesso!",
+  update_pass_error = "Erro ao tentar atualizar a senha" ,
+  update_pass_info = "Atualize a senha para acessar o sistema" ,
 }

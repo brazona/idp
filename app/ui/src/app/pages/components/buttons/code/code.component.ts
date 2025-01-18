@@ -17,8 +17,6 @@ export class ButtonCodeComponent implements OnInit{
 
   validar(){
     this.storageService.setItemStorage('button_type', RecuperacaoButtomEnum.validate);
-    console.log('ButtonCodeComponent');
-
   }
   receberCodigo(codigo:string) {
     this.codigo = codigo;
