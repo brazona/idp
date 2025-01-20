@@ -13,6 +13,7 @@ import {LoadingService} from "./loading.service";
 import {StorageService} from "./storage.service";
 import {ValidateInterface} from "../interfaces/auth/validate.interface";
 import {UpdateInterface} from "../interfaces/auth/update.interface";
+import {StorageEnum} from "../enuns/storage.enum";
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class AuthService extends GenericService{
 
   private authBase64: string = "";
   private isUserAuth: boolean = false;
-
+  private list_storage: string[];
   private isAuthorization: boolean | undefined = false;
   private readonly URL_API:string = 'http://localhost:7782/api'
   private readonly URL:string = 'http://localhost:7782/api/v1/auth/authentication'
@@ -126,6 +127,7 @@ export class AuthService extends GenericService{
                 message: NotificationMessageEnum.update_pass_success, type: NotificationTypeEnum.success});
               this.loadingService.loadingOff();
               this.storageService.setItemStorage('is_user_update', 'false');
+              this.removeStorage();
               this.router.navigate(["/autenticacao"]);
               observer.next(true);
             },
@@ -161,6 +163,7 @@ export class AuthService extends GenericService{
             message: NotificationMessageEnum.auth_success, type: NotificationTypeEnum.success});
           this.setSession(res.body?.token);
           this.storageService.setItemStorage('is_user_update', 'false');
+          this.removeStorage();
           this.loadingService.loadingOff();
           this.router.navigate(["/home"]);
           observer.next(true);
@@ -208,8 +211,6 @@ export class AuthService extends GenericService{
       }
 
     );
-    debugger
-    console.log('xx');
     this.loadingService.loadingOff();
   }
   private setSession(token: string | undefined) {
@@ -251,5 +252,14 @@ export class AuthService extends GenericService{
       .set('Content-Type', 'application/json')
       .set('Authorization', `Basic ${this.getBasic()}`);
   }
+  private removeStorage(){
+    this.storageService.clearItemStorage(StorageEnum.email);
+    this.storageService.clearItemStorage(StorageEnum.recovery_code);
+    this.storageService.clearItemStorage(StorageEnum.recovery_new_password);
+    this.storageService.clearItemStorage(StorageEnum.recovery_repeat_new_password);
+    this.storageService.clearItemStorage(StorageEnum.button_type);
+
+  }
+
 }
 
