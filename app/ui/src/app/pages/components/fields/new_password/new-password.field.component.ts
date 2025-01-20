@@ -23,7 +23,7 @@ export class NewPasswordFieldComponent implements OnInit{
   ngOnInit(): void {}
   showPass(){
     this.passVisibility = !this.passVisibility;
-    const password = document.querySelector(".field-password");
+    const password = document.querySelector(".field-new-password");
     if (password)
       this.setType(password);
   }
