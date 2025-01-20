@@ -28,9 +28,16 @@ export class coreGuard implements CanActivate, CanLoad {
   ): Observable<boolean>|Promise<boolean>|boolean {
     debugger
     this.verificaPath(route);
+    const is_user_update = this.storageService.getItemStorage("is_user_update");
     var valido = this.verificarAcesso();
     if (!valido){
       this.router.navigate(["/autenticacao"]);
+      return false;
+    }
+    if (is_user_update && is_user_update == "true" && this.path != "atualizacao"){
+      this.router.navigate(["/recuperacao"]);
+      this.loadingService.loadingOff();
+      this.notification.sendMessage({message: NotificationMessageEnum.update_pass_info, type: NotificationTypeEnum.info});
       return false;
     }
     this.loadingService.loadingOff();

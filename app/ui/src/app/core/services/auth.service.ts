@@ -160,6 +160,7 @@ export class AuthService extends GenericService{
           this.notication.sendMessage({
             message: NotificationMessageEnum.auth_success, type: NotificationTypeEnum.success});
           this.setSession(res.body?.token);
+          this.storageService.setItemStorage('is_user_update', 'false');
           this.loadingService.loadingOff();
           this.router.navigate(["/home"]);
           observer.next(true);

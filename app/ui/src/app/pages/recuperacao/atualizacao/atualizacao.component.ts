@@ -32,8 +32,8 @@ export class AtualizacaoComponent {
   formularioAtualizar: FormGroup;
   formulario: FormControl;
   submitted:boolean;
-  FIEL_PASSWORD:string = 'password';
-  FIEL_NEW_PASSWORD:string = 'new-password';
+  FIEL_NEW_PASSWORD:string = 'new_password';
+  FIEL_REPEAT_NEW_PASSWORD:string = 'repeat_new_password';
 
   @Output() public onAtualizar = new EventEmitter();
 
@@ -46,10 +46,10 @@ export class AtualizacaoComponent {
     // Cada FormControl valida um input do formulário
     // **************************************************
     this.formularioAtualizar = this.formBuilder.group({
-      passoword: ['', [
+      new_password: ['', [
         Validators.required
       ]],
-      new_passoword: ['', [
+      repeat_new_password: ['', [
         Validators.required
       ]],
     });
@@ -61,14 +61,14 @@ export class AtualizacaoComponent {
     this.passwordRequerid = false;
   }
   receberPassword(password:string){
-    this.formularioAtualizar.controls[this.FIEL_PASSWORD].setValue(password);
-    this.validaCampos(this.FIEL_PASSWORD);
-    this.storageService.setItemStorage('recuperacao_password', this.cryptService.encrypt(password));
+    this.formularioAtualizar.controls[this.FIEL_NEW_PASSWORD].setValue(password);
+    this.validaCampos(this.FIEL_REPEAT_NEW_PASSWORD);
+    this.storageService.setItemStorage('recovery_repeat_new_password', this.cryptService.encrypt(password));
   }
   receberNewPassword(new_password:string){
-    this.formularioAtualizar.controls[this.FIEL_PASSWORD].setValue(new_password);
-    this.validaCampos(this.FIEL_PASSWORD);
-    this.storageService.setItemStorage('recuperacao_new_password', this.cryptService.encrypt(new_password));
+    this.formularioAtualizar.controls[this.FIEL_NEW_PASSWORD].setValue(new_password);
+    this.validaCampos(this.FIEL_REPEAT_NEW_PASSWORD);
+    this.storageService.setItemStorage('recovery_new_password', this.cryptService.encrypt(new_password));
   }
   atualizar(){
     this.submitted = true;
@@ -83,12 +83,12 @@ export class AtualizacaoComponent {
 
     if(campo == '')
       return;
-    if(campo == this.FIEL_PASSWORD)
+    if(campo == this.FIEL_NEW_PASSWORD)
       this.passwordRequerid = false;
     const erros = this.formularioAtualizar.get(campo)?.errors || {};
     const tipoErro = Object.keys(erros)[0];
 
-    if(erros && tipoErro == 'required' && campo == this.FIEL_PASSWORD)
+    if(erros && tipoErro == 'required' && campo == this.FIEL_NEW_PASSWORD)
       this.passwordRequerid = true;
   }
 }
