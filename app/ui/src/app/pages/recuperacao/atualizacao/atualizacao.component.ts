@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import * as crypto from 'crypto-js';
 import {FlexModule} from "@angular/flex-layout";
 import {NgIf} from "@angular/common";
@@ -10,6 +10,9 @@ import {PasswordComponent} from "../../components/fields/password/password.compo
 import {PasswordButtonComponent} from "../../components/buttons/password/password.button.component"
 import {NewPasswordFieldComponent} from "../../components/fields/new_password/new-password.field.component";
 import {CryptService} from "../../../core/services/crypt.service";
+import {
+  RepeatNewPasswordFieldComponent
+} from "../../components/fields/repeat_new_password/repeat-new-password.field.component";
 
 @Component({
   selector: 'app-atualizacao',
@@ -19,15 +22,18 @@ import {CryptService} from "../../../core/services/crypt.service";
     FlexModule,
     NgIf,
     RouterLink,
-    PasswordComponent,
-    NewPasswordFieldComponent
+    NewPasswordFieldComponent,
+    RepeatNewPasswordFieldComponent
   ],
   templateUrl: './atualizacao.component.html',
   styleUrl: './atualizacao.component.scss'
 })
-export class AtualizacaoComponent {
-  passwordRequerid:boolean = false;
+export class AtualizacaoComponent implements OnInit{
+
   passwordNewRequerid:boolean = false;
+  passwordNewRepeatRequerid:boolean = false;
+  passwordNewEqual:boolean = false;
+  passwordNewRepeatEquals:boolean = false;
 
   formularioAtualizar: FormGroup;
   formulario: FormControl;
@@ -58,25 +64,20 @@ export class AtualizacaoComponent {
   ngOnInit(): void {
     this.submitted = false;
     this.passwordNewRequerid = false;
-    this.passwordRequerid = false;
-  }
-  receberPassword(password:string){
-    this.formularioAtualizar.controls[this.FIEL_NEW_PASSWORD].setValue(password);
-    this.validaCampos(this.FIEL_REPEAT_NEW_PASSWORD);
-    this.storageService.setItemStorage('recovery_repeat_new_password', this.cryptService.encrypt(password));
+    this.passwordNewRepeatRequerid = false;
   }
   receberNewPassword(new_password:string){
     this.formularioAtualizar.controls[this.FIEL_NEW_PASSWORD].setValue(new_password);
     this.validaCampos(this.FIEL_REPEAT_NEW_PASSWORD);
     this.storageService.setItemStorage('recovery_new_password', this.cryptService.encrypt(new_password));
   }
+  receberRepeatNewPassword(repeat_new_password_value:string){
+    if (this.validateFields(this.FIEL_REPEAT_NEW_PASSWORD, repeat_new_password_value))
+        this.storageService.setItemStorage('recovery_repeat_new_password', this.cryptService.encrypt(repeat_new_password_value));
+  }
   atualizar(){
     this.submitted = true;
     console.log('atualizar');
-  };
-  validar(){
-    console.log('ValidacaoComponent');
-    this.submitted = true;
   };
 
   private validaCampos(campo:string):void{
@@ -84,11 +85,34 @@ export class AtualizacaoComponent {
     if(campo == '')
       return;
     if(campo == this.FIEL_NEW_PASSWORD)
-      this.passwordRequerid = false;
+      this.passwordNewRepeatRequerid = false;
     const erros = this.formularioAtualizar.get(campo)?.errors || {};
     const tipoErro = Object.keys(erros)[0];
 
     if(erros && tipoErro == 'required' && campo == this.FIEL_NEW_PASSWORD)
-      this.passwordRequerid = true;
+      this.passwordNewRepeatRequerid = true;
   }
+  private validateFields(field: string, value: string): boolean{
+    debugger
+    this.passwordNewRepeatEquals = false;
+    this.passwordNewEqual = false;
+    if (!field)
+      return false;
+    if (field == this.FIEL_REPEAT_NEW_PASSWORD && !value){
+      this.passwordNewRepeatRequerid = true;
+    }
+    if (field == this.FIEL_REPEAT_NEW_PASSWORD && value){
+      let passwordNew = this.storageService.getItemStorage('recovery_new_password');
+      if (!passwordNew)
+        return false;
+      let passwordNewDecrypt = this.cryptService.decrypt(passwordNew);
+      if (passwordNewDecrypt != value){
+        this.passwordNewRepeatEquals = true;
+        this.passwordNewEqual = true;
+        return false;
+      }
+      return true;
+    }
+    return false;
+  };
 }

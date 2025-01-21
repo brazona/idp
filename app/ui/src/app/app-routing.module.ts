@@ -24,7 +24,10 @@ const routes: Routes = [
     children: [
       { path: '', component: EmailComponent },
       { path: 'validacao', component: ValidacaoComponent },
-      { path: 'atualizacao', component: AtualizacaoComponent
+      { path: 'atualizacao', component: AtualizacaoComponent,
+        canActivate: [
+          coreGuard
+        ]
       },
     ],
   },

@@ -29,6 +29,8 @@ export class coreGuard implements CanActivate, CanLoad {
     debugger
     this.verificaPath(route);
     const is_user_update = this.storageService.getItemStorage("is_user_update");
+    console.log('is_user_update :', is_user_update);
+    console.log('path: ', this.path);
     var valido = this.verificarAcesso();
     if (!valido){
       this.router.navigate(["/autenticacao"]);
@@ -38,6 +40,13 @@ export class coreGuard implements CanActivate, CanLoad {
       this.router.navigate(["/recuperacao"]);
       this.loadingService.loadingOff();
       this.notification.sendMessage({message: NotificationMessageEnum.update_pass_info, type: NotificationTypeEnum.info});
+      return false;
+    }
+
+    if (is_user_update && is_user_update == "false" && ( this.path == "atualizacao" || this.path == "validacao")){
+      this.router.navigate(["/autenticacao"]);
+      this.loadingService.loadingOff();
+      this.notification.sendMessage({message: NotificationMessageEnum.forgot_pass_info, type: NotificationTypeEnum.info});
       return false;
     }
     this.loadingService.loadingOff();

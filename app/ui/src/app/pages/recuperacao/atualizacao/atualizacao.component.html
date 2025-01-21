@@ -5,19 +5,6 @@
     </label>
   </div>
   <br/>
-  <app-field-password
-    (password)="receberPassword($event)"
-    fxFlex="30"
-    fxFill fxLayoutAlign="none"
-    fxFill
-  >
-  </app-field-password><br/>
-  <div fxFlex="10" fxFill fxLayoutAlign="start center" *ngIf="passwordRequerid">
-    <label class="label-requerid">
-      Campo obrigatório
-    </label>
-  </div>
-  <br/>
   <app-field-new-password
     (new_password)="receberNewPassword($event)"
     fxFlex="30"
@@ -25,9 +12,32 @@
     fxFill
   >
   </app-field-new-password><br/>
-  <div fxFlex="10" fxFill fxLayoutAlign="start center" *ngIf="passwordRequerid">
+  <div fxFlex="10" fxFill fxLayoutAlign="start center" *ngIf="passwordNewRequerid">
     <label class="label-requerid">
       Campo obrigatório
+    </label>
+  </div>
+  <div fxFlex="10" fxFill fxLayoutAlign="start center" *ngIf="passwordNewEqual">
+    <label class="label-requerid">
+      As senhas devem serem iguais.
+    </label>
+  </div>
+  <br/>
+  <app-field-repeat-new-password
+    (repeat_new_password)="receberRepeatNewPassword($event)"
+    fxFlex="30"
+    fxFill fxLayoutAlign="none"
+    fxFill
+  >
+  </app-field-repeat-new-password><br/>
+  <div fxFlex="10" fxFill fxLayoutAlign="start center" *ngIf="passwordNewRepeatRequerid">
+    <label class="label-requerid">
+      Campo obrigatório
+    </label>
+  </div>
+  <div fxFlex="10" fxFill fxLayoutAlign="start center" *ngIf="passwordNewRepeatEquals">
+    <label class="label-requerid">
+      As senhas devem serem iguais.
     </label>
   </div>
   <br/>

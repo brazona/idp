@@ -10,4 +10,6 @@ export enum NotificationMessageEnum{
   update_pass_success = "Nova senha cadastrada com sucesso!",
   update_pass_error = "Erro ao tentar atualizar a senha" ,
   update_pass_info = "Atualize a senha para acessar o sistema" ,
+  forgot_pass_info = "Clique em esqueci minha senha para recuperar o acesso no sistema" ,
+  update_repeat_pass_error = "As senhas devem ser iguais" ,
 }
