@@ -171,11 +171,6 @@ export class RecuperacaoComponent implements OnInit{
     this.validaCampos(this.FIEL_EMAIL);
 
     if (new_password && repeat_new_password && code && email){
-      let passValid = new_password === repeat_new_password;
-      if (!passValid){
-        this.notification.sendMessage({message: NotificationMessageEnum.update_repeat_pass_error, type: NotificationTypeEnum.error});
-        return;
-      }
       let new_password_descryp = this.cryptService.decrypt(new_password);
       let repeat_new_password_descrypt = this.cryptService.decrypt(repeat_new_password);
       this.service.updatePassword({

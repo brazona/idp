@@ -41,7 +41,19 @@
     </label>
   </div>
   <br/>
-  <app-btn-new-password (onAtualizar)="atualizar()" fxFlex="25" fxFill fxLayoutAlign="center center"></app-btn-new-password><br/>
+  <ng-container
+    *ngIf="enabledButton; then buttondisabled; else buttonenabled">
+  </ng-container>
+  <ng-template #buttondisabled>
+    <app-btn-new-password (onAtualizar)="atualizar()" fxFlex="25" fxFill fxLayoutAlign="center center" >  </app-btn-new-password><br/>
+  </ng-template>
+  <ng-template #buttonenabled>
+    <div class="container-btn-new-password">
+      <button (click)="atualizar()" class="btn-new-password btn waves-effect waves-light" type="submit" name="action" [disabled]="true">CRIAR NOVA SENHA
+      </button>
+    </div>
+  </ng-template>
+  <br/>
   <div fxFlex="20" fxFill fxLayoutAlign="end end">
     <a class="link-authenticacao" routerLink="/autenticacao">Volte para Autenticação</a>
   </div>

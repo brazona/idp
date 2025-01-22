@@ -29,7 +29,7 @@ import {
   styleUrl: './atualizacao.component.scss'
 })
 export class AtualizacaoComponent implements OnInit{
-
+  enabledButton = false;
   passwordNewRequerid:boolean = false;
   passwordNewRepeatRequerid:boolean = false;
   passwordNewEqual:boolean = false;
@@ -64,20 +64,54 @@ export class AtualizacaoComponent implements OnInit{
   ngOnInit(): void {
     this.submitted = false;
     this.passwordNewRequerid = false;
+    this.passwordNewEqual = false;
     this.passwordNewRepeatRequerid = false;
+    this.passwordNewRepeatEquals = false;
+    this.enabledButton = false;
   }
   receberNewPassword(new_password:string){
-    this.formularioAtualizar.controls[this.FIEL_NEW_PASSWORD].setValue(new_password);
-    this.validaCampos(this.FIEL_REPEAT_NEW_PASSWORD);
+    // this.submitted = false;
+    // this.passwordNewRequerid = true;
+    // this.passwordNewEqual = true;
+    // this.passwordNewRepeatRequerid = true;
+    // this.passwordNewRepeatEquals = true;
+    // this.enabledButton = false;
+    if (!this.validateFields(this.FIEL_NEW_PASSWORD, new_password)){
+      return;
+    }
+    // this.submitted = true;
+    // this.passwordNewRequerid = false;
+    // this.passwordNewEqual = false;
+    // this.passwordNewRepeatRequerid = false;
+    // this.passwordNewRepeatEquals = false;
+    // this.enabledButton = true;
+    // this.storageService.setItemStorage('recovery_new_password', this.cryptService.encrypt(new_password));
+    //
+    // this.formularioAtualizar.controls[this.FIEL_NEW_PASSWORD].setValue(new_password);
+
     this.storageService.setItemStorage('recovery_new_password', this.cryptService.encrypt(new_password));
   }
   receberRepeatNewPassword(repeat_new_password_value:string){
-    if (this.validateFields(this.FIEL_REPEAT_NEW_PASSWORD, repeat_new_password_value))
-        this.storageService.setItemStorage('recovery_repeat_new_password', this.cryptService.encrypt(repeat_new_password_value));
+    // this.submitted = false;
+    // this.passwordNewRequerid = true;
+    // this.passwordNewEqual = true;
+    // this.passwordNewRepeatRequerid = true;
+    // this.passwordNewRepeatEquals = true;
+    // this.enabledButton = false;
+    if (!this.validateFields(this.FIEL_REPEAT_NEW_PASSWORD, repeat_new_password_value)){
+      return;
+    }
+    // this.submitted = true;
+    // this.passwordNewRequerid = false;
+    // this.passwordNewEqual = false;
+    // this.passwordNewRepeatRequerid = false;
+    // this.passwordNewRepeatEquals = false;
+    // this.enabledButton = true;
+    this.storageService.setItemStorage('recovery_repeat_new_password', this.cryptService.encrypt(repeat_new_password_value));
+
   }
   atualizar(){
     this.submitted = true;
-    console.log('atualizar');
   };
 
   private validaCampos(campo:string):void{
@@ -94,12 +128,17 @@ export class AtualizacaoComponent implements OnInit{
   }
   private validateFields(field: string, value: string): boolean{
     debugger
-    this.passwordNewRepeatEquals = false;
-    this.passwordNewEqual = false;
+    this.submitted = false;
+    this.passwordNewRequerid = true;
+    this.passwordNewEqual = true;
+    this.passwordNewRepeatRequerid = true;
+    this.passwordNewRepeatEquals = true;
+    this.enabledButton = false;
+
     if (!field)
       return false;
     if (field == this.FIEL_REPEAT_NEW_PASSWORD && !value){
-      this.passwordNewRepeatRequerid = true;
+      return false;
     }
     if (field == this.FIEL_REPEAT_NEW_PASSWORD && value){
       let passwordNew = this.storageService.getItemStorage('recovery_new_password');
@@ -107,12 +146,18 @@ export class AtualizacaoComponent implements OnInit{
         return false;
       let passwordNewDecrypt = this.cryptService.decrypt(passwordNew);
       if (passwordNewDecrypt != value){
-        this.passwordNewRepeatEquals = true;
-        this.passwordNewEqual = true;
         return false;
       }
-      return true;
     }
-    return false;
+    if (field == this.FIEL_NEW_PASSWORD && !value){
+      return false;
+    }
+    this.submitted = true;
+    this.passwordNewRequerid = false;
+    this.passwordNewEqual = false;
+    this.passwordNewRepeatRequerid = false;
+    this.passwordNewRepeatEquals = false;
+    this.enabledButton = true;
+    return true;
   };
 }
