@@ -1,6 +1,6 @@
 import {Router} from '@angular/router';
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Token} from '../interfaces/token/token'
 import {GenericService} from './generic.service';
@@ -24,6 +24,8 @@ export class AuthService extends GenericService{
   private isUserAuth: boolean = false;
   private list_storage: string[];
   private isAuthorization: boolean | undefined = false;
+  private isAuthorizeSource = new Subject<boolean>();
+  isAuthorize$ = this.isAuthorizeSource.asObservable();
   private readonly URL_API:string = 'http://localhost:7782/api'
   private readonly URL:string = 'http://localhost:7782/api/v1/auth/authentication'
   private readonly URL_AUTHORIZATION:string = 'http://localhost:7782/api/v1/auth/authorization'
@@ -179,12 +181,10 @@ export class AuthService extends GenericService{
     }
 
   )};
-  authorization(token: String): Observable<boolean> | boolean {
-    this.isAuthorization = false;
+  authorization(token: String): Observable<boolean>{
     this.loadingService.loadingOn();
-    debugger
+    debugger;
     return new Observable((observer) => {
-      debugger;
         this.http.post<AuthorizationInterface>(this.URL_AUTHORIZATION,JSON.stringify(token),
           {
             headers: new HttpHeaders()
@@ -197,6 +197,10 @@ export class AuthService extends GenericService{
 
           res =>{
             this.isAuthorization = res.body?.is_authorized;
+            if (this.isAuthorization)
+              this.isAuthorizeSource.next(this.isAuthorization);
+            else
+              this.isAuthorizeSource.next(false);
             this.loadingService.loadingOff();
             observer.next(true);
           },
@@ -204,14 +208,13 @@ export class AuthService extends GenericService{
             this.notication.sendMessage({message: NotificationMessageEnum.authorization_error, type: NotificationTypeEnum.error})
             console.log(err);
             this.loadingService.loadingOff();
+            this.isAuthorizeSource.next(false);
             this.router.navigate(["/autenticacao"]);
-            observer.next(true);
+            observer.next(false);
           }
         );
       }
-
     );
-    this.loadingService.loadingOff();
   }
   private setSession(token: string | undefined) {
     if (typeof token === "string") {
