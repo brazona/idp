@@ -42,6 +42,8 @@ public class CustomAuthManager implements AuthorizationManager {
     private static final String[] AUTHORIZATION = {
             "/v1/auth/update/password"
             ,"/api/v1/auth/update/password"
+            ,"/api/v1/auth/authorization"
+            ,"/v1/auth/authorization"
     };
     @Autowired
     private EnvUtil envUtil;

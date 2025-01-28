@@ -134,6 +134,7 @@ public class AuthService implements UserDetailsService {
         if (emailService.send(prepareEmailForgotPassword(userRequestVO, randomPass)))
             valid = userService.createOrUpdate(userRequestVO);
         String message = valid ? MailConst.FORGOT_MSG_SEND_MAIL : MailConst.FORGOT_MSG_NOT_SEND_MAIL;
+
         return new ForgotResponseVO(valid, message);
     }
 
@@ -151,6 +152,7 @@ public class AuthService implements UserDetailsService {
         if (emailService.send(prepareEmailUpdatePassword(userRequestVO)))
             valid = userService.createOrUpdate(userRequestVO);
         String message = valid ? MailConst.UPDATE_MSG_SEND_MAIL : MailConst.UPDATE_MSG_NOT_SEND_MAIL;
+
         return new ForgotResponseVO(valid, message);
     }
     public AuthResponseBusinessVO validateCode(AuthValidateCodeRequestBusinessVO authValidateCodeRequestBusinessVO){
@@ -171,13 +173,15 @@ public class AuthService implements UserDetailsService {
     }
     private EmailSendlVO prepareEmailForgotPassword(UserRequestVO userRequestVO, String randomPass){
         String subject = MailConst.SUBJECT_SEND_MAIL.replace("_USER_", userRequestVO.getName());
-        String msg = MailConst.MAIL_HTML_FORGOT.replace("_USER_", userRequestVO.getName());
+        //String msg = MailConst.MAIL_HTML_FORGOT.replace("_USER_", userRequestVO.getName());
+        String msg = MailConst.MAIL_HTML_RECOVERY_FORGOT.replace("_USER_", userRequestVO.getName());
         msg = msg.replace("_NEW_PASS_",randomPass);
         return new EmailSendlVO(userRequestVO.getUsername(),subject, msg);
     }
     private EmailSendlVO prepareEmailUpdatePassword(UserRequestVO userRequestVO){
         String subject = MailConst.SUBJECT_SEND_MAIL_UPDATE_PASS.replace("_USER_", userRequestVO.getName());
-        String msg = MailConst.MAIL_HTML_UPDATE_PASS.replace("_USER_", userRequestVO.getName());
+        //String msg = MailConst.MAIL_HTML_UPDATE_PASS.replace("_USER_", userRequestVO.getName());
+        String msg = MailConst.MAIL_HTML_RECOVERY_UPDATE_PASS.replace("_USER_", userRequestVO.getName());
         return new EmailSendlVO(userRequestVO.getUsername(),subject, msg);
     }
     private Boolean validateUserIsupdate(String username){

@@ -1,7 +1,7 @@
 import {Router} from '@angular/router';
 import {Injectable} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {Token} from '../interfaces/token/token'
 import {GenericService} from './generic.service';
 import {User} from '../interfaces/user/user';
@@ -14,6 +14,7 @@ import {StorageService} from "./storage.service";
 import {ValidateInterface} from "../interfaces/auth/validate.interface";
 import {UpdateInterface} from "../interfaces/auth/update.interface";
 import {StorageEnum} from "../enuns/storage.enum";
+import {ApiPathEnum} from "../enuns/api.path.enum";
 
 @Injectable({
   providedIn: 'root'
@@ -161,6 +162,7 @@ export class AuthService extends GenericService{
       )
       .subscribe(
         res =>{
+          debugger;
           this.notication.sendMessage({
             message: NotificationMessageEnum.auth_success, type: NotificationTypeEnum.success});
           this.setSession(res.body?.token);
@@ -170,10 +172,8 @@ export class AuthService extends GenericService{
           this.router.navigate(["/home"]);
           observer.next(true);
         },
-        (err: string) =>{
-          this.notication.sendMessage({message: NotificationMessageEnum.auth_error, type: NotificationTypeEnum.error})
-          console.log(err);
-          this.loadingService.loadingOff();
+        (err: string ) =>{
+          this.httpErrorResponse(JSON.parse(err), ApiPathEnum.authentication);
           observer.next(true);
         }
       );
@@ -261,8 +261,15 @@ export class AuthService extends GenericService{
     this.storageService.clearItemStorage(StorageEnum.recovery_new_password);
     this.storageService.clearItemStorage(StorageEnum.recovery_repeat_new_password);
     this.storageService.clearItemStorage(StorageEnum.button_type);
+  }
+  private httpErrorResponse(responseError: HttpErrorResponse, path: string){
+    if (responseError.status == 0 ){
+      this.notication.sendMessage({message: NotificationMessageEnum.generic_error, type: NotificationTypeEnum.error})
+    }
+    else if (path == ApiPathEnum.authentication && responseError.status != 0 && responseError.status == 403 ){
+    }
+    this.loadingService.loadingOff();
 
   }
-
 }
 

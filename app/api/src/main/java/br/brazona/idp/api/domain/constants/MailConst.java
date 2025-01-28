@@ -31,6 +31,92 @@ public class MailConst {
     public final static String MAIL_PROP_PORT = "mail.smtp.port";
     public final static String MAIL_PROP_FACTORY_PORT = "mail.smtp.socketFactory.port";
     public final static String MAIL_PROP_FACTORY_CLASS = "mail.smtp.socketFactory.class";
+
+    public final static String MAIL_HTML_RECOVERY_UPDATE_PASS = "<!DOCTYPE html>\n" +
+            "<html lang=\"pt-br\">\n" +
+            "<head>\n" +
+            "  <meta charset=\"UTF-8\">\n" +
+            "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+            "  <title>Atualização de Senha</title>\n" +
+            "  <style>\n" +
+            "    /* CSS inline para compatibilidade com clientes de email */\n" +
+            "    body {\n" +
+            "      font-family: Arial, sans-serif;\n" +
+            "      margin: 0;\n" +
+            "      padding: 0;\n" +
+            "      background-color: #f4f4f4;\n" +
+            "    }\n" +
+            "\n" +
+            "    .email-container {\n" +
+            "      width: 100%;\n" +
+            "      max-width: 600px;\n" +
+            "      margin: 0 auto;\n" +
+            "      background-color: #ffffff;\n" +
+            "      padding: 20px;\n" +
+            "      border-radius: 8px;\n" +
+            "      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\n" +
+            "    }\n" +
+            "\n" +
+            "    .email-header {\n" +
+            "      text-align: center;\n" +
+            "      margin-bottom: 20px;\n" +
+            "    }\n" +
+            "\n" +
+            "    .email-header img {\n" +
+            "      width: 150px;\n" +
+            "      height: auto;\n" +
+            "    }\n" +
+            "\n" +
+            "    .email-body {\n" +
+            "      font-size: 16px;\n" +
+            "      line-height: 1.5;\n" +
+            "      color: #333333;\n" +
+            "      margin-bottom: 20px;\n" +
+            "    }\n" +
+            "\n" +
+            "    .email-body p {\n" +
+            "      margin: 10px 0;\n" +
+            "    }\n" +
+            "\n" +
+            "    .cta-button {\n" +
+            "      display: inline-block;\n" +
+            "      background-color: #4CAF50;\n" +
+            "      color: #ffffff;\n" +
+            "      padding: 12px 20px;\n" +
+            "      font-size: 16px;\n" +
+            "      text-decoration: none;\n" +
+            "      border-radius: 5px;\n" +
+            "      text-align: center;\n" +
+            "    }\n" +
+            "\n" +
+            "    .cta-button:hover {\n" +
+            "      background-color: #45a049;\n" +
+            "    }\n" +
+            "\n" +
+            "    .email-footer {\n" +
+            "      text-align: center;\n" +
+            "      font-size: 14px;\n" +
+            "      color: #777777;\n" +
+            "      margin-top: 20px;\n" +
+            "    }\n" +
+            "\n" +
+            "    .email-footer a {\n" +
+            "      color: #4CAF50;\n" +
+            "      text-decoration: none;\n" +
+            "    }\n" +
+            "\n" +
+            "    .email-footer a:hover {\n" +
+            "      text-decoration: underline;\n" +
+            "    }\n" +
+            "  </style>\n" +
+            "</head>\n" +
+            "<body>\n" +
+            "\n" +
+            "<img src=\"https://i.ibb.co/DLLbR5q/atualiza-o-senha-v1.jpg\" alt=\"atualiza-o-senha-v1\" border=\"0\">" +
+            "\n" +
+            "</body>\n" +
+            "</html>\n";
+
     public final static String MAIL_HTML_UPDATE_PASS = "<!DOCTYPE html>\n" +
             "<html lang=\"pt-br\">\n" +
             "<head>\n" +
@@ -367,7 +453,121 @@ public class MailConst {
             "\n" +
             "</body>\n" +
             "</html>";
-
+    public final static String MAIL_HTML_RECOVERY_FORGOT = "<!DOCTYPE html>\n" +
+            "<html lang=\"pt-br\">\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                "    <title>Esqueceu sua Senha</title>\n" +
+                "    <style>\n" +
+                "        /* Reseta alguns estilos padrão */\n" +
+                "        * {\n" +
+                "            margin: 0;\n" +
+                "            padding: 0;\n" +
+                "            box-sizing: border-box;\n" +
+                "        }\n" +
+                "\n" +
+                "        body {\n" +
+                "            font-family: Arial, sans-serif;\n" +
+                "            background-color: #f7f7f7;\n" +
+                "            color: #333;\n" +
+                "            padding: 20px;\n" +
+                "        }\n" +
+                "\n" +
+                "        .email-container {\n" +
+                "            width: 100%;\n" +
+                "            max-width: 600px;\n" +
+                "            margin: 0 auto;\n" +
+                "            background-color: #ffffff;\n" +
+                "            border-radius: 8px;\n" +
+                "            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);\n" +
+                "            padding: 20px;\n" +
+                "        }\n" +
+                "\n" +
+                "        .header {\n" +
+                "            text-align: center;\n" +
+                "            margin-bottom: 30px;\n" +
+                "        }\n" +
+                "\n" +
+                "        .header img {\n" +
+                "            max-width: 150px;\n" +
+                "            margin-bottom: 15px;\n" +
+                "        }\n" +
+                "\n" +
+                "        h1 {\n" +
+                "            font-size: 24px;\n" +
+                "            color: #333;\n" +
+                "        }\n" +
+                "\n" +
+                "        p {\n" +
+                "            font-size: 16px;\n" +
+                "            line-height: 1.5;\n" +
+                "            color: #555;\n" +
+                "        }\n" +
+                "\n" +
+                "        .btn {\n" +
+                "            display: inline-block;\n" +
+                "            background-color: #007bff;\n" +
+                "            color: #ffffff;\n" +
+                "            padding: 12px 20px;\n" +
+                "            font-size: 16px;\n" +
+                "            text-decoration: none;\n" +
+                "            border-radius: 5px;\n" +
+                "            margin-top: 20px;\n" +
+                "        }\n" +
+                "\n" +
+                //
+                "        .body-text {\n" +
+                "            text-align: center;\n" +
+                "            font-size: 24px;\n" +
+                "        }\n" +
+                //
+                "        .footer {\n" +
+                "            text-align: center;\n" +
+                "            font-size: 12px;\n" +
+                "            color: #999;\n" +
+                "            margin-top: 30px;\n" +
+                "        }\n" +
+                "\n" +
+                "        .footer p {\n" +
+                "            margin-bottom: 10px;\n" +
+                "        }\n" +
+                "\n" +
+                "        /* Responsividade */\n" +
+                "        @media (max-width: 600px) {\n" +
+                "            .email-container {\n" +
+                "                padding: 15px;\n" +
+                "            }\n" +
+                "\n" +
+                "            h1 {\n" +
+                "                font-size: 20px;\n" +
+                "            }\n" +
+                "\n" +
+                "            .btn {\n" +
+                "                font-size: 14px;\n" +
+                "                padding: 10px 18px;\n" +
+                "            }\n" +
+                "        }\n" +
+                "    </style>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                        "\n" +
+                        "    <div class=\"email-container\">\n" +
+                        "        <!-- Corpo do email -->\n" +
+                        "        <img src=\"https://i.ibb.co/FYT211n/esqueceu-senha-superior.png\" alt=\"esqueceu-senha-superior\" border=\"0\">\n" +
+                        "\n" +
+                        "        <div class=\"body-text\">\n" +
+                        "           <h1>_NEW_PASS_</h1>\n" +
+                        "        </div>\n" +
+                        "\n" +
+                        "        <!-- Rodapé -->\n" +
+                        "        <div class=\"footer\">\n" +
+                        "            <img src=\"https://i.ibb.co/C1rwyBD/esqueceu-a-senha-inferior.png\" alt=\"esqueceu-a-senha-inferior\" border=\"0\">\n" +
+                        "        </div>\n" +
+                        "    </div>\n" +
+                        "\n" +
+                "</body>\n" +
+            "</html>\n";
     /**
      *
      * Class constructor.
