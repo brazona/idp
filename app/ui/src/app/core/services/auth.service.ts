@@ -205,7 +205,7 @@ export class AuthService extends GenericService{
             observer.next(true);
           },
           (err: string) =>{
-            this.notication.sendMessage({message: NotificationMessageEnum.authorization_error, type: NotificationTypeEnum.error})
+            this.notication.sendMessage({message: NotificationMessageEnum.authorization_error, type: NotificationTypeEnum.warning})
             console.log(err);
             this.loadingService.loadingOff();
             this.isAuthorizeSource.next(false);
