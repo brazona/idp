@@ -12,6 +12,8 @@ import {NotificationTypeEnum} from "../enuns/notificationType.enum";
 export class coreGuard implements CanActivate, CanLoad {
 
   private path:string;
+  private isGuard:boolean = true;
+  private isValidateCode = false;
 
   constructor(
     private authService: AuthService,
@@ -25,9 +27,12 @@ export class coreGuard implements CanActivate, CanLoad {
   ): Observable<boolean>|Promise<boolean>|boolean {
     console.log('rota: '+route);
     this.verificaRecuperacao(route);
-    var valido = this.verificarAcesso();
-    if (!valido){
-      this.router.navigate(["/autenticacao"]);
+    var valido: Observable<boolean> | boolean = false;
+    if (!this.isValidateCode){
+      valido = this.verificarAcesso();
+      if (!valido){
+        this.router.navigate(["/autenticacao"]);
+      }
     }
     return valido;
   }
@@ -38,14 +43,24 @@ export class coreGuard implements CanActivate, CanLoad {
   private verificaRecuperacao(path: ActivatedRouteSnapshot): void {
     this.consultaRota(path);
     const is_user_update = this.storageService.getItemStorage("is_user_update");
+
     if (is_user_update ){
-      if (is_user_update == "true" && this.path != "atualizacao"){
+      if (is_user_update == "true" && ( this.path != "atualizacao") && this.path != "validacao" ){
+        this.isValidateCode = true;
         this.router.navigate(["/recuperacao"]);
         this.notification.sendMessage({message: NotificationMessageEnum.update_pass_info, type: NotificationTypeEnum.info});
       }
       if (is_user_update == "false" && this.path == "atualizacao"){
         this.router.navigate(["/autenticacao"]);
         this.notification.sendMessage({message: NotificationMessageEnum.forgot_pass_info, type: NotificationTypeEnum.info});
+      }
+      if (is_user_update == "true" && this.path == "atualizacao"){
+        this.router.navigate(["/autenticacao"]);
+        this.notification.sendMessage({message: NotificationMessageEnum.forgot_pass_info, type: NotificationTypeEnum.info});
+      }
+      if (is_user_update == "true" && this.path == "validacao" ){
+        this.isValidateCode = true;
+        this.router.navigate(["/recuperacao/validacao"]);
       }
     }
   }
