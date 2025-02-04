@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { coreGuard } from './core/guards/core.guard';
+import { AuthGuard} from "./core/guards/auth.guard";
+import { RecoveryGuard} from "./core/guards/recovery.guard";
 import { HomeComponent } from './pages/home/home.component';
 import { AutenticacaoComponent } from './pages/autenticacao/autenticacao.component';
 import { RecuperacaoComponent } from './pages/recuperacao/recuperacao.component';
@@ -15,7 +17,7 @@ const routes: Routes = [
   { path: 'autenticacao', component: AutenticacaoComponent },
   { path: 'home', component: HomeComponent,
         canActivate: [
-          coreGuard
+          AuthGuard,
         ]
   },
   {
@@ -23,10 +25,15 @@ const routes: Routes = [
     component: RecuperacaoComponent,
     children: [
       { path: '', component: EmailComponent },
-      { path: 'validacao', component: ValidacaoComponent },
+      { path: 'validacao', component: ValidacaoComponent,
+        canActivate: [
+          RecoveryGuard
+        ]
+      },
       { path: 'atualizacao', component: AtualizacaoComponent,
         canActivate: [
-          coreGuard
+          AuthGuard,
+          RecoveryGuard
         ]
       },
     ],
