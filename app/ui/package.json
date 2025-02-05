@@ -5,12 +5,12 @@
     "ng": "ng",
     "start": "ng serve -o",
     "dev": "npm run env && ng build --watch --configuration development --output-path ../api/target/idp/app",
-    "build": "npm run env && ng build --configuration production",
+    "build": "npm run file_env && ng build --configuration production --output-path ../api/target/idp/app",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "clean": "rm -rf ./node_modules package-lock.json .cache dist .angular",
     "reinstall": "npm run clean && npm cache clean --force && npm install --force",
-    "env": "cp ./src/assets/env.template.js ./src/assets/env.js"
+    "file_env": "cp ./src/assets/env.template.js ./src/assets/env.js"
   },
   "private": true,
   "dependencies": {
@@ -30,6 +30,7 @@
     "angular-material": "^1.2.5",
     "bootstrap": "^5.3.3",
     "class-transformer": "^0.5.1",
+    "crypto-js": "^4.2.0",
     "materialize-css": "^1.0.0",
     "moment": "^2.30.1",
     "ngx-toastr": "^19.0.0",
@@ -42,6 +43,7 @@
     "@angular-devkit/schematics": "^18.2.11",
     "@angular/cli": "~18.2.11",
     "@angular/compiler-cli": "^18.2.11",
+    "@types/crypto-js": "^4.2.2",
     "@types/jasmine": "~5.1.4",
     "jasmine-core": "~5.4.0",
     "karma": "~6.4.0",
@@ -50,5 +52,8 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.5.4"
+  },
+  "browser": {
+    "crypto": false
   }
 }

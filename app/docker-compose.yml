@@ -1,0 +1,25 @@
+version: '3.0'
+
+services:
+  app:
+    container_name: ${CONTAINER_NAME}
+    build:
+      context: .
+    networks:
+      - ${NETWORK_NAME}
+    restart: always  
+    environment:
+    - SPRING_ACTIVE_PROFILE=${SPRING_ACTIVE_PROFILE}
+    - CONFIG_SERVER_HOST=${CONFIG_SERVER_HOST}
+    - CONFIG_SERVER_USER=${CONFIG_SERVER_USER}
+    - CONFIG_SERVER_PASS=${CONFIG_SERVER_PASS}
+    - APP_API_URL=${APP_API_URL}
+    - BASIC_USER=${BASIC_USER}
+    - BASIC_PASS=${BASIC_PASS}
+    ports:
+      - "${PORT_EXTERNAL}:${PORT_INTERNAL}"
+      
+
+networks:
+  "${NETWORK_NAME}":
+    external: true

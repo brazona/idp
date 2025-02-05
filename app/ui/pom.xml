@@ -15,7 +15,7 @@
 
 	<profiles>
 		<profile>
-			<id>default</id>
+			<id>local</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
@@ -34,20 +34,27 @@
 						<configuration>
 							<workingDirectory>./</workingDirectory>
 							<nodeVersion>v20.3.0</nodeVersion>
-							<npmVersion>9.6.7</npmVersion>
 						</configuration>
 						<executions>
-							<execution>
-								<id>install node and npm</id>
-								<goals>
-									<goal>install-node-and-npm</goal>
-								</goals>
-							</execution>
 							<execution>
 								<id>npm install</id>
 								<goals>
 									<goal>npm</goal>
 								</goals>
+								<phase>generate-resources</phase>
+								<configuration>
+									<arguments>install</arguments>
+								</configuration>
+							</execution>
+							<execution>
+								<id>npm build</id>
+								<goals>
+									<goal>npm</goal>
+								</goals>
+								<phase>generate-resources</phase>
+								<configuration>
+									<arguments>run build</arguments>
+								</configuration>
 							</execution>
 						</executions>
 					</plugin>

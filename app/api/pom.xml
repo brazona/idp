@@ -160,13 +160,6 @@
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
-<!--			<properties>-->
-<!--				<activeProfile>local</activeProfile>-->
-<!--			</properties>-->
-<!--			<id>default</id>-->
-<!--			<activation>-->
-<!--				<activeByDefault>true</activeByDefault>-->
-<!--			</activation>-->
 			<build>
 				<plugins>
 					<plugin>

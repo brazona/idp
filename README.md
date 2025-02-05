@@ -37,6 +37,12 @@ As alterações são aplicadas em determinado ambiente através das **branchs**,
 | pre-release/** | Aplica no ambiente __STG__ |
 | main | Aplica no ambiente __PRD__ |
 
+``` sh
+cd app &&
+mvn clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true &&
+docker compose --env-file .env up -d --build --force-recreate
+```
+
 ## Licença
 
 > [!IMPORTANT]

@@ -42,6 +42,6 @@
 	</properties>
     <modules>
 		<module>api</module>
-		<!-- <module>ui</module> -->
+		<module>ui</module>
 	</modules>
 </project>
