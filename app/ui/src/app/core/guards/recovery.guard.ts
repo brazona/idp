@@ -33,7 +33,7 @@ export class RecoveryGuard implements CanActivate {
     const is_user_update = this.storageService.getItemStorage("is_user_update");
     debugger;
     if (is_user_update ){
-      if (is_user_update == "true" && ( this.path != "atualizacao") && this.path != "validacao" ){
+      if (is_user_update == "true" && this.path != "atualizacao" && this.path != "validacao" ){
         this.isValidateCode = true;
         this.router.navigate(["/recuperacao"]);
         this.notification.sendMessage({message: NotificationMessageEnum.update_pass_info, type: NotificationTypeEnum.info});
@@ -41,14 +41,6 @@ export class RecoveryGuard implements CanActivate {
       if (is_user_update == "false" && this.path == "atualizacao"){
         this.router.navigate(["/autenticacao"]);
         this.notification.sendMessage({message: NotificationMessageEnum.forgot_pass_info, type: NotificationTypeEnum.info});
-      }
-      if (is_user_update == "true" && this.path == "atualizacao"){
-        this.router.navigate(["/autenticacao"]);
-        this.notification.sendMessage({message: NotificationMessageEnum.forgot_pass_info, type: NotificationTypeEnum.info});
-      }
-      if (is_user_update == "true" && this.path == "validacao" ){
-        this.isValidateCode = true;
-        this.router.navigate(["/recuperacao/validacao"]);
       }
     }
     return true;

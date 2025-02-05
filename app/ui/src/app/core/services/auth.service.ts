@@ -173,6 +173,9 @@ export class AuthService extends GenericService{
           observer.next(true);
         },
         (err: string ) =>{
+          debugger;
+          this.notication.sendMessage({
+            message: NotificationMessageEnum.auth_error, type: NotificationTypeEnum.error});
           this.httpErrorResponse(JSON.parse(err), ApiPathEnum.authentication);
           observer.next(true);
         }
