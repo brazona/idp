@@ -106,4 +106,20 @@ public class AuthController implements IAuthController {
                 .body(service.updatePassword(auth));
     }
 
+    /**
+     * Endpoint that validate the code the recovery access
+     *
+     * @param auth information the username and code.
+     **/
+    @Override
+    public ResponseEntity<AuthResponseBusinessVO>  validateCode(AuthValidateCodeRequestBusinessVO auth) {
+        log.info(LogsConst.ENDPOINT_INFO, EndpointsConst.AUTH_VALIDATE_CODE);
+        log.debug(LogsConst.ENDPOINT_DEBUG, auth, "null");
+        AuthResponseBusinessVO tokenDTO = service.validateCode(auth);
+        sessionService.createUpdate(new SessionVO(auth.getUsername(), tokenDTO.getToken()));
+        return ResponseEntity.ok()
+                .header("Authorization", "Bearer "+tokenDTO.getToken())
+                .body(tokenDTO);
+    }
+
 }

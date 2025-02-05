@@ -16,6 +16,7 @@ public class ServicesConst {
     public final static String AUTH_SERVICE_AUTHORIZATION = "Access token authorization.";
     public final static String AUTH_SERVICE_FORGOT = "Forgot password";
     public final static String AUTH_SERVICE_UPDATE_PASSWORD = "Password update";
+    public final static String AUTH_SERVICE_VALIDATE_CODE_RECOVERY = "Validate code recovery";
 
     /**
      *

@@ -1,4 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {RecuperacaoButtomEnum} from "../../../../core/enuns/recuperacao.buttom.enum";
+import {StorageService} from "../../../../core/services/storage.service";
 
 @Component({
   selector: 'app-btn-forgot',
@@ -10,12 +12,10 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 export class ForgotComponent implements OnInit{
   email:string
   @Output() public onRecuperar = new EventEmitter();
-  constructor(){}
+  constructor(private storageService: StorageService){}
   ngOnInit(): void {}
   recuperar(){
-    console.log('recuperar forgot');
-  }
-  receberEmail(email:string) {
-    this.email = email;
+    console.log("recuperando....");
+    this.storageService.setItemStorage('button_type', RecuperacaoButtomEnum.forgot);
   }
 }

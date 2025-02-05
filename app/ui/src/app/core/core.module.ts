@@ -9,6 +9,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { coreGuard } from './guards/core.guard';
 import { Interceptor } from './interceptors/interceptor';
 import {LoadingInterceptor} from "./interceptors/loading.interceptor";
+import {AuthGuard} from "./guards/auth.guard";
+import {RecoveryGuard} from "./guards/recovery.guard";
 
 
 @NgModule(
@@ -22,6 +24,8 @@ import {LoadingInterceptor} from "./interceptors/loading.interceptor";
          ],
         providers: [
             coreGuard,
+            AuthGuard,
+            RecoveryGuard,
             Interceptor,
             LoadingInterceptor,
             {

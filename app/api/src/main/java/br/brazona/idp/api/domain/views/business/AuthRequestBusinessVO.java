@@ -56,4 +56,19 @@ public class AuthRequestBusinessVO extends AbstractVO {
         this.username = username;
         this.password = password;
     }
+    /**
+     *
+     * Method that provides the object with authentication data.
+     *
+     * @param id Object of the User class, with the application's authentication values.
+     * @param username Object of the User class, with the application's authentication values.
+     * @param password Object of the User class, with the application's authentication values.
+     *
+     **/
+
+    public AuthRequestBusinessVO(Long id, String username, String password) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+    }
 }

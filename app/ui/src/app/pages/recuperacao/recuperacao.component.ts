@@ -23,6 +23,12 @@ import {AuthService} from "../../core/services/auth.service";
 import {FieldEmailComponent} from "../components/fields/email/field.email.component";
 import {ForgotComponent} from "../components/buttons/forgot/forgot.component";
 import {StorageService} from "../../core/services/storage.service";
+import {RecuperacaoButtomEnum} from "../../core/enuns/recuperacao.buttom.enum";
+import {NotificationMessageEnum} from "../../core/enuns/notificationMessage.enum";
+import {NotificationTypeEnum} from "../../core/enuns/notificationType.enum";
+import {HttpErrorResponse} from "@angular/common/http";
+import {CryptService} from "../../core/services/crypt.service";
+import {NotificationService} from "../../core/services/notification.service";
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -42,13 +48,20 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 export class RecuperacaoComponent implements OnInit{
   FIEL_EMAIL:string = 'email';
+  FIEL_CODE:string = 'code';
+  FIEL_NEW_PASSWORD:string = 'new_password';
+  FIEL_REPEAT_NEW_PASSWORD:string = 'repeat_new_password';
+
   emailFormat:boolean = false;
   emailRequerid:boolean = false;
   formularioRecuperacao: FormGroup;
   formulario: FormControl;
   submitted:boolean;
 
-  constructor(private router: Router,private formBuilder: FormBuilder, private service: AuthService, private storageService: StorageService
+  constructor(private router: Router,private formBuilder: FormBuilder, private service: AuthService,
+              private storageService: StorageService,
+              private cryptService: CryptService,
+              private notification: NotificationService
               ) {
 
     // **************************************************
@@ -60,6 +73,18 @@ export class RecuperacaoComponent implements OnInit{
       email: ['', [
         Validators.required,
         Validators.email
+      ]],
+      code: ['', [
+        Validators.required,
+      ]],
+      password: ['', [
+        Validators.required,
+      ]],
+      new_password: ['', [
+        Validators.required,
+      ]],
+      repeat_new_password: ['', [
+        Validators.required,
       ]]
     });
     this.formulario = this.formBuilder.control({
@@ -75,48 +100,104 @@ export class RecuperacaoComponent implements OnInit{
     this.emailRequerid = false;
   }
   recuperacao(){
-    debugger
-    let emailValue = this.storageService.getItemStorage('email');
-    if (emailValue){
-      this.receberOnEmail(emailValue);
+
+    let button_type = this.storageService.getItemStorage('button_type');
+    console.log('button: ', button_type);
+    switch (button_type){
+      case RecuperacaoButtomEnum.forgot:
+        this.forgot();
+        break;
+      case RecuperacaoButtomEnum.validate:
+        this.validate();
+        break;
+      case RecuperacaoButtomEnum.update:
+        this.update();
+        break;
+      default:
+        return;
     }
-    this.submitted = true;
-    this.emailFormat = false;
-    this.emailRequerid = false;
 
-    this.validacaoFormulario();
-
-    if (!this.formularioRecuperacao.valid) {
-      return;
-    }
-    var email = this.formularioRecuperacao.get(this.FIEL_EMAIL)?.value;
-
-    this.service.recovery(email).subscribe(
-
-    );
   }
   receberOnEmail(email:string){
-
-    console.log('receberOnEmail', email);
     this.formularioRecuperacao.controls[this.FIEL_EMAIL].setValue(email);
     this.validaCampos(this.FIEL_EMAIL);
   }
-private validacaoFormulario(){
+  private forgot(){
+    console.log('forgot');
+    let email = this.storageService.getItemStorage('email');
+    this.formularioRecuperacao.controls[this.FIEL_EMAIL].setValue(email);
     this.validaCampos(this.FIEL_EMAIL);
+    if (email){
+      this.service.recovery(email).subscribe(
+        res => {
+          this.storageService.setItemStorage('is_user_update', 'true');
+        },
+      );
+    }
+
   }
-private validaCampos(campo:string):void{
-  debugger
-  if(campo == '')
-    return;
-  if(campo == this.FIEL_EMAIL)
-    this.emailRequerid = false;
+  private validate(){
+    let code = this.storageService.getItemStorage('recuperacao_code');
+    let email = this.storageService.getItemStorage('email');
+    this.formularioRecuperacao.controls[this.FIEL_CODE].setValue(code);
 
-  const erros = this.formularioRecuperacao.get(campo)?.errors || {};
-  const tipoErro = Object.keys(erros)[0];
+    this.validaCampos(this.FIEL_CODE);
+    if (!email){
+      this.router.navigate(["/recuperacao"]);
+    }
+    if (code && email){
+      this.service.validateCode({ username: email, code: code}).subscribe(
+        res =>{
+          this.storageService.setItemStorage('is_user_update', 'true');
+        },
+      );
+    }
 
-  if(erros && tipoErro == 'required' && campo == this.FIEL_EMAIL)
-    this.emailRequerid = true;
-  if(erros && tipoErro == 'email' && campo == this.FIEL_EMAIL)
-    this.emailFormat = true;
-}
+  }
+  private update(){
+    console.log('update');
+     let new_password = this.storageService.getItemStorage('recovery_new_password');
+     let repeat_new_password = this.storageService.getItemStorage('recovery_repeat_new_password');
+    let code = this.storageService.getItemStorage('recuperacao_code');
+    let email = this.storageService.getItemStorage('email');
+
+    this.formularioRecuperacao.controls[this.FIEL_NEW_PASSWORD].setValue(new_password);
+    this.formularioRecuperacao.controls[this.FIEL_REPEAT_NEW_PASSWORD].setValue(repeat_new_password);
+    this.formularioRecuperacao.controls[this.FIEL_CODE].setValue(code);
+    this.formularioRecuperacao.controls[this.FIEL_EMAIL].setValue(email);
+    this.validaCampos(this.FIEL_NEW_PASSWORD);
+    this.validaCampos(this.FIEL_REPEAT_NEW_PASSWORD);
+    this.validaCampos(this.FIEL_CODE);
+    this.validaCampos(this.FIEL_EMAIL);
+
+    if (new_password && repeat_new_password && code && email){
+      let new_password_descryp = this.cryptService.decrypt(new_password);
+      let repeat_new_password_descrypt = this.cryptService.decrypt(repeat_new_password);
+      this.service.updatePassword({
+        username: email,
+        password: code,
+        passwordNew: new_password_descryp,
+        passwordRepeat: repeat_new_password_descrypt
+      }).subscribe(
+        res =>{
+
+        },
+      );
+    }
+  }
+
+  private validaCampos(campo:string):void{
+    if(campo == '')
+      return;
+    if(campo == this.FIEL_EMAIL)
+      this.emailRequerid = false;
+
+    const erros = this.formularioRecuperacao.get(campo)?.errors || {};
+    const tipoErro = Object.keys(erros)[0];
+
+    if(erros && tipoErro == 'required' && campo == this.FIEL_EMAIL)
+      this.emailRequerid = true;
+    if(erros && tipoErro == 'email' && campo == this.FIEL_EMAIL)
+      this.emailFormat = true;
+  }
 }

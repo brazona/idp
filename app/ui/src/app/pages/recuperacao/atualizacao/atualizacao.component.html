@@ -1,1 +1,61 @@
-<p>atualizacao works!</p>
+<div class="formulario-campos" fxFlex="100" fxFill fxLayoutAlign="none" fxLayout="column">
+  <div fxFlex="30" fxFill fxLayoutAlign="start center">
+    <label class="label-message-code">
+      Crie uma nova senha para acessar o sistema.
+    </label>
+  </div>
+  <br/>
+  <app-field-new-password
+    (new_password)="receberNewPassword($event)"
+    fxFlex="30"
+    fxFill fxLayoutAlign="none"
+    fxFill
+  >
+  </app-field-new-password><br/>
+  <div fxFlex="10" fxFill fxLayoutAlign="start center" *ngIf="passwordNewRequerid">
+    <label class="label-requerid">
+      Campo obrigatório
+    </label>
+  </div>
+  <div fxFlex="10" fxFill fxLayoutAlign="start center" *ngIf="passwordNewEqual">
+    <label class="label-requerid">
+      As senhas devem serem iguais.
+    </label>
+  </div>
+  <br/>
+  <app-field-repeat-new-password
+    (repeat_new_password)="receberRepeatNewPassword($event)"
+    fxFlex="30"
+    fxFill fxLayoutAlign="none"
+    fxFill
+  >
+  </app-field-repeat-new-password><br/>
+  <div fxFlex="10" fxFill fxLayoutAlign="start center" *ngIf="passwordNewRepeatRequerid">
+    <label class="label-requerid">
+      Campo obrigatório
+    </label>
+  </div>
+  <div fxFlex="10" fxFill fxLayoutAlign="start center" *ngIf="passwordNewRepeatEquals">
+    <label class="label-requerid">
+      As senhas devem serem iguais.
+    </label>
+  </div>
+  <br/>
+  <ng-container
+    *ngIf="enabledButton; then buttondisabled; else buttonenabled">
+  </ng-container>
+  <ng-template #buttondisabled>
+    <app-btn-new-password (onAtualizar)="atualizar()" fxFlex="25" fxFill fxLayoutAlign="center center" >  </app-btn-new-password><br/>
+  </ng-template>
+  <ng-template #buttonenabled>
+    <div class="container-btn-new-password">
+      <button (click)="atualizar()" class="btn-new-password btn waves-effect waves-light" type="submit" name="action" [disabled]="true">CRIAR NOVA SENHA
+      </button>
+    </div>
+  </ng-template>
+  <br/>
+  <div fxFlex="20" fxFill fxLayoutAlign="end end">
+    <a class="link-authenticacao" routerLink="/autenticacao">Volte para Autenticação</a>
+  </div>
+</div>
+

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {StorageService} from "../../../../core/services/storage.service";
 
 @Component({
   selector: 'app-btn-access',
@@ -10,12 +11,9 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 export class AccessComponent implements OnInit{
   username:string
   @Output() public onLogar = new EventEmitter();
-  constructor(){}
+  constructor(private storageService: StorageService){}
   ngOnInit(): void {}
   logar(){
-    console.log("logando....")
-  }
-  receberUsername(username:string) {
-    this.username = username;
+    console.log("logando....");
   }
 }

@@ -36,10 +36,14 @@ public class CustomAuthManager implements AuthorizationManager {
             ,"/v1/auth/authentication"
             ,"/v1/auth/forgot"
             ,"/api/v1/auth/forgot"
-            ,"/v1/auth/update/password"
+            ,"/api/v1/auth/validate/code"
+            ,"/v1/auth/validate/code"
+    };
+    private static final String[] AUTHORIZATION = {
+            "/v1/auth/update/password"
             ,"/api/v1/auth/update/password"
-            ,"/api/v1/auth/update"
-            ,"/v1/auth/update"
+            ,"/api/v1/auth/authorization"
+            ,"/v1/auth/authorization"
     };
     @Autowired
     private EnvUtil envUtil;
@@ -57,11 +61,11 @@ public class CustomAuthManager implements AuthorizationManager {
                 Enumeration<String> h = object.getRequest().getHeaderNames();
                 String headerAuth = object.getRequest().getHeader("Authorization");
                 String path =  object.getRequest().getRequestURI();
-
+                Boolean isAuthorization = ArrayUtils.contains(AUTHORIZATION, path);
                 if (headerAuth == null || headerAuth.isEmpty())
                     return new AuthorizationDecision(false);
                 else if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")){
-                    return authorizationBearer(headerAuth);
+                    return authorizationBearer(headerAuth, isAuthorization);
                 } else if (StringUtils.hasText(headerAuth)
                         && headerAuth.startsWith("Basic ") && ArrayUtils.contains(PUBLIC, path)) {
                     return authorizationBasic(headerAuth);
@@ -117,7 +121,7 @@ public class CustomAuthManager implements AuthorizationManager {
         }
         return new AuthorizationDecision(true);
     }
-    private AuthorizationDecision authorizationBearer(String auth){
+    private AuthorizationDecision authorizationBearer(String auth, Boolean isAuthorization){
         String jwt = auth.substring(BEARER_LENGTH);
         if (jwt.isEmpty() || !jwtUtils.validateJwtToken(jwt))
             return new AuthorizationDecision(false);
@@ -126,6 +130,6 @@ public class CustomAuthManager implements AuthorizationManager {
         UserDetails userDetails = authService.loadUserByUsername(username);
         UserDetailsVO userDetailsVO = userService.getUserByUsername(username);
         return new AuthorizationDecision(
-                authService.authorization(userDetailsVO.getId(), jwt));
+                authService.authorization(userDetailsVO.getId(), jwt, isAuthorization));
     }
 }

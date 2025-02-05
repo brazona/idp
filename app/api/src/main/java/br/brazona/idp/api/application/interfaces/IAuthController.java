@@ -70,4 +70,17 @@ public interface IAuthController {
     @PostMapping(value = "/update/password", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<ForgotResponseVO> updatePassword(
             @RequestBody UpdatePassRequestBusinessVO auth);
+
+    /**
+     *
+     * Endpoint that validate the code the recovery access
+     *
+     * @param auth information the username and code.
+     *
+     *
+     **/
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PostMapping(value = "/validate/code", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity<AuthResponseBusinessVO>  validateCode(
+            @RequestBody AuthValidateCodeRequestBusinessVO auth);
 }
