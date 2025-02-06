@@ -37,8 +37,8 @@ ENV APP_API_URL=$ARG_APP_API_URL
 ENV BASIC_USER=$ARG_BASIC_USER
 ENV BASIC_PASS=$ARG_BASIC_PASS
 
-COPY nginx.conf  /etc/nginx/conf.d/default.conf
-COPY dist/app-ui/browser /usr/share/nginx/html
+COPY ./ui/nginx.conf  /etc/nginx/conf.d/default.conf
+COPY ./ui/dist/app-ui/browser /usr/share/nginx/html
 
 CMD ["/bin/sh",  "-c",  "envsubst < /usr/share/nginx/html/assets/env.template.js > /usr/share/nginx/html/assets/env.js && exec nginx -g 'daemon off;'"]
 # Expose port 80
