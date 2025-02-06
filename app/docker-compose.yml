@@ -6,7 +6,7 @@ services:
     build:
       context: .
     networks:
-      - ${NETWORK_NAME}
+      - bza-network
     restart: always  
     environment:
     - SPRING_ACTIVE_PROFILE=${SPRING_ACTIVE_PROFILE}
@@ -22,5 +22,5 @@ services:
       
 
 networks:
-  "${NETWORK_NAME}":
+  bza-network:
     external: true
