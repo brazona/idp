@@ -1,7 +1,7 @@
 ################
 # BackEnd #
 ################
-FROM openjdk:21 as backend
+FROM openjdk:21 AS backend
 LABEL maintainer=BrazonaTech
 LABEL stage="backend"
 LABEL author="BrazonaTech"
@@ -20,17 +20,16 @@ ENV CONFIG_SERVER_PASS=$ARG_CONFIG_SERVER_PASS
 WORKDIR /app
 
 COPY ./api/target/*.jar /app
+COPY ./api/target/*.jar app.jar
 
-# COPY ./api/target/*.jar app.jar
-
-# ENTRYPOINT ["java","-jar","/app.jar"]
+ENTRYPOINT ["java","-jar","/app.jar"]
 
 EXPOSE $API_PORT_INTERNAL
 
 ################
 # FrontEnd #
 ################
-FROM nginx:latest as frontend
+FROM nginx:latest AS frontend
 LABEL maintainer=BrazonaTech
 LABEL stage="frontend"
 LABEL author="BrazonaTech"
@@ -48,7 +47,6 @@ COPY --from=backend /app/*.jar app.jar
 COPY ./ui/nginx.conf  /etc/nginx/conf.d/default.conf
 COPY ./ui/dist/app-ui/browser /usr/share/nginx/html
 
-ENTRYPOINT ["java","-jar","/app.jar"]
 CMD ["/bin/sh",  "-c",  "envsubst < /usr/share/nginx/html/assets/env.template.js > /usr/share/nginx/html/assets/env.js && exec nginx -g 'daemon off;'"]
 
 EXPOSE $UI_PORT_INTERNAL
