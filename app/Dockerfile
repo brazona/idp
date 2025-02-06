@@ -19,5 +19,7 @@ ENV BASIC_USER=$ARG_BASIC_USER
 ENV BASIC_PASS=$ARG_BASIC_PASS
 
 COPY ./api/target/*.jar app.jar
+COPY ./api/target/idp/* app.jar
+COPY ./ui/target/*.jar app.jar
 
 ENTRYPOINT ["java","-jar","/app.jar"]
