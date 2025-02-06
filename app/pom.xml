@@ -39,6 +39,9 @@
 		<liquibase.version>4.28.0</liquibase.version>
 		<restassured.version>4.4.0</restassured.version>
 		<maven.javadoc.version>3.6.3</maven.javadoc.version>
+		<frontend-maven-plugin.version>1.7.6</frontend-maven-plugin.version>
+		<frontend-maven-plugin.nodeVersion>v20.3.0</frontend-maven-plugin.nodeVersion>
+		<frontend-maven-plugin.npmVersion>9.6.7</frontend-maven-plugin.npmVersion>
 	</properties>
     <modules>
 		<module>api</module>
