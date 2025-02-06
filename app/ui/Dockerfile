@@ -1,21 +1,22 @@
 ################
-# Run in NGINX #
+# FrontEnd #
 ################
-FROM nginx:latest
+FROM nginx:latest AS frontend
+LABEL maintainer=BrazonaTech
+LABEL stage="frontend"
+LABEL author="BrazonaTech"
 
-ARG ENVIRONMENT
-ARG VERSION
+ARG ARG_APP_API_URL=http://localhost:8080
+ARG ARG_BASIC_USER=user
+ARG ARG_BASIC_PASS=user
 
-ENV APP_VERSION $VERSION
-ENV APP_ENVIRONMENT $ENVIRONMENT
+ENV APP_API_URL=$ARG_APP_API_URL
+ENV BASIC_USER=$ARG_BASIC_USER
+ENV BASIC_PASS=$ARG_BASIC_PASS
 
-
-#COPY nginx.conf /etc/nginx/conf.d/default.conf
-#COPY dist/app-ui/* /usr/share/nginx/html
-
-COPY nginx.conf  /etc/nginx/conf.d/default.conf
-COPY dist/app-ui /usr/share/nginx/html
+COPY ./nginx.conf  /etc/nginx/conf.d/default.conf
+COPY ./dist/app-ui/browser /usr/share/nginx/html
 
 CMD ["/bin/sh",  "-c",  "envsubst < /usr/share/nginx/html/assets/env.template.js > /usr/share/nginx/html/assets/env.js && exec nginx -g 'daemon off;'"]
-# Expose port 80
-EXPOSE $API_UI_PORT_EXT
+
+EXPOSE $UI_PORT_INTERNAL
