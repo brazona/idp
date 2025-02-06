@@ -4,8 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve -o",
-    "dev": "npm run env && ng build --watch --configuration development --output-path ../api/target/idp/app",
-    "build": "npm run file_env && ng build --configuration production --output-path ../api/target/idp/app",
+    "dev": "npm run env && ng build --watch --configuration development ",
+    "build": "npm run file_env && ng build --configuration production ",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "clean": "rm -rf ./node_modules package-lock.json .cache dist .angular ./node ./target",

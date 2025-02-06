@@ -17,7 +17,8 @@ services:
     - BASIC_USER=${BASIC_USER}
     - BASIC_PASS=${BASIC_PASS}
     ports:
-      - "${PORT_EXTERNAL}:${PORT_INTERNAL}"
+      - "${UI_PORT_EXTERNAL}:${UI_PORT_INTERNAL}"
+      - "${API_PORT_EXTERNAL}:${API_PORT_INTERNAL}"
       
 
 networks:
