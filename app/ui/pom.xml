@@ -37,21 +37,22 @@
 						</configuration>
 						<executions>
 							<execution>
+								<id>install node and npm</id>
+								<goals>
+									<goal>install-node-and-npm</goal>
+								</goals>
+							</execution>
+							<execution>
 								<id>npm install</id>
 								<goals>
 									<goal>npm</goal>
 								</goals>
-								<phase>generate-resources</phase>
-								<configuration>
-									<arguments>install</arguments>
-								</configuration>
 							</execution>
 							<execution>
-								<id>npm build</id>
+								<id>npm run build</id>
 								<goals>
 									<goal>npm</goal>
 								</goals>
-								<phase>generate-resources</phase>
 								<configuration>
 									<arguments>run build</arguments>
 								</configuration>
