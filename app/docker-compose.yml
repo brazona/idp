@@ -3,6 +3,7 @@ version: '3.0'
 services:
   api:
     container_name: ${CONTAINER_NAME_API}
+    hostname: ${CONTAINER_NAME_API}
     build:
       context: ./api
     networks:
@@ -17,11 +18,14 @@ services:
       - "${API_PORT_EXTERNAL}:${API_PORT_INTERNAL}"
   ui:
     container_name: ${CONTAINER_NAME_UI}
+    hostname: ${CONTAINER_NAME_UI}
     build:
       context: ./ui
     networks:
       - bza-network
-    restart: always  
+    restart: always
+    depends_on:
+      - api  
     environment:
     - APP_API_URL=${APP_API_URL}
     - BASIC_USER=${BASIC_USER}
