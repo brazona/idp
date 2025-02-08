@@ -8,6 +8,8 @@ services:
       context: ./api
     networks:
       - bza-network
+    extra_hosts:
+    - "host.docker.internal:host-gateway"  
     restart: always  
     environment:
     - SPRING_ACTIVE_PROFILE=${SPRING_ACTIVE_PROFILE}
