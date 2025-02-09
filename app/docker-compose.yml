@@ -16,6 +16,7 @@ services:
     - CONFIG_SERVER_HOST=${CONFIG_SERVER_HOST}
     - CONFIG_SERVER_USER=${CONFIG_SERVER_USER}
     - CONFIG_SERVER_PASS=${CONFIG_SERVER_PASS}
+    - DB_SERVER_HOST=${DB_SERVER_HOST}
     ports:
       - "${API_PORT_EXTERNAL}:${API_PORT_INTERNAL}"
   ui:
@@ -32,6 +33,7 @@ services:
     - APP_API_URL=${APP_API_URL}
     - BASIC_USER=${BASIC_USER}
     - BASIC_PASS=${BASIC_PASS}
+    
     ports:
       - "${UI_PORT_EXTERNAL}:${UI_PORT_INTERNAL}"
 networks:
