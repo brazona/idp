@@ -39,7 +39,7 @@ As alterações são aplicadas em determinado ambiente através das **branchs**,
 
 ``` sh
 cd app &&
-mvn clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true &&
+mvn clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true -P tst &&
 docker compose --env-file .env up -d --build --force-recreate
 ```
 

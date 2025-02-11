@@ -7,12 +7,13 @@ LABEL stage="frontend"
 LABEL author="BrazonaTech"
 
 ARG ARG_APP_API_URL=http://localhost:8080
-ARG ARG_BASIC_USER=user
-ARG ARG_BASIC_PASS=user
+ARG ARG_APP_API_BASIC_USER=user
+ARG ARG_APP_API_BASIC_PASS=user
 
 ENV APP_API_URL=$ARG_APP_API_URL
-ENV BASIC_USER=$ARG_BASIC_USER
-ENV BASIC_PASS=$ARG_BASIC_PASS
+ENV APP_API_BASIC_USER=$ARG_APP_API_BASIC_USER
+ENV APP_API_BASIC_PASS=$ARG_APP_API_BASIC_PASS
+
 
 COPY ./nginx.conf  /etc/nginx/conf.d/default.conf
 COPY ./dist/app-ui/browser /usr/share/nginx/html

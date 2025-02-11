@@ -31,8 +31,10 @@ services:
       - api  
     environment:
     - APP_API_URL=${APP_API_URL}
-    - BASIC_USER=${BASIC_USER}
-    - BASIC_PASS=${BASIC_PASS}
+    - APP_API_HOST=${APP_API_HOST}
+    - APP_API_PORT=${APP_API_PORT}
+    - APP_API_BASIC_USER=${APP_API_BASIC_USER}
+    - APP_API_BASIC_PASS=${APP_API_BASIC_PASS}
     
     ports:
       - "${UI_PORT_EXTERNAL}:${UI_PORT_INTERNAL}"
