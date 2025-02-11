@@ -16,6 +16,7 @@ import {UpdateInterface} from "../interfaces/auth/update.interface";
 import {StorageEnum} from "../enuns/storage.enum";
 import {ApiPathEnum} from "../enuns/api.path.enum";
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -26,8 +27,10 @@ export class AuthService extends GenericService{
   private list_storage: string[];
   private isAuthorization: boolean | undefined = false;
   private isAuthorizeSource = new Subject<boolean>();
+  private api_url: string;
   isAuthorize$ = this.isAuthorizeSource.asObservable();
   private readonly URL_API:string = 'http://localhost:7782/api'
+
   private readonly URL:string = 'http://localhost:7782/api/v1/auth/authentication'
   private readonly URL_AUTHORIZATION:string = 'http://localhost:7782/api/v1/auth/authorization'
   // Headers
@@ -46,7 +49,8 @@ export class AuthService extends GenericService{
       password: email
     }
     return new Observable((observer) => {
-        this.http.post<Token>(this.URL_API+'/v1/auth/forgot',JSON.stringify(user),
+      const URL = this.getApiURL() + ApiPathEnum.auth_forgot;
+      this.http.post<AuthorizationInterface>(URL,JSON.stringify(user),
           {
             headers: this.getHeaderBasic(),
             observe: 'response'
@@ -79,7 +83,8 @@ export class AuthService extends GenericService{
   validateCode(validate: ValidateInterface): Observable <any>{
     this.loadingService.loadingOn();
     return new Observable((observer) => {
-        this.http.post<Token>(this.URL_API+'/v1/auth/validate/code',JSON.stringify(validate),
+            const URL = this.getApiURL() + ApiPathEnum.auth_validate_code;
+            this.http.post<Token>(URL,JSON.stringify(validate),
           {
             headers: this.getHeaderBasic(),
             observe: 'response'
@@ -117,7 +122,8 @@ export class AuthService extends GenericService{
   updatePassword(updatePassword: UpdateInterface): Observable <any>{
     this.loadingService.loadingOn();
     return new Observable((observer) => {
-        this.http.post<Token>(this.URL_API+'/v1/auth/update/password',JSON.stringify(updatePassword),
+      const URL = this.getApiURL() + ApiPathEnum.auth_update_password;
+      this.http.post<AuthorizationInterface>(URL,JSON.stringify(updatePassword),
           {
             headers: this.getHeaderToken(),
             observe: 'response'
@@ -152,7 +158,8 @@ export class AuthService extends GenericService{
     this.builderHeader64();
     this.loadingService.loadingOn();
     return new Observable((observer) => {
-      this.http.post<Token>(this.URL,JSON.stringify(user),
+      const URL = this.getApiURL() + ApiPathEnum.authentication;
+      this.http.post<Token>(URL,JSON.stringify(user),
         {
           headers: new HttpHeaders()
             .set('Content-Type', 'application/json')
@@ -163,17 +170,17 @@ export class AuthService extends GenericService{
       .subscribe(
         res =>{
           debugger;
+          this.removeStorage();
           this.notication.sendMessage({
             message: NotificationMessageEnum.auth_success, type: NotificationTypeEnum.success});
           this.setSession(res.body?.token);
           this.storageService.setItemStorage('is_user_update', 'false');
-          this.removeStorage();
           this.loadingService.loadingOff();
           this.router.navigate(["/home"]);
           observer.next(true);
         },
         (err: string ) =>{
-          debugger;
+
           this.notication.sendMessage({
             message: NotificationMessageEnum.auth_error, type: NotificationTypeEnum.error});
           this.httpErrorResponse(JSON.parse(err), ApiPathEnum.authentication);
@@ -186,9 +193,9 @@ export class AuthService extends GenericService{
   )};
   authorization(token: String): Observable<boolean>{
     this.loadingService.loadingOn();
-    debugger;
     return new Observable((observer) => {
-        this.http.post<AuthorizationInterface>(this.URL_AUTHORIZATION,JSON.stringify(token),
+          const URL = this.getApiURL() + ApiPathEnum.authorization;
+          this.http.post<AuthorizationInterface>(URL,JSON.stringify(token),
           {
             headers: new HttpHeaders()
               .set('Content-Type', 'application/json')
@@ -272,7 +279,6 @@ export class AuthService extends GenericService{
     else if (path == ApiPathEnum.authentication && responseError.status != 0 && responseError.status == 403 ){
     }
     this.loadingService.loadingOff();
-
   }
 }
 
