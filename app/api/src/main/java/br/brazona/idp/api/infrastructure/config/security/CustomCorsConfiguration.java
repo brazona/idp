@@ -40,9 +40,13 @@ public class CustomCorsConfiguration implements CorsConfigurationSource {
         String[] list_cors_origin = value.split(",");
         log.debug("Cors Origin: {}", Arrays.toString(list_cors_origin));
         if ("OPTIONS".equals(request.getMethod())) {
+            log.debug("Request Method OPTIONS: {}", request.getMethod());
+            log.debug("Request Method OPTIONS Header: {}", request.getHeader("Origin"));
             corsConfig.setAllowedOrigins(List.of(request.getHeader("Origin")));
             corsConfig.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "DELETE", "PATCH", "OPTIONS"));
         } else {
+            log.debug("Request Method : {}", request.getMethod());
+            log.debug("Request Method Header: {}", request.getHeader("Origin"));
             corsConfig.setAllowedOrigins(List.of(list_cors_origin));
             corsConfig.setAllowCredentials(true);
             corsConfig.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "DELETE"));
