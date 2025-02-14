@@ -1,11 +1,14 @@
 package br.brazona.idp.api.infrastructure.config.security;
 
+import br.brazona.idp.api.domain.constants.LogsConst;
+import br.brazona.idp.api.domain.constants.ServicesConst;
 import br.brazona.idp.api.domain.exceptions.AccessDeniedException;
 import br.brazona.idp.api.domain.services.business.AuthService;
 import br.brazona.idp.api.domain.services.business.UserService;
 import br.brazona.idp.api.domain.utils.EnvUtil;
 import br.brazona.idp.api.domain.utils.JwtUtils;
 import br.brazona.idp.api.domain.views.business.UserDetailsVO;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +27,7 @@ import java.util.Enumeration;
 import java.util.function.Supplier;
 
 @Component
+@Slf4j
 @Configuration
 public class CustomAuthManager implements AuthorizationManager {
 
@@ -58,6 +62,7 @@ public class CustomAuthManager implements AuthorizationManager {
         return new AuthorizationManager<RequestAuthorizationContext>() {
             @Override
             public AuthorizationDecision check(Supplier<Authentication> authentication, RequestAuthorizationContext object) {
+                log.debug(LogsConst.SERVICE_DEBUG, ServicesConst.AUTH_SERVICE_SECURITY_AUTHORIZATION);
                 Enumeration<String> h = object.getRequest().getHeaderNames();
                 String headerAuth = object.getRequest().getHeader("Authorization");
                 String path =  object.getRequest().getRequestURI();
