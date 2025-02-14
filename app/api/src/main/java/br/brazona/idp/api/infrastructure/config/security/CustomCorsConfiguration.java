@@ -30,6 +30,10 @@ public class CustomCorsConfiguration implements CorsConfigurationSource {
         String origin = request.getHeader("Origin");
         CorsConfiguration corsConfig = new CorsConfiguration();
 
+        log.debug("Request Remote Host: {}", request.getRemoteHost());
+        log.debug("Request Remote Uri: {}", request.getRequestURI());
+        log.debug("Request Remote Port: {}", request.getRemotePort());
+
         corsConfig.setAllowedHeaders(List.of("*"));
         corsConfig.setMaxAge(3600L);
         String value = envUtil.getEnvValue(CORS_ORIGIN_PROP);
