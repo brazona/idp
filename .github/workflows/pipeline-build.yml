@@ -19,6 +19,8 @@ env:
   REPOSITORY_DOCKER: ${{ github.repository }}
   VERSION_TYPE: ''
   APP: idp
+  APP_UI: idp-ui
+  APP_API: idp-api
   
 jobs:
   info-environment:
@@ -34,7 +36,7 @@ jobs:
     name: Generate Tag Image Docker
     permissions: write-all
     needs: [info-environment]
-    uses: ./.github/workflows/tag.yml
+    uses: ./.github/workflows/tag-image.yml
     with:
       environment_name: ${{needs.info-environment.outputs.environment_name}}
       path_pom: ./app/pom.xml
@@ -57,7 +59,8 @@ jobs:
         cache: maven
 
     - name: Build with Maven
-      run: mvn -B package --file app/pom.xml
+      #run: mvn -B package --file app/pom.xml
+      run: mvn clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true -P build --file app/pom.xml
   build:
     name: Build and Push Docker image 
     needs: [info-environment, generate-tag, java]
@@ -83,7 +86,7 @@ jobs:
           java-version: '21'
       - name: Build with Maven
         #run: mvn -f ./app/ clean install 
-        run: mvn -f ./app/ clean install -P ${{needs.info-environment.outputs.maven_profile}}
+        run: mvn -f ./app/ clean install -P build
       - name: Log in to the Container registry
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
         with:
@@ -91,24 +94,32 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build Docker Image
+      - name: Build Docker Image APP API
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         env:
           TAG_IMAGE: ${{needs.generate-tag.outputs.tag}}
         with:
-          context: ./app
+          context: ./app/api
           push: true
-          tags: ${{ env.REGISTRY_DOCKER }}/${{ github.repository }}/${{ env.APP }}:${{env.TAG_IMAGE}}
-  deploy:
-    name: Pipeline Deploy
-    needs: [info-environment, generate-tag, build]
-    permissions: write-all
-    uses: ./.github/workflows/deploy.yml
-    secrets:
-      KUBECONFIG: ${{ secrets.KUBECONFIG }}
-    with:
-      environment_name: ${{needs.info-environment.outputs.environment_name}}
-      name_env: ${{needs.info-environment.outputs.github_env_file_field}}
-      path_app: app
-      docker_image_tag: ${{needs.generate-tag.outputs.tag}}
+          tags: ${{ env.REGISTRY_DOCKER }}/${{ github.repository }}/${{ env.APP.API }}:${{env.TAG_IMAGE}}
+      - name: Build Docker Image APP UI
+        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        env:
+          TAG_IMAGE: ${{needs.generate-tag.outputs.tag}}
+        with:
+          context: ./app/ui
+          push: true
+          tags: ${{ env.REGISTRY_DOCKER }}/${{ github.repository }}/${{ env.APP.UI }}:${{env.TAG_IMAGE}}      
+  # deploy:
+  #   name: Pipeline Deploy
+  #   needs: [info-environment, generate-tag, build]
+  #   permissions: write-all
+  #   uses: ./.github/workflows/deploy.yml
+  #   secrets:
+  #     KUBECONFIG: ${{ secrets.KUBECONFIG }}
+  #   with:
+  #     environment_name: ${{needs.info-environment.outputs.environment_name}}
+  #     name_env: ${{needs.info-environment.outputs.github_env_file_field}}
+  #     path_app: app
+  #     docker_image_tag: ${{needs.generate-tag.outputs.tag}}
 
