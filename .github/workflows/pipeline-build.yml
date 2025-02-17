@@ -92,18 +92,18 @@ jobs:
           context: ./app/ui
           push: true
           tags: ${{ env.REGISTRY_DOCKER }}/${{ github.repository }}/${{ env.DOCKER_NAME_UI }}:${{env.TAG_IMAGE}}    
-  # deploy:
-  #   name: Pipeline Deploy
-  #   needs: [info-environment, generate-tag, build]
-  #   permissions: write-all
-  #   uses: ./.github/workflows/deploy.yml
-  #   secrets:
-  #     KUBECONFIG: ${{ secrets.KUBECONFIG }}
-  #   with:
-  #     environment_name: ${{needs.info-environment.outputs.environment_name}}
-  #     name_env: ${{needs.info-environment.outputs.github_env_file_field}}
-  #     path_app: app/service
-  #     docker_image_tag: ${{needs.generate-tag.outputs.tag}}  
+  deploy:
+    name: Pipeline Deploy
+    needs: [build]
+    permissions: write-all
+    uses: ./.github/workflows/pipeline-deploy.yml
+    secrets:
+      KUBECONFIG: ${{ secrets.KUBECONFIG }}
+    with:
+      environment_name: ${{needs.info-environment.outputs.environment_name}}
+      name_env: ${{needs.info-environment.outputs.github_env_file_field}}
+      path_app: app/service
+      docker_image_tag: ${{needs.generate-tag.outputs.tag}}  
           
 
 
