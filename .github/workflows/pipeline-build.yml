@@ -3,7 +3,7 @@ on:
   pull_request:
     paths:
       - 'app/**'
-      - '.github/workflows/**'
+      - '.github/workflows/pipeline-build.yml'      
     branches:
       - 'main'
       - 'develop'
@@ -19,8 +19,8 @@ env:
   REPOSITORY_DOCKER: ${{ github.repository }}
   VERSION_TYPE: ''
   APP: idp
-  APP_UI: idp-ui
-  APP_API: idp-api
+  APP_API: idp/api
+  APP_UI: idp/ui
   
 jobs:
   info-environment:
@@ -31,12 +31,12 @@ jobs:
       github_base_ref: ${{github.base_ref}}
       github_event_name: ${{github.event_name }}
       github_ref_name: ${{github.ref_name}}
-      pr_merged: ${{github.event.pull_request.merged}}
+      app_name: conf
   generate-tag:
     name: Generate Tag Image Docker
     permissions: write-all
     needs: [info-environment]
-    uses: ./.github/workflows/tag-image.yml
+    uses: ./.github/workflows/tag.yml
     with:
       environment_name: ${{needs.info-environment.outputs.environment_name}}
       path_pom: ./app/pom.xml
@@ -59,8 +59,7 @@ jobs:
         cache: maven
 
     - name: Build with Maven
-      #run: mvn -B package --file app/pom.xml
-      run: mvn clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true -P build --file app/pom.xml
+      run: mvn -B package --file app/pom.xml
   build:
     name: Build and Push Docker image 
     needs: [info-environment, generate-tag, java]
@@ -85,8 +84,7 @@ jobs:
           distribution: 'adopt'
           java-version: '21'
       - name: Build with Maven
-        #run: mvn -f ./app/ clean install 
-        run: mvn -f ./app/ clean install -P build
+        run: mvn -f ./app/ clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true
       - name: Log in to the Container registry
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
         with:
@@ -94,22 +92,23 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build Docker Image APP API
+      - name: Build Docker Image API
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         env:
           TAG_IMAGE: ${{needs.generate-tag.outputs.tag}}
         with:
           context: ./app/api
           push: true
-          tags: ${{ env.REGISTRY_DOCKER }}/${{ github.repository }}/${{ env.APP.API }}:${{env.TAG_IMAGE}}
-      - name: Build Docker Image APP UI
+          tags: ${{ env.REGISTRY_DOCKER }}/${{ github.repository }}/${{ env.APP_API }}:${{env.TAG_IMAGE}}
+
+      - name: Build Docker Image UI
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         env:
           TAG_IMAGE: ${{needs.generate-tag.outputs.tag}}
         with:
           context: ./app/ui
           push: true
-          tags: ${{ env.REGISTRY_DOCKER }}/${{ github.repository }}/${{ env.APP.UI }}:${{env.TAG_IMAGE}}      
+          tags: ${{ env.REGISTRY_DOCKER }}/${{ github.repository }}/${{ env.APP_UI }}:${{env.TAG_IMAGE}}    
   # deploy:
   #   name: Pipeline Deploy
   #   needs: [info-environment, generate-tag, build]
@@ -120,6 +119,8 @@ jobs:
   #   with:
   #     environment_name: ${{needs.info-environment.outputs.environment_name}}
   #     name_env: ${{needs.info-environment.outputs.github_env_file_field}}
-  #     path_app: app
-  #     docker_image_tag: ${{needs.generate-tag.outputs.tag}}
+  #     path_app: app/service
+  #     docker_image_tag: ${{needs.generate-tag.outputs.tag}}  
+          
+
 
