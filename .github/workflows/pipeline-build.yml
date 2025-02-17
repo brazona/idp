@@ -1,4 +1,4 @@
-name: Pipeline Build
+name: Pipeline Build IDP
 on:
   pull_request:
     paths:
