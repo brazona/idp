@@ -76,7 +76,7 @@ jobs:
         method: kubeconfig
         kubeconfig: ${{ secrets.KUBECONFIG }}
     - name: Deploy to Cluster
-      run: | 
+      run: cat ${{env.MANIFEST_OUT}} | 
         kubectl apply -f ${{env.MANIFEST_OUT}}
     - name: Successful
       id: status
