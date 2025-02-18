@@ -75,8 +75,20 @@ jobs:
       with:
         method: kubeconfig
         kubeconfig: ${{ secrets.KUBECONFIG }}
+    - name: Print Manifest
+      id: vars
+      run: echo "version=$(cat ${{env.MANIFEST_OUT}})" >> $GITHUB_OUTPUT
+    - name: Read README.md
+      id: package
+      uses: jaywcjlove/github-action-read-file@main
+      with:
+        path: ${{env.MANIFEST_OUT}}
+    
+    - name: Echo package.json
+      run: echo "${{ steps.package.outputs.content }}"  
+
     - name: Deploy to Cluster
-      run: cat ${{env.MANIFEST_OUT}} | 
+      run: | 
         kubectl apply -f ${{env.MANIFEST_OUT}}
     - name: Successful
       id: status
