@@ -1,9 +1,9 @@
-name: Pipeline Build IDP
+name: IDP Pipeline Build
 on:
   pull_request:
     paths:
       - 'app/**'
-      - '.github/workflows/pipeline-build.yml'      
+      - '.github/workflows/pipeline-build.yml'   
     branches:
       - 'main'
       - 'develop'
@@ -40,7 +40,6 @@ jobs:
     with:
       environment_name: ${{needs.info-environment.outputs.environment_name}}
       path_pom: ./app/pom.xml
-
   build:
     name: Build Maven and Build/Push Image Docker
     needs: [info-environment, generate-tag]
@@ -91,10 +90,10 @@ jobs:
         with:
           context: ./app/ui
           push: true
-          tags: ${{ env.REGISTRY_DOCKER }}/${{ github.repository }}/${{ env.DOCKER_NAME_UI }}:${{env.TAG_IMAGE}}    
+          tags: ${{ env.REGISTRY_DOCKER }}/${{ github.repository }}/${{ env.DOCKER_NAME_UI }}:${{env.TAG_IMAGE}}
   deploy:
     name: Pipeline Deploy
-    needs: [build]
+    needs: [build, generate-tag, info-environment]
     permissions: write-all
     uses: ./.github/workflows/pipeline-deploy.yml
     secrets:
@@ -102,8 +101,7 @@ jobs:
     with:
       environment_name: ${{needs.info-environment.outputs.environment_name}}
       name_env: ${{needs.info-environment.outputs.github_env_file_field}}
-      path_app: app
+      path_app: app/service
       docker_image_tag: ${{needs.generate-tag.outputs.tag}}  
           
-
 
