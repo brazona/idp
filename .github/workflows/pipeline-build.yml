@@ -101,7 +101,7 @@ jobs:
     with:
       environment_name: ${{needs.info-environment.outputs.environment_name}}
       name_env: ${{needs.info-environment.outputs.github_env_file_field}}
-      path_app: app/service
+      path_app: app
       docker_image_tag: ${{needs.generate-tag.outputs.tag}}  
           
 
