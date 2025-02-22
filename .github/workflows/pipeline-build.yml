@@ -31,7 +31,7 @@ jobs:
       github_base_ref: ${{github.base_ref}}
       github_event_name: ${{github.event_name }}
       github_ref_name: ${{github.ref_name}}
-      app_name: conf
+      app_name: idp
   generate-tag:
     name: Generate Tag Image Docker
     permissions: write-all
@@ -91,17 +91,28 @@ jobs:
           context: ./app/ui
           push: true
           tags: ${{ env.REGISTRY_DOCKER }}/${{ github.repository }}/${{ env.DOCKER_NAME_UI }}:${{env.TAG_IMAGE}}
-  deploy:
-    name: Pipeline Deploy
-    needs: [build, generate-tag, info-environment]
-    permissions: write-all
-    uses: ./.github/workflows/pipeline-deploy.yml
-    secrets:
-      KUBECONFIG: ${{ secrets.KUBECONFIG }}
-    with:
-      environment_name: ${{needs.info-environment.outputs.environment_name}}
-      name_env: ${{needs.info-environment.outputs.github_env_file_field}}
-      path_app: app
-      docker_image_tag: ${{needs.generate-tag.outputs.tag}}  
-          
+  # deploy-api:
+  #   name: Pipeline Deploy API
+  #   needs: [build, generate-tag, info-environment]
+  #   permissions: write-all
+  #   uses: ./.github/workflows/pipeline-deploy.yml
+  #   secrets:
+  #     KUBECONFIG: ${{ secrets.KUBECONFIG }}
+  #   with:
+  #     environment_name: ${{needs.info-environment.outputs.environment_name}}
+  #     name_env: ${{needs.info-environment.outputs.github_env_file_field}}
+  #     path_app: app/api
+  #     docker_image_tag: ${{needs.generate-tag.outputs.tag}}  
+  # deploy-ui:
+  #   name: Pipeline Deploy UI
+  #   needs: [build, generate-tag, info-environment]
+  #   permissions: write-all
+  #   uses: ./.github/workflows/pipeline-deploy.yml
+  #   secrets:
+  #     KUBECONFIG: ${{ secrets.KUBECONFIG }}
+  #   with:
+  #     environment_name: ${{needs.info-environment.outputs.environment_name}}
+  #     name_env: ${{needs.info-environment.outputs.github_env_file_field}}
+  #     path_app: app/ui
+  #     docker_image_tag: ${{needs.generate-tag.outputs.tag}}        
 
