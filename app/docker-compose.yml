@@ -31,7 +31,6 @@ services:
     depends_on:
       - api  
     environment:
-    - APP_API_URL=${APP_API_URL}
     - APP_API_HOST=${APP_API_HOST}
     - APP_API_PORT=${APP_API_PORT}
     - APP_API_BASIC_USER=${APP_API_BASIC_USER}
