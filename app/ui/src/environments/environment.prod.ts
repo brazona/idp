@@ -2,8 +2,6 @@ export const environment = {
   production: true,
   APP_API:{
     //@ts-ignore
-    URL: window["env"]["APP_API_HOST"],
-    //@ts-ignore
     HOST: window["env"]["APP_API_HOST"],
     //@ts-ignore
     PORT: window["env"]["APP_API_PORT"],
