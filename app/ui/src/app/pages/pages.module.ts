@@ -1,21 +1,24 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import {MatGridListModule} from '@angular/material/grid-list';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule } from '@angular/forms';
 
-
-import { HomeComponent } from './home/home.component';
-import { LoginComponent } from './login/login.component';
-
-
+import { AutenticacaoComponent } from './autenticacao/autenticacao.component';
+import { RecuperacaoComponent } from './recuperacao/recuperacao.component';
+import { ComponentsModule } from './components/components.module';
+import { AuthService } from '../core/services/auth.service';
 
 @NgModule({
   declarations: [
-    HomeComponent,
-    LoginComponent
   ],
   imports: [
-    CommonModule,
-    MatGridListModule
+    FlexLayoutModule,
+    FormsModule,
+    //app
+    AutenticacaoComponent,
+    RecuperacaoComponent
+  ],
+  providers: [
+    AuthService
   ]
 })
 export class PagesModule { }

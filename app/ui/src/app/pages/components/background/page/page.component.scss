@@ -1,0 +1,13 @@
+@use '@angular/material' as mat;
+@use "pallete-color.scss" as paleta;
+@use "typography.scss" as font;
+
+.background {
+    background-image: url(../../../../../assets/imagens/background-pagina-1024x768.png);
+    background-repeat: round;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    overflow: auto;
+}
+

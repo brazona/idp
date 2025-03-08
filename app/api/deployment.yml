@@ -1,0 +1,113 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: idp-api
+  namespace: ${NAMESPACE}
+  labels:
+    app: idp-api
+spec:
+  selector:
+    matchLabels:
+      app: idp-api
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: idp-api
+    spec:
+      restartPolicy: Always
+      securityContext:
+        runAsUser: 0
+      terminationGracePeriodSeconds: 30
+      imagePullSecrets:
+        - name: dockerconfigjson-github-com
+      containers:
+      - name: idp-api-service
+        image: ${IMAGE_API}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 7782
+          protocol: TCP
+        env:
+          - name: SPRING_ACTIVE_PROFILE
+            valueFrom:
+              configMapKeyRef:
+                name: idp           
+                key: SPRING_ACTIVE_PROFILE
+
+          - name: CONFIG_SERVER_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: idp           
+                key: CONFIG_SERVER_HOST
+
+          - name: CONFIG_SERVER_USER
+            valueFrom:
+              configMapKeyRef:
+                name: idp           
+                key: CONFIG_SERVER_USER
+
+          - name: CONFIG_SERVER_PASS
+            valueFrom:
+              configMapKeyRef:
+                name: idp           
+                key: CONFIG_SERVER_PASS
+
+          - name: DB_SERVER_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: idp           
+                key: DB_SERVER_HOST
+
+          - name: IDP_CORS_ORIGIN
+            valueFrom:
+              configMapKeyRef:
+                name: idp           
+                key: IDP_CORS_ORIGIN
+
+          - name: API_PORT_INTERNAL
+            valueFrom:
+              configMapKeyRef:
+                name: idp           
+                key: API_PORT_INTERNAL                           
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: idp-api-service
+  namespace: ${NAMESPACE}
+spec:
+  selector:
+    app: idp-api
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 7782
+      targetPort: 7782
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: ${NAMESPACE}
+  name: idp-api-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: ${DNS_API}
+    http:
+      paths:
+        - pathType: Prefix
+          path: "/"
+          backend:
+            service:
+              name: idp-api-service
+              port:
+                number: 7782

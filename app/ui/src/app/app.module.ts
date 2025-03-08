@@ -1,11 +1,22 @@
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatIconModule } from '@angular/material/icon'
+import { MatInput } from '@angular/material/input'
+import { MatToolbar } from '@angular/material/toolbar'
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { ToastrModule} from "ngx-toastr";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
-import { SharedModule } from './shared/shared.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { PagesModule } from './pages/pages.module';
+import { MaterialModule } from './core/material.module';
+import {ComponentsModule} from "./pages/components/components.module";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {AutorizacaoComponent} from "./pages/autorizacao/autorizacao.component";
 
 
 @NgModule({
@@ -15,10 +26,32 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    BrowserAnimationsModule,
+    FlexLayoutModule,
+    MatIconModule,
+    MatInput,
+    MatToolbar,
+    MatSlideToggleModule,
+    FormsModule,
+    MatProgressSpinnerModule,
+    // imports: [MatProgressSpinnerModule, AsyncPipe, NgIf, NgTemplateOutlet],
+    ToastrModule.forRoot(
+      {
+        timeOut: 5000, // 5 seconds
+        closeButton: true,
+        progressBar: true,
+        countDuplicates: true,
+        tapToDismiss: true,
+        positionClass: 'bottom-right',
+        progressAnimation: "decreasing"
+      }
+    ),
+    //app
+    MaterialModule,
     CoreModule,
-    SharedModule,
-    BrowserAnimationsModule
-
+    PagesModule,
+    ComponentsModule,
+    AutorizacaoComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

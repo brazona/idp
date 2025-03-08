@@ -1,4 +1,4 @@
-name: Apply Manifest K8S
+name: IDP Pipeline Deploy
 on:
   workflow_call:
     secrets:
@@ -25,6 +25,8 @@ env:
   MANIFEST_IN: ${{ inputs.path_app }}/deployment.yml
   MANIFEST_OUT: ${{ inputs.path_app }}/deployment-run.yml
   ENV_TXT: ${{ inputs.path_app }}/env.txt
+  TEMPLATE_TXT: ${{ inputs.path_app }}/template.txt
+  DOCKER_IMAGE_TAG: ${{ inputs.docker_image_tag }}
 jobs:
   envfile:
     name: Env File
@@ -54,7 +56,7 @@ jobs:
       id: values_file_env
       run: echo "values_file_env=${{ env.VALUES }}" >> $GITHUB_OUTPUT
   deploy:
-    name: Deploy K8S
+    name: Publish Manifest K8S
     runs-on: ubuntu-latest
     permissions: write-all
     needs: [envfile]
@@ -68,8 +70,8 @@ jobs:
     
     - name: Preparete Manisfest k8s
       run: |
-        echo ${{ needs.envfile.outputs.var_values }} >> "template.txt"
-        bash .github/workflows/scripts/prepare-manifest.sh template.txt ${{env.MANIFEST_IN}} ${{env.MANIFEST_OUT}} ${{inputs.docker_image_tag}}
+        echo ${{ needs.envfile.outputs.var_values }} >> "${{env.TEMPLATE_TXT}}" 
+        bash .github/workflows/scripts/manifest.sh ${{env.TEMPLATE_TXT}} ${{env.MANIFEST_IN}} ${{env.MANIFEST_OUT}} ${{env.DOCKER_IMAGE_TAG}}
     - name: Set Kubernetes Context
       uses: azure/k8s-set-context@v1
       with:
@@ -77,6 +79,7 @@ jobs:
         kubeconfig: ${{ secrets.KUBECONFIG }}
     - name: Deploy to Cluster
       run: | 
+        cat ${{env.MANIFEST_OUT}}
         kubectl apply -f ${{env.MANIFEST_OUT}}
     - name: Successful
       id: status

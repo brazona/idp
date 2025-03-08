@@ -1,0 +1,26 @@
+<div class="formulario-campos" fxFlex="100" fxFill fxLayoutAlign="none" fxLayout="column">
+  <div fxFlex="30" fxFill fxLayoutAlign="start center">
+    <label class="label-message-code">
+      Foi enviado o código de redefinição da senho no e-mail informado, insira no campo abaixo para prosseguir.
+    </label>
+  </div>
+  <br/>
+  <app-field-code
+    (code)="receberCodigo($event)"
+    fxFlex="30"
+    fxFill fxLayoutAlign="none"
+    fxFill
+  >
+  </app-field-code><br/>
+  <div fxFlex="10" fxFill fxLayoutAlign="start center" *ngIf="codigoRequerid">
+    <label class="label-requerid">
+      Campo obrigatório
+    </label>
+  </div>
+  <br/>
+  <app-btn-code (onValidar)="validar()" fxFlex="25" fxFill fxLayoutAlign="center center"></app-btn-code><br/>
+  <div fxFlex="20" fxFill fxLayoutAlign="end end">
+    <a class="link-authenticacao" routerLink="/autenticacao">Volte para Autenticação</a>
+  </div>
+</div>
+

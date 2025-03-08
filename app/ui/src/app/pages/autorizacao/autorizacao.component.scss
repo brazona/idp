@@ -1,0 +1,25 @@
+@use "pallete-color.scss" as paleta;
+
+.spinner-container {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  background: rgba(17, 67, 3, 0.50);
+  z-index: 2000;
+}
+.progress{
+  width: 50%;
+  height: 1%;
+  border: 1px solid paleta.$brazona-verde-claro;
+  border-radius: 5px;
+  padding: 0.5rem;
+  background-color: transparent;
+}
+.indeterminate {
+  background-color: paleta.$brazona-verde-claro;
+}

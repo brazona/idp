@@ -1,0 +1,16 @@
+@import "pallete-color";
+// import bootstrap css framework
+@import url('../../node_modules/bootstrap/dist/css/bootstrap.min.css');
+// import materialize css framework
+@import url('../../node_modules/materialize-css/dist/css/materialize.min.css');
+// import materialize ngx toast
+@import url('../../node_modules/ngx-toastr/toastr.css');
+html,
+body {
+    height: 100%;
+    margin: 0;
+    font-family: "Russo One", sans-serif;
+}
+.page {
+    height: 100%;
+}

@@ -1,0 +1,90 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: idp-ui
+  namespace: ${NAMESPACE}
+  labels:
+    app: idp-ui
+spec:
+  selector:
+    matchLabels:
+      app: idp-ui
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: idp-ui
+    spec:
+      restartPolicy: Always
+      securityContext:
+        runAsUser: 0
+      terminationGracePeriodSeconds: 30
+      imagePullSecrets:
+        - name: dockerconfigjson-github-com
+      containers:
+      - name: idp-ui-service
+        image: ${IMAGE_UI}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        env:
+          - name: APP_API_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: idp         
+                key: APP_API_HOST
+          
+          - name: APP_API_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: idp         
+                key: APP_API_PORT  
+
+          - name: APP_API_BASIC_USER
+            valueFrom:
+              configMapKeyRef:
+                name: idp         
+                key: APP_API_BASIC_USER     
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: idp-ui-service
+  namespace: ${NAMESPACE}
+spec:
+  selector:
+    app: idp-ui
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: ${NAMESPACE}
+  name: idp-ui-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: ${DNS_UI}
+    http:
+      paths:
+        - pathType: Prefix
+          path: "/"
+          backend:
+            service:
+              name: idp-ui-service
+              port:
+                number: 80

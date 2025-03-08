@@ -9,6 +9,16 @@ import org.springframework.stereotype.Component;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+* 
+* Class Entity Addresses.
+* 
+* @author Brazona Tech
+* @version 1.0
+* @since 1.0
+*
+**/
+
 @Entity
 @Table(name = "addresses")
 @Getter
@@ -28,9 +38,28 @@ public class AddressesEntity implements Serializable {
     private String country;
     private Long business_partner_id;
 
+    /**
+     *
+     * Class constructor.
+     *
+     **/
     public AddressesEntity() {
     }
-
+    /**
+     * 
+     * Method that provides the object with authentication data.
+     * 
+     * @param id Object of the User class, with the application's authentication values.
+     * @param street Object of the User class, with the application's authentication values.
+     * @param neighborhood Object of the User class, with the application's authentication values.
+     * @param number Object of the User class, with the application's authentication values.
+     * @param complement Object of the User class, with the application's authentication values.
+     * @param state Object of the User class, with the application's authentication values.
+     * @param zipcode Object of the User class, with the application's authentication values.
+     * @param country Object of the User class, with the application's authentication values.
+     * @param business_partner_id Object of the User class, with the application's authentication values.
+     * 
+     **/
     public AddressesEntity(Long id, String street, String neighborhood,
                            String number, String complement, String state,
                            String zipcode, String country, Long business_partner_id) {

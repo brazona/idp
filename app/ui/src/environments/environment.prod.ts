@@ -1,21 +1,15 @@
 export const environment = {
   production: true,
-  //@ts-ignore
-  ENVIRONMENT: window["env"]["APP_ENVIRONMENT"],
-  //@ts-ignore
-  VERSION: window["env"]["APP_VERSION"],
-  //@ts-ignore
   APP_API:{
     //@ts-ignore
-    URL: window["env"]["APP_API_URL"],
+    HOST: window["env"]["APP_API_HOST"],
+    //@ts-ignore
+    PORT: window["env"]["APP_API_PORT"],
     BASIC_AUTH:{
       //@ts-ignore
-      AUTH_USER: window["env"]["AUTHENTICATION_USER"],
+      USERNAME: window["env"]["APP_API_BASIC_USER"],
       //@ts-ignore
-      AUTH_PASS:window["env"]["AUTHENTICATION_PASS"]
-    },
-    
-    //@ts-ignore
-    GRANT: window["env"]["AUTHENTICATION_GRANT"]
+      PASSWORD: window["env"]["APP_API_BASIC_PASS"],
+    }
   },
 };
