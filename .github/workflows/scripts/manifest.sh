@@ -22,4 +22,5 @@ cp  $DIR_MANIFEST_IN $DIR_MANIFEST_OUT
 export $(grep -v '^#' $DIRETORIO_ENV | xargs) && env
 ## Substitui os valores do arquivo .env para o manisfesto temporário
 envsubst < $DIR_MANIFEST_IN > $DIR_MANIFEST_OUT
-
+## Imprimi manifest temporário
+cat $DIR_MANIFEST_OUT
