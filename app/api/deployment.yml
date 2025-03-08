@@ -38,43 +38,43 @@ spec:
           - name: SPRING_ACTIVE_PROFILE
             valueFrom:
               configMapKeyRef:
-                name: idp-api-service           
+                name: idp           
                 key: SPRING_ACTIVE_PROFILE
           
           - name: GITHUB_TOKEN
             valueFrom:
               configMapKeyRef:
-                name: idp-api-service           
+                name: idp         
                 key: GITHUB_TOKEN  
 
           - name: GITHUB_USER
             valueFrom:
               configMapKeyRef:
-                name: idp-api-service           
+                name: idp        
                 key: GITHUB_USER   
 
           - name: CONFIG_SERVER_PASS
             valueFrom:
               configMapKeyRef:
-                name: idp-api-service           
+                name: idp          
                 key: CONFIG_SERVER_PASS
 
           - name: CONFIG_SERVER_ENCRYPT_KEY
             valueFrom:
               configMapKeyRef:
-                name: idp-api-service           
+                name: idp           
                 key: CONFIG_SERVER_ENCRYPT_KEY
 
           - name: GITHUB_BRANCH
             valueFrom:
               configMapKeyRef:
-                name: idp-api-service           
+                name: idp          
                 key: GITHUB_BRANCH
 
           - name: GITHUB_URL
             valueFrom:
               configMapKeyRef:
-                name: idp-api-service           
+                name: idp         
                 key: GITHUB_URL     
 
 ---
@@ -91,27 +91,6 @@ spec:
     - protocol: TCP
       port: 7782
       targetPort: 7782
-
-# ---
-
-# apiVersion: networking.k8s.io/v1
-# kind: Ingress
-# metadata:
-#   namespace: ${NAMESPACE}
-#   name: idp-api-ingress
-# spec:
-#   ingressClassName: nginx
-#   rules:
-#   - host: ${DNS_API}
-#     http:
-#       paths:
-#         - pathType: Prefix
-#           path: "/"
-#           backend:
-#             service:
-#               name: idp-api-service
-#               port:
-#                 number: 7782
 
 ---
 

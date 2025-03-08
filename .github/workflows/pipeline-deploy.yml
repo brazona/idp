@@ -80,7 +80,7 @@ jobs:
     - name: Deploy to Cluster
       run: | 
         cat ${{env.MANIFEST_OUT}}
-        kubectl apply -f ${{env.MANIFEST_IN}}
+        kubectl apply -f ${{env.MANIFEST_OUT}}
     - name: Successful
       id: status
       run: echo "status=true" >> $GITHUB_OUTPUT

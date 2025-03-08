@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: idp-ui
-  namespace: development
+  namespace: ${NAMESPACE}
   labels:
     app: idp-ui
 spec:
@@ -29,8 +29,7 @@ spec:
         - name: dockerconfigjson-github-com
       containers:
       - name: idp-ui-service
-        # image: ${IMAGE}
-        image: ghcr.io/brazona/idp/ui:0.0.1-SNAPSHOT-24
+        image: ${IMAGE_UI}
         imagePullPolicy: Always
         ports:
         - containerPort: 80
@@ -52,13 +51,14 @@ spec:
             valueFrom:
               configMapKeyRef:
                 name: idp         
-                key: APP_API_BASIC_USER   
+                key: APP_API_BASIC_USER     
+
 ---
 kind: Service
 apiVersion: v1
 metadata:
   name: idp-ui-service
-  namespace: development
+  namespace: ${NAMESPACE}
 spec:
   selector:
     app: idp-ui
@@ -73,13 +73,12 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  namespace: development
+  namespace: ${NAMESPACE}
   name: idp-ui-ingress
 spec:
   ingressClassName: nginx
   rules:
-  # - host: ${DNS}
-  - host: idp-dsv.rancher.brazona.site
+  - host: ${DNS_UI}
     http:
       paths:
         - pathType: Prefix
