@@ -92,6 +92,27 @@ spec:
       port: 7782
       targetPort: 7782
 
+# ---
+
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   namespace: ${NAMESPACE}
+#   name: idp-api-ingress
+# spec:
+#   ingressClassName: nginx
+#   rules:
+#   - host: ${DNS_API}
+#     http:
+#       paths:
+#         - pathType: Prefix
+#           path: "/"
+#           backend:
+#             service:
+#               name: idp-api-service
+#               port:
+#                 number: 7782
+
 ---
 
 apiVersion: networking.k8s.io/v1
