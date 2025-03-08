@@ -40,43 +40,42 @@ spec:
               configMapKeyRef:
                 name: idp           
                 key: SPRING_ACTIVE_PROFILE
-          
-          - name: GITHUB_TOKEN
-            valueFrom:
-              configMapKeyRef:
-                name: idp         
-                key: GITHUB_TOKEN  
 
-          - name: GITHUB_USER
+          - name: CONFIG_SERVER_HOST
             valueFrom:
               configMapKeyRef:
-                name: idp        
-                key: GITHUB_USER   
+                name: idp           
+                key: CONFIG_SERVER_HOST
+
+          - name: CONFIG_SERVER_USER
+            valueFrom:
+              configMapKeyRef:
+                name: idp           
+                key: CONFIG_SERVER_USER
 
           - name: CONFIG_SERVER_PASS
             valueFrom:
               configMapKeyRef:
-                name: idp          
+                name: idp           
                 key: CONFIG_SERVER_PASS
 
-          - name: CONFIG_SERVER_ENCRYPT_KEY
+          - name: DB_SERVER_HOST
             valueFrom:
               configMapKeyRef:
                 name: idp           
-                key: CONFIG_SERVER_ENCRYPT_KEY
+                key: DB_SERVER_HOST
 
-          - name: GITHUB_BRANCH
+          - name: IDP_CORS_ORIGIN
             valueFrom:
               configMapKeyRef:
-                name: idp          
-                key: GITHUB_BRANCH
+                name: idp           
+                key: IDP_CORS_ORIGIN
 
-          - name: GITHUB_URL
+          - name: API_PORT_INTERNAL
             valueFrom:
               configMapKeyRef:
-                name: idp         
-                key: GITHUB_URL     
-
+                name: idp           
+                key: API_PORT_INTERNAL                           
 ---
 kind: Service
 apiVersion: v1
